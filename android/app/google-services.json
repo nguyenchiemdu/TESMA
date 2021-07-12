@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "600364208024",
+    "project_id": "tesma-f9631",
+    "storage_bucket": "tesma-f9631.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600364208024:android:ebd4767fe42adb9b0f65ed",
+        "android_client_info": {
+          "package_name": "com.tesma.tesma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600364208024-bb0kp8mn7jnrmlvdqil1vcfbacm82v66.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tesma.tesma",
+            "certificate_hash": "979760c949aee37160464390028a41eeba38639e"
+          }
+        },
+        {
+          "client_id": "600364208024-pllr8tbrg34nb2641ce37vg6ni8c1d3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOVXxjl3n-8uZdqjl37qTB8b3SbMobeIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "600364208024-pllr8tbrg34nb2641ce37vg6ni8c1d3j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
