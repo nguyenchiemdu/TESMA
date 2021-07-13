@@ -12,7 +12,7 @@ class AuthenticationWrapper extends StatelessWidget {
     final firebaseUser = context.watch<User>();
 
     if (firebaseUser != null) {
-      return HomePage_LoginTest();
+      return HomePageLoginTest();
     } else {
       return LoginForm();
     }

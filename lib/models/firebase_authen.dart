@@ -1,13 +1,12 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   final FirebaseAuth auth;
   AuthService(this.auth);
   Stream<User> get authStateChanges => auth.authStateChanges();
-  Future createUser({String user, String password}) async {
+  Future createUser(String user, String password) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
+      await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: user, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -20,9 +19,9 @@ class AuthService {
     }
   }
 
-  Future Signin(String user, String password) async {
+  Future signIn(String user, String password) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
+      await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: user, password: password);
       print("Signed in");
     } on FirebaseAuthException catch (e) {
@@ -34,7 +33,7 @@ class AuthService {
     }
   }
 
-  Future SignOut() async {
+  Future signOut() async {
     try {
       await auth.signOut();
     } on FirebaseAuthException catch (e) {

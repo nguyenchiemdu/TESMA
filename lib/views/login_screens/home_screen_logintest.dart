@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/firebase_authen.dart';
 
-class HomePage_LoginTest extends StatelessWidget {
+class HomePageLoginTest extends StatelessWidget {
   // This widget is the root of your application.
 
   @override
@@ -12,7 +12,7 @@ class HomePage_LoginTest extends StatelessWidget {
         Text('Homepage'),
         ElevatedButton(
             onPressed: () {
-              context.read<AuthService>().SignOut();
+              context.read<AuthService>().signOut();
             },
             child: Text("Signout"))
       ]),

@@ -24,9 +24,19 @@ class LoginForm extends StatelessWidget {
               onPressed: () {
                 context
                     .read<AuthService>()
-                    .Signin(userController.text, passwordController.text);
+                    .signIn(userController.text, passwordController.text);
               },
-              child: Text("Signin"))
+              style: ButtonStyle(
+                  //backgroundColor: Color.fromRGBO(69, 34, 139, 10),
+                  ),
+              child: Text(
+                "Signin",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
+                ),
+              ))
         ],
       ),
     );
