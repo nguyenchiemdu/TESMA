@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
+  final GoogleSignIn ggsignin = GoogleSignIn();
   final FirebaseAuth auth;
   AuthService(this.auth);
   Stream<User> get authStateChanges => auth.authStateChanges();
@@ -33,8 +35,29 @@ class AuthService {
     }
   }
 
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await ggsignin.signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
   Future signOut() async {
     try {
+      if (auth.currentUser.providerData[0].providerId == 'google.com') {
+        await ggsignin.disconnect();
+      }
       await auth.signOut();
     } on FirebaseAuthException catch (e) {
       print(e);
