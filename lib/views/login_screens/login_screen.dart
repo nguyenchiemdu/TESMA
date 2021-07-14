@@ -3,6 +3,8 @@ import 'package:flutter/rendering.dart';
 import '../../models/firebase_authen.dart';
 import 'package:provider/provider.dart';
 import '../../models/firebase_google_sign_in.dart';
+import 'package:tesma/views/regis_screens/regis_screen.dart';
+import 'package:flutter/gestures.dart';
 
 class LoginForm extends StatelessWidget {
   // This widget is the root of your application.
@@ -25,6 +27,7 @@ class LoginForm extends StatelessWidget {
 
     //var borderRadius = BorderRadius.circular(15);
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text('Sign in'),
         ),
@@ -144,20 +147,23 @@ class LoginForm extends StatelessWidget {
                 ),
               ])),
               RichText(
-                  text: TextSpan(children: [
-                TextSpan(
+                text: TextSpan(children: [
+                  TextSpan(
                     text: "Don’t have an account ? ",
                     style: TextStyle(
                       color: Color(0xffd7cee9),
                       fontSize: 16.0,
-                    )),
-                TextSpan(
-                    text: "Sign up",
-                    style: TextStyle(
-                      color: Color(0xff7243cf),
-                      fontSize: 16.0,
-                    )),
-              ]))
+                    ),
+                  ),
+                ]),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyRegisterScreen()),
+                ),
+                child: Text("Sign up"),
+              ),
             ],
           ),
         ));
