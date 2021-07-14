@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../../models/firebase_authen.dart';
 import 'package:provider/provider.dart';
-import '../../models/firebase_google_sign_in.dart';
 
 class LoginForm extends StatelessWidget {
   // This widget is the root of your application.
@@ -127,10 +126,7 @@ class LoginForm extends StatelessWidget {
                   child: Row(children: [
                 ElevatedButton(
                     onPressed: () {
-                      //final provider_ggsignin =
-                      //Provider.of<GoogleSignInProvider>(context,
-                      //      listen: false);
-                      //  provider_ggsignin.signInWithGoogle();
+                      context.read<AuthService>().signInWithGoogle();
                     },
                     child: Icon(
                       Icons.mail,
