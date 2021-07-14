@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../models/firebase_authen.dart';
 
 class HomeScreen extends StatelessWidget {
   Color getbackgroudcolor(Set<MaterialState> states) {
@@ -32,7 +34,9 @@ class HomeScreen extends StatelessWidget {
                   RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
               ))),
-          onPressed: () {},
+          onPressed: () {
+            context.read<AuthService>().signOut();
+          },
           child: Icon(Icons.add_rounded),
         ),
       ),
