@@ -11,6 +11,7 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     //var borderRadius = BorderRadius.circular(15);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: MaxWidthContainer(
           child: ReponsiveLayout(
         mobileBody: LoginMobileContent(),
@@ -42,13 +43,16 @@ class LoginMobileContent extends StatelessWidget {
         appBar: AppBar(
           toolbarHeight: 128,
           backgroundColor: Color(0xff45228b),
-          title: const Text('Log in',
-              style: TextStyle(
-                fontFamily: 'SegoeUI',
-                color: Colors.white,
-                fontSize: 40.0,
-                fontWeight: FontWeight.w900,
-              )),
+          title: Container(
+            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+            child: const Text('Log in',
+                style: TextStyle(
+                  fontFamily: 'SegoeUI',
+                  color: Colors.white,
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.w900,
+                )),
+          ),
         ),
         body: Container(
           decoration: BoxDecoration(
@@ -97,9 +101,22 @@ class LoginMobileContent extends StatelessWidget {
               ]),
               Spacer(),
               Container(
-                height: 46,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Color(0xffe5e8fb),
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
                 child: TextField(
                   decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                        fontFamily: 'SegoeUI',
+                        color: Color(0xffd7cee9),
+                        fontSize: 16.0,
+                      ),
                       border: OutlineInputBorder(),
                       labelText: "Enter your username or email"),
                   controller: userController,
@@ -120,9 +137,22 @@ class LoginMobileContent extends StatelessWidget {
               ]),
               Spacer(),
               Container(
-                height: 46,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Color(0xffe5e8fb),
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
                 child: TextField(
                   decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                        fontFamily: 'SegoeUI',
+                        color: Color(0xffd7cee9),
+                        fontSize: 16.0,
+                      ),
                       border: OutlineInputBorder(),
                       labelText: "Enter your password"),
                   controller: passwordController,
@@ -256,15 +286,23 @@ class LoginTabletContent extends StatelessWidget {
         appBar: AppBar(
           toolbarHeight: 128,
           backgroundColor: Color(0xff45228b),
-          title: const Text('Log in',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 32.0,
-                fontWeight: FontWeight.bold,
-              )),
+          title: Container(
+            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+            child: const Text('Log in',
+                style: TextStyle(
+                  fontFamily: 'SegoeUI',
+                  color: Colors.white,
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.w900,
+                )),
+          ),
         ),
         body: Container(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          padding: EdgeInsets.fromLTRB(25, 20, 25, 50),
           child: Column(
             children: [
               Row(children: [
@@ -272,9 +310,10 @@ class LoginTabletContent extends StatelessWidget {
                   "Welcome Back",
                   textAlign: TextAlign.left,
                   style: TextStyle(
+                    fontFamily: 'SegoeUI',
                     color: Color(0xff000000),
                     fontSize: 32.0,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
               ]),
@@ -283,50 +322,98 @@ class LoginTabletContent extends StatelessWidget {
                   "Hello there, sign in to continue",
                   textAlign: TextAlign.left,
                   style: TextStyle(
+                    fontFamily: 'SegoeUI',
                     color: Color(0xffd7cee9),
+                    fontWeight: FontWeight.w600,
                     fontSize: 16.0,
                   ),
                 ),
               ]),
+              Spacer(),
               Row(children: [
                 Text(
                   "Username or email",
                   textAlign: TextAlign.left,
                   style: TextStyle(
+                    fontFamily: 'SegoeUI',
                     color: Color(0xff000000),
                     fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ]),
-              TextField(
-                decoration:
-                    InputDecoration(labelText: "Enter your username or email"),
-                controller: userController,
+              Spacer(),
+              Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Color(0xffe5e8fb),
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                        fontFamily: 'SegoeUI',
+                        color: Color(0xffd7cee9),
+                        fontSize: 16.0,
+                      ),
+                      border: OutlineInputBorder(),
+                      labelText: "Enter your username or email"),
+                  controller: userController,
+                ),
               ),
+              Spacer(),
               Row(children: [
                 Text(
                   "Password",
                   textAlign: TextAlign.left,
                   style: TextStyle(
+                    fontFamily: 'SegoeUI',
                     color: Color(0xff000000),
                     fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ]),
-              TextField(
-                decoration: InputDecoration(labelText: "Enter your password"),
-                controller: passwordController,
+              Spacer(),
+              Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Color(0xffe5e8fb),
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                        fontFamily: 'SegoeUI',
+                        color: Color(0xffd7cee9),
+                        fontSize: 16.0,
+                      ),
+                      border: OutlineInputBorder(),
+                      labelText: "Enter your password"),
+                  controller: passwordController,
+                ),
               ),
+              Spacer(),
               Row(children: [
                 Text(
                   "Forgot password ?",
                   textAlign: TextAlign.left,
                   style: TextStyle(
+                      fontFamily: 'SegoeUI',
                       color: Color(0xff7243cf),
                       fontSize: 16.0,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.w600),
                 ),
               ]),
+              Spacer(),
               ElevatedButton(
                   onPressed: () {
                     context
@@ -338,60 +425,81 @@ class LoginTabletContent extends StatelessWidget {
                           MaterialStateProperty.resolveWith(getbackgroudcolor),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
+                        borderRadius: BorderRadius.circular(15.0),
                       ))),
                   child: Container(
-                      width: 167,
-                      height: 38,
+                      width: 195,
+                      height: 43,
                       child: Center(
                           child: Text(
-                        "Sign in",
+                        "Log in",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.white,
+                            fontFamily: 'SegoeUI',
+                            color: Color(0xffffffff),
                             fontSize: 16.0,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.w900),
                       )))),
+              Spacer(),
               Text("Or sign in with",
                   textAlign: TextAlign.center,
                   style: TextStyle(
+                    fontFamily: 'SegoeUI',
                     color: Color(0xffd7cee9),
                     fontSize: 16.0,
                   )),
-              Container(
-                  child: Row(children: [
-                ElevatedButton(
-                    onPressed: () {
-                      context.read<AuthService>().signInWithGoogle();
-                    },
-                    child: Icon(
-                      Icons.mail,
-                      color: Colors.blue,
-                      size: 36.0,
-                    )),
+              Spacer(),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                new GestureDetector(
+                  onTap: () {
+                    context.read<AuthService>().signInWithGoogle();
+                  },
+                  child: Icon(
+                    Icons.mail,
+                    color: Colors.blue,
+                    size: 45.0,
+                  ),
+                ),
                 Icon(
                   Icons.facebook,
                   color: Colors.blue,
-                  size: 36.0,
+                  size: 45.0,
                 ),
-              ])),
-              RichText(
-                text: TextSpan(children: [
-                  TextSpan(
-                    text: "Don’t have an account ? ",
-                    style: TextStyle(
-                      color: Color(0xffd7cee9),
-                      fontSize: 16.0,
+              ]),
+              Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: "Don’t have an account ? ",
+                        style: TextStyle(
+                          fontFamily: 'SegoeUI',
+                          color: Color(0xffd7cee9),
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  new GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MyRegisterScreen()),
+                      );
+                    },
+                    child: new Text(
+                      "Sign up",
+                      style: TextStyle(
+                          color: Color(0xff7243cf),
+                          fontSize: 16.0,
+                          fontFamily: 'SegoeUI',
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
-                ]),
-              ),
-              ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyRegisterScreen()),
-                ),
-                child: Text("Sign up"),
+                ],
               ),
             ],
           ),
