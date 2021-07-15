@@ -11,6 +11,7 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     //var borderRadius = BorderRadius.circular(15);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: MaxWidthContainer(
           child: ReponsiveLayout(
         mobileBody: LoginMobileContent(),
