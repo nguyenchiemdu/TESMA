@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tesma/views/classes_screen/InputClass_screen.dart';
 import '../../../models/firebase_authen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List <Widget> listClass = [];
+  void reRender (Map<String,dynamic> classItem){
+    List <Widget> temp = listClass;
+    temp.add(Text(classItem['className']));
+
+    setState(() {
+      listClass = temp;
+    });
+    print(listClass);
+  }
   Color getbackgroudcolor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
@@ -35,7 +51,10 @@ class HomeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18.0),
               ))),
           onPressed: () {
-            context.read<AuthService>().signOut();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => InputClassScreen(reRender)),
+            );
           },
           child: Icon(Icons.add_rounded),
         ),
