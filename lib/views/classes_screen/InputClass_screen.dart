@@ -6,12 +6,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
 
 
-class InputClassScreen extends StatefulWidget{
+class InputClassScreen extends StatefulWidget {
   InputClassScreen(this.rendering);
+
   @override
   _InputClassScreen createState() {
     return _InputClassScreen();
   }
+
   Function rendering;
 }
 
@@ -30,7 +32,8 @@ class _InputClassScreen extends State<InputClassScreen> {
 
   DateTime startDate;
   DateTime endDate;
-  Map<String,dynamic> newClass = {};
+  Map<String, dynamic> newClass = {};
+
   String getStartDate() {
     if (startDate == null) {
       return 'Select Start Date';
@@ -39,6 +42,7 @@ class _InputClassScreen extends State<InputClassScreen> {
       return '${startDate.day}/${startDate.month}/${startDate.year}';
     }
   }
+
   String getEndDate() {
     if (endDate == null) {
       return 'Select End Date';
@@ -47,26 +51,36 @@ class _InputClassScreen extends State<InputClassScreen> {
       return '${endDate.day}/${endDate.month}/${endDate.year}';
     }
   }
+
   Future pickStartDate(BuildContext context) async {
     final initialDate = DateTime.now();
     final newDate = await showDatePicker(
       context: context,
       initialDate: startDate ?? initialDate,
-      firstDate: DateTime(DateTime.now().year - 5),
-      lastDate: DateTime(DateTime.now().year + 5),
+      firstDate: DateTime(DateTime
+          .now()
+          .year - 5),
+      lastDate: DateTime(DateTime
+          .now()
+          .year + 5),
     );
 
     if (newDate == null) return;
 
     setState(() => startDate = newDate);
   }
+
   Future pickEndDate(BuildContext context) async {
     final initialDate = DateTime.now();
     final newDate = await showDatePicker(
       context: context,
       initialDate: endDate ?? initialDate,
-      firstDate: DateTime(DateTime.now().year - 5),
-      lastDate: DateTime(DateTime.now().year + 5),
+      firstDate: DateTime(DateTime
+          .now()
+          .year - 5),
+      lastDate: DateTime(DateTime
+          .now()
+          .year + 5),
     );
 
     if (newDate == null) return;
@@ -76,7 +90,8 @@ class _InputClassScreen extends State<InputClassScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> classSetup( String classname, String subject, String description, String startdate, String enddate) async {
+    Future<void> classSetup(String classname, String subject,
+        String description, String startdate, String enddate) async {
       CollectionReference classes =
       FirebaseFirestore.instance.collection('classes');
       DateTime createdate = DateTime.now();
@@ -84,33 +99,39 @@ class _InputClassScreen extends State<InputClassScreen> {
         //'classID': classid,
         'className': classname,
         'createDate': createdate,
-        'start' : startdate,
-        'end' : enddate,
-      }).then((value)  {
+        'start': startdate,
+        'end': enddate,
+      }).then((value) {
         newClass = {
           //'classID': classid,
           'className': classname,
           'createDate': createdate,
-          'start' : startdate,
-          'end' : enddate,
+          'start': startdate,
+          'end': enddate,
         };
         widget.rendering(newClass);
         showDialog(
             context: context,
-            builder: (context){
+            builder: (context) {
               return Dialog(
                 child: Container(
                   child: FloatingActionButton(
                     child: Text("OK"),
-                    onPressed: (){Navigator.pop(context);Navigator.pop(context);},
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
               );
             });
-      }).onError((error, stackTrace){ print(error.code);});
+      }).onError((error, stackTrace) {
+        print(error.code);
+      });
       return;
     }
     return new Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: new Container(
           padding: const EdgeInsets.all(40.0),
@@ -130,7 +151,8 @@ class _InputClassScreen extends State<InputClassScreen> {
             ]),
               new TextField(
                 controller: classNameController,
-                decoration: new InputDecoration(labelText: "Enter your className"),
+                decoration: new InputDecoration(
+                    labelText: "Enter your className"),
                 keyboardType: TextInputType.text,
               ),
               Spacer(),
@@ -148,7 +170,8 @@ class _InputClassScreen extends State<InputClassScreen> {
               ]),
               new TextField(
                 controller: subjectController,
-                decoration: new InputDecoration(labelText: "Enter your subject"),
+                decoration: new InputDecoration(
+                    labelText: "Enter your subject"),
                 keyboardType: TextInputType.text,
               ),
               Spacer(),
@@ -166,7 +189,8 @@ class _InputClassScreen extends State<InputClassScreen> {
               ]),
               new TextField(
                 controller: descriptionController,
-                decoration: new InputDecoration(labelText: "Enter your description"),
+                decoration: new InputDecoration(
+                    labelText: "Enter your description"),
                 keyboardType: TextInputType.text,
               ),
               Spacer(),
@@ -182,7 +206,9 @@ class _InputClassScreen extends State<InputClassScreen> {
                   ),
                 ),
               ]),
-              ButtonHeaderWidget(title: 'Start date', text: getStartDate(), onClicked: () => pickStartDate(context)),
+              ButtonHeaderWidget(title: 'Start date',
+                  text: getStartDate(),
+                  onClicked: () => pickStartDate(context)),
               Spacer(),
               Row(children: [
                 Text(
@@ -196,31 +222,38 @@ class _InputClassScreen extends State<InputClassScreen> {
                   ),
                 ),
               ]),
-              ButtonHeaderWidget(title: 'End date', text: getEndDate(), onClicked: () => pickEndDate(context)),
+              ButtonHeaderWidget(title: 'End date',
+                  text: getEndDate(),
+                  onClicked: () => pickEndDate(context)),
               Spacer(),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () async{
-                    try {
-                      await Firebase.initializeApp();
-                      await classSetup(
-                          classNameController.text, subjectController.text, descriptionController.text, getStartDate(), getEndDate());
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //   SnackBar(
-                      //     content: const Text('Awesome Snackbar!'),
-                      //   ),
-                      //
-                      // );
-
-                    } on FirebaseAuthException catch (e) {
-                      print(e.code);
-                    } catch (e) {
-                      print(e.toString());
-                    }
-
-                  },
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    await Firebase.initializeApp();
+                    await classSetup(
+                        classNameController.text, subjectController.text,
+                        descriptionController.text, getStartDate(),
+                        getEndDate());
+                  } on FirebaseAuthException catch (e) {
+                    print(e.code);
+                  } catch (e) {
+                    print(e.toString());
+                  }
+                },
+                child: Container(
+                  child: Center(
+                    child: Text(
+                      'Create',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'SegoeUI',
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
                 ),
-              )
+              ),
             ],
           )),
     );
