@@ -50,6 +50,7 @@ class AuthService extends ChangeNotifier {
         print('Wrong password provided for that user.');
       }
     }
+    isSigningIn = false;
   }
 
   Future signInWithGoogle() async {
