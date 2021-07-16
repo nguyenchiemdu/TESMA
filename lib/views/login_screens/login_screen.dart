@@ -22,9 +22,18 @@ class LoginForm extends StatelessWidget {
   }
 }
 
-class LoginMobileContent extends StatelessWidget {
+class LoginMobileContent extends StatefulWidget {
+  @override
+  _LoginMobileContentState createState() => _LoginMobileContentState();
+}
+
+class _LoginMobileContentState extends State<LoginMobileContent> {
   final TextEditingController userController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
+  bool showPassword = false;
+
   @override
   Widget build(BuildContext context) {
     Color getbackgroudcolor(Set<MaterialState> states) {
@@ -132,13 +141,15 @@ class LoginMobileContent extends StatelessWidget {
                       ),
                       child: TextField(
                         decoration: InputDecoration(
-                            labelStyle: TextStyle(
-                              fontFamily: 'SegoeUI',
-                              color: Color(0xffd7cee9),
-                              fontSize: 16.0,
-                            ),
-                            border: OutlineInputBorder(),
-                            labelText: "Enter your username or email"),
+                          labelStyle: TextStyle(
+                            fontFamily: 'SegoeUI',
+                            color: Color(0xffd7cee9),
+                            fontSize: 16.0,
+                          ),
+                          border: OutlineInputBorder(),
+                          counterText: "",
+                          hintText: 'Enter your password',
+                        ),
                         controller: userController,
                       ),
                     ),
@@ -166,14 +177,27 @@ class LoginMobileContent extends StatelessWidget {
                       ),
                       child: TextField(
                         decoration: InputDecoration(
-                            labelStyle: TextStyle(
-                              fontFamily: 'SegoeUI',
-                              color: Color(0xffd7cee9),
-                              fontSize: 16.0,
-                            ),
-                            border: OutlineInputBorder(),
-                            labelText: "Enter your password"),
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                showPassword = !showPassword;
+                              });
+                            },
+                            child: Icon(showPassword
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                          ),
+                          labelStyle: TextStyle(
+                            fontFamily: 'SegoeUI',
+                            color: Color(0xffd7cee9),
+                            fontSize: 16.0,
+                          ),
+                          border: OutlineInputBorder(),
+                          counterText: "",
+                          hintText: 'Enter your password',
+                        ),
                         controller: passwordController,
+                        obscureText: !showPassword,
                       ),
                     ),
                     SizedBox(height: 15.0),
