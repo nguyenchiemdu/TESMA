@@ -265,7 +265,7 @@ class LoginMobileContent extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            context.read<AuthService>().signInWithGoogle();
+                            context.read<AuthService>().signInWithFacebook();
                           },
                           child: Container(
                             height: 50.0,
