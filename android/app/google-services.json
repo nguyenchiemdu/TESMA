@@ -7,6 +7,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:600364208024:android:9086c80a4f4a0b790f65ed",
+        "android_client_info": {
+          "package_name": "com.example.tesma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600364208024-qfe96pkr96kqakp5628nqjtd5pm78r85.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tesma",
+            "certificate_hash": "979760c949aee37160464390028a41eeba38639e"
+          }
+        },
+        {
+          "client_id": "600364208024-pllr8tbrg34nb2641ce37vg6ni8c1d3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOVXxjl3n-8uZdqjl37qTB8b3SbMobeIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "600364208024-pllr8tbrg34nb2641ce37vg6ni8c1d3j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:600364208024:android:ebd4767fe42adb9b0f65ed",
         "android_client_info": {
           "package_name": "com.tesma.tesma"
@@ -19,6 +56,30 @@
           "android_info": {
             "package_name": "com.tesma.tesma",
             "certificate_hash": "979760c949aee37160464390028a41eeba38639e"
+          }
+        },
+        {
+          "client_id": "600364208024-fngtm0ghe4taq6dpi0snturhps5qpiml.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tesma.tesma",
+            "certificate_hash": "325c46fbe1d9a2dd9577a974eba67a348fc0076b"
+          }
+        },
+        {
+          "client_id": "600364208024-p0jobhjfpe3s2rcha71fkomsq10urm0d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tesma.tesma",
+            "certificate_hash": "ba58bead441bfe6eb665bf9305cbd6f55e565e12"
+          }
+        },
+        {
+          "client_id": "600364208024-tv6jh79n0d4kei1ri7f6ushl3scnc7de.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tesma.tesma",
+            "certificate_hash": "8103dd0dd1fe3796a7715a8b2400bab46732da08"
           }
         },
         {
