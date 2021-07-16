@@ -40,34 +40,28 @@ class LoginMobileContent extends StatelessWidget {
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        // appBar: AppBar(
-        //   toolbarHeight: 128,
-        //   backgroundColor: Color(0xff45228b),
-        //   title: Container(
-        //     padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-        //     child: const Text('Log in',
-        //         style: TextStyle(
-        //           fontFamily: 'SegoeUI',
-        //           color: Colors.white,
-        //           fontSize: 40.0,
-        //           fontWeight: FontWeight.w900,
-        //         )),
-        //   ),
-        // ),
         body: Container(
-          color: Colors.purple,
+          color: Color(0xff45228b),
           child: Column(
             children: [
               Container(
                 height: MediaQuery.of(context).size.height * .15,
-                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: const Text('Log in',
-                    style: TextStyle(
-                      fontFamily: 'SegoeUI',
-                      color: Colors.white,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w900,
-                    )),
+                padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Log in',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontFamily: 'SegoeUI',
+                        color: Colors.white,
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Container(
                 height: MediaQuery.of(context).size.height * .85,
@@ -76,6 +70,14 @@ class LoginMobileContent extends StatelessWidget {
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15),
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.orange.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
+                    )
+                  ],
                   color: Colors.white,
                 ),
                 //margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -94,6 +96,7 @@ class LoginMobileContent extends StatelessWidget {
                         fontWeight: FontWeight.w900,
                       ),
                     ),
+                    SizedBox(height: 10.0),
                     Text(
                       "Hello there, sign in to continue",
                       textAlign: TextAlign.left,
@@ -104,6 +107,7 @@ class LoginMobileContent extends StatelessWidget {
                         fontSize: 16.0,
                       ),
                     ),
+                    SizedBox(height: 30.0),
                     Text(
                       "Username or email",
                       textAlign: TextAlign.left,
@@ -114,6 +118,7 @@ class LoginMobileContent extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
+                    SizedBox(height: 10.0),
                     Container(
                       //height: 50,
                       decoration: BoxDecoration(
@@ -136,6 +141,7 @@ class LoginMobileContent extends StatelessWidget {
                         controller: userController,
                       ),
                     ),
+                    SizedBox(height: 15.0),
                     Text(
                       "Password",
                       textAlign: TextAlign.left,
@@ -146,6 +152,7 @@ class LoginMobileContent extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
+                    SizedBox(height: 10.0),
                     Container(
                       // height: 50,
                       decoration: BoxDecoration(
@@ -168,6 +175,7 @@ class LoginMobileContent extends StatelessWidget {
                         controller: passwordController,
                       ),
                     ),
+                    SizedBox(height: 15.0),
                     Row(children: [
                       Text(
                         "Forgot password ?",
@@ -179,55 +187,108 @@ class LoginMobileContent extends StatelessWidget {
                             fontWeight: FontWeight.w600),
                       ),
                     ]),
-                    ElevatedButton(
-                        onPressed: () {
-                          context.read<AuthService>().signIn(
-                              userController.text, passwordController.text);
-                        },
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith(
-                                getbackgroudcolor),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ))),
-                        child: Container(
-                            //width: 195,
-                            //height: 43,
-                            child: Center(
-                                child: Text(
-                          "Log in",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
+                    SizedBox(height: 20.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                            onPressed: () {
+                              context.read<AuthService>().signIn(
+                                  userController.text, passwordController.text);
+                            },
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith(
+                                        getbackgroudcolor),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ))),
+                            child: Container(
+                                width: 195,
+                                height: 43,
+                                child: Center(
+                                    child: Text(
+                                  "Log in",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: 'SegoeUI',
+                                      color: Color(0xffffffff),
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w900),
+                                )))),
+                      ],
+                    ),
+                    SizedBox(height: 15.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Or sign in with",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
                               fontFamily: 'SegoeUI',
-                              color: Color(0xffffffff),
+                              color: Color(0xffd7cee9),
                               fontSize: 16.0,
-                              fontWeight: FontWeight.w900),
-                        )))),
-                    Text("Or sign in with",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'SegoeUI',
-                          color: Color(0xffd7cee9),
-                          fontSize: 16.0,
-                        )),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      new GestureDetector(
-                        onTap: () {
-                          context.read<AuthService>().signInWithGoogle();
-                        },
-                        child: Icon(
-                          Icons.mail,
-                          color: Colors.blue,
-                          size: 45.0,
+                            )),
+                      ],
+                    ),
+                    SizedBox(height: 15.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            context.read<AuthService>().signInWithGoogle();
+                          },
+                          child: Container(
+                            height: 50.0,
+                            width: 50.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 6.0,
+                                ),
+                              ],
+                            ),
+                            child: Image.asset(
+                              'assets/image/google.png',
+                            ),
+                          ),
                         ),
-                      ),
-                      Icon(
-                        Icons.facebook,
-                        color: Colors.blue,
-                        size: 45.0,
-                      ),
-                    ]),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            context.read<AuthService>().signInWithGoogle();
+                          },
+                          child: Container(
+                            height: 50.0,
+                            width: 50.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 6.0,
+                                ),
+                              ],
+                            ),
+                            child: Image.asset(
+                              'assets/image/facebook.png',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 15.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
