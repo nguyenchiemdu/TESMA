@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tesma/max_width_container.dart';
+import 'package:tesma/views/login_screens/loading.dart';
 import '../../models/firebase_authen.dart';
 import 'package:provider/provider.dart';
 import 'package:tesma/views/regis_screens/regis_screen.dart';
@@ -240,6 +241,9 @@ class LoginMobileContent extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             context.read<AuthService>().signInWithGoogle();
+                            if (context.read<AuthService>().isSigningIn) {
+                              return Loading();
+                            }
                           },
                           child: Container(
                             height: 50.0,
