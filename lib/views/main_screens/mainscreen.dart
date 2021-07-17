@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tesma/views/login_screens/home_screen_logintest.dart';
 import './home_screen/home_screen.dart';
 import 'placeholder_widget.dart';
+import 'user_profile_screen/user_profile_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -19,15 +20,12 @@ class _MyHomePageState extends State<MyHomePage> {
     PlaceholderWidget(Colors.deepOrange),
     PlaceholderWidget(Colors.green),
     PlaceholderWidget(Colors.red),
-    HomePageLoginTest(),
+    UserProfile(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orangeAccent,
-        title: Text('Trang chủ'),
-      ),
+      //
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
