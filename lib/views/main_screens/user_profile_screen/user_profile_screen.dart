@@ -15,8 +15,13 @@ class UserProfile extends StatelessWidget {
             child: Container(
               height: 300,
               decoration: BoxDecoration(
-                color: Colors.deepPurple[900],
-                borderRadius: BorderRadius.circular(20)
+                color: Colors.indigo[900],
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [BoxShadow(
+                  color: Colors.blue.withOpacity(0.1),
+                  blurRadius: 15,
+                  spreadRadius: 10,
+                )],
               ),
               child: Container(
                 padding: EdgeInsets.only(top: 70, left: 30),
@@ -138,7 +143,6 @@ class UserProfile extends StatelessWidget {
                 ),
                 Text(
                   'Classes',
-                  
                 )
               ],)
             ],),       
