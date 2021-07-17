@@ -180,14 +180,13 @@ class _MyRegisterScreen extends State<MyRegisterScreen> {
                                     ),
                                   ),
                                   Container(
+                                    alignment: Alignment.centerLeft,
                                     padding: EdgeInsets.only(
                                       left: 2 * SizeConfig.widthMultiplier,
                                       right: 2 * SizeConfig.widthMultiplier,
                                     ),
                                     height: 7 * SizeConfig.heightMultiplier,
                                     child: TextField(
-                                      textAlignVertical:
-                                          TextAlignVertical.center,
                                       controller: userController,
                                       maxLength: maxLengthTextField,
                                       decoration: InputDecoration(
@@ -235,14 +234,13 @@ class _MyRegisterScreen extends State<MyRegisterScreen> {
                                     ),
                                   ),
                                   Container(
+                                    alignment: Alignment.centerLeft,
                                     padding: EdgeInsets.only(
                                       left: 2 * SizeConfig.widthMultiplier,
                                       right: 2 * SizeConfig.widthMultiplier,
                                     ),
                                     height: 7 * SizeConfig.heightMultiplier,
                                     child: TextField(
-                                      textAlignVertical:
-                                          TextAlignVertical.center,
                                       controller: emailController,
                                       maxLength: maxLengthTextField,
                                       decoration: InputDecoration(
@@ -290,14 +288,13 @@ class _MyRegisterScreen extends State<MyRegisterScreen> {
                                     ),
                                   ),
                                   Container(
+                                    alignment: Alignment.centerLeft,
                                     padding: EdgeInsets.only(
                                       left: 2 * SizeConfig.widthMultiplier,
                                       right: 2 * SizeConfig.widthMultiplier,
                                     ),
                                     height: 7 * SizeConfig.heightMultiplier,
                                     child: TextField(
-                                      textAlignVertical:
-                                          TextAlignVertical.center,
                                       controller: numberPhoneController,
                                       maxLength: maxLengthTextField,
                                       decoration: InputDecoration(
@@ -345,13 +342,12 @@ class _MyRegisterScreen extends State<MyRegisterScreen> {
                                     ),
                                   ),
                                   Container(
+                                    alignment: Alignment.centerLeft,
                                     padding: EdgeInsets.only(
                                       left: 2 * SizeConfig.widthMultiplier,
                                     ),
                                     height: 7 * SizeConfig.heightMultiplier,
                                     child: TextField(
-                                      textAlignVertical:
-                                          TextAlignVertical.center,
                                       controller: passwordController,
                                       maxLength: maxLengthTextField,
                                       decoration: InputDecoration(
