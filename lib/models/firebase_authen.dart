@@ -94,6 +94,7 @@ class AuthService extends ChangeNotifier {
   }
 
   Future signOut() async {
+    isSigningIn = true;
     try {
       if (auth.currentUser.providerData[0].providerId == 'google.com') {
         await ggsignin.disconnect();
@@ -102,5 +103,6 @@ class AuthService extends ChangeNotifier {
     } on FirebaseAuthException catch (e) {
       print(e);
     }
+    isSigningIn = false;
   }
 }
