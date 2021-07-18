@@ -101,12 +101,7 @@ class _MyRegisterScreen extends State<MyRegisterScreen> {
       // print(isErrorFromServe);
     }
     if (isErrorFromServe == "") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MyTypeUserSelectionScreen(
-                    countPopScreen: 2,
-                  )));
+      Navigator.pop(context);
     } else {
       _showToast(isErrorFromServe);
     }
