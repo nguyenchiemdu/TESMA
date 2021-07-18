@@ -3,11 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tesma/views/login_screens/loading.dart';
 import 'package:tesma/views/login_screens/login_screen.dart';
+import 'package:tesma/views/regis_screens/select_user_type.dart';
 import '../../views/main_screens/mainscreen.dart';
 import '../../models/firebase_authen.dart';
+import '../../models/firebase_database.dart';
 
 class AuthenticationWrapper extends StatelessWidget {
-  // This widget is the root of your application.
+  Future newUser(BuildContext context) async {
+    bool newUser = await UserInfor().isNewUser();
+    if (newUser) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  MyTypeUserSelectionScreen(countPopScreen: 1)));
+    }
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -22,6 +33,7 @@ class AuthenticationWrapper extends StatelessWidget {
               if (provider.isSigningIn) {
                 return Loading();
               } else if (snapshot.hasData) {
+                newUser(context);
                 return MyHomePage();
               } else {
                 return LoginForm();

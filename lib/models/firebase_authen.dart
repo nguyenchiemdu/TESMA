@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -75,6 +76,19 @@ class AuthService extends ChangeNotifier {
 
       // Once signed in, return the UserCredential
       await FirebaseAuth.instance.signInWithCredential(credential);
+
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+      String uid = auth.currentUser.uid.toString();
+      await users.doc(uid).get().then((docsnap) {
+        if (docsnap.data() == null) {
+          users.doc(uid).set({
+            'userName': auth.currentUser.displayName,
+            'email': auth.currentUser.email,
+            'uid': uid,
+          });
+        }
+      });
 
       isSigningIn = false;
     }

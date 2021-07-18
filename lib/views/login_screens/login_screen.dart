@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tesma/max_width_container.dart';
@@ -288,9 +290,6 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                                   context
                                       .read<AuthService>()
                                       .signInWithGoogle();
-                                  if (context.read<AuthService>().isSigningIn) {
-                                    return Loading();
-                                  }
                                 },
                                 child: Container(
                                   height: 50.0,
