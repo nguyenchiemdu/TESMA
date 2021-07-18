@@ -80,11 +80,16 @@ class AuthService extends ChangeNotifier {
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');
       String uid = auth.currentUser.uid.toString();
-      users.doc(uid).set({
-        'userName': auth.currentUser.displayName,
-        'email': auth.currentUser.email,
-        'uid': uid,
+      await users.doc(uid).get().then((docsnap) {
+        if (docsnap.data() == null) {
+          users.doc(uid).set({
+            'userName': auth.currentUser.displayName,
+            'email': auth.currentUser.email,
+            'uid': uid,
+          });
+        }
       });
+
       isSigningIn = false;
     }
   }
