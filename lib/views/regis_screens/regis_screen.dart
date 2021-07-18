@@ -6,12 +6,15 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tesma/views/regis_screens/size_config.dart';
+import 'package:tesma/views/regis_screens/select_user_type.dart';
 
 const darkPurpleColor = Color(0xFF45228B);
 const lightPurpleColor = Color(0xFF7243CF);
 const whiteColor = Color(0xFFFFFFFF);
 const greyColor = Color(0xFFD7CEE9);
 const redColor = Color(0xFFF74B46);
+const String patternVietnamese =
+    '[^aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ0123456789 ]';
 
 class MyRegisterScreen extends StatefulWidget {
   @override
@@ -27,8 +30,7 @@ class _MyRegisterScreen extends State<MyRegisterScreen> {
   final TextEditingController passwordController = TextEditingController();
 
   final maxLengthTextField = 30;
-  final String patternVietnamese =
-      '[^aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ0123456789 ]';
+
   bool agreeTerms = false;
   bool isFilledInAll = false;
   bool showPassword = false;
@@ -39,14 +41,13 @@ class _MyRegisterScreen extends State<MyRegisterScreen> {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     FirebaseAuth auth = FirebaseAuth.instance;
     String uid = auth.currentUser.uid.toString();
-    users.add({
+    users.doc(uid).set({
       'userName': displayName,
       'email': email,
       'numberPhone': numberPhone,
       'password': password,
       'uid': uid,
     });
-    return;
   }
 
   void _showToast(String context) {
@@ -56,29 +57,6 @@ class _MyRegisterScreen extends State<MyRegisterScreen> {
       textColor: whiteColor,
       gravity: ToastGravity.CENTER,
     );
-  }
-
-  Future<void> signUpOnServe() async {
-    try {
-      await Firebase.initializeApp();
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
-      User updateUser = FirebaseAuth.instance.currentUser;
-      updateUser.updateProfile(displayName: userController.text);
-      userSetup(userController.text, emailController.text,
-          numberPhoneController.text, passwordController.text);
-    } on FirebaseAuthException catch (e) {
-      isErrorFromServe = e.code.toString();
-      // print(isErrorFromServe);
-    } catch (e) {
-      isErrorFromServe = e.toString();
-      // print(isErrorFromServe);
-    }
-    if (isErrorFromServe == "") {
-      Navigator.pop(context);
-    } else {
-      _showToast(isErrorFromServe);
-    }
   }
 
   Color getbackgroudcolor(Set<MaterialState> states) {
@@ -104,6 +82,34 @@ class _MyRegisterScreen extends State<MyRegisterScreen> {
       return false;
     }
     return int.tryParse(numberPhone) != null;
+  }
+
+  Future<void> signUpOnServe() async {
+    try {
+      await Firebase.initializeApp();
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      User updateUser = FirebaseAuth.instance.currentUser;
+      updateUser.updateProfile(displayName: userController.text);
+      userSetup(userController.text, emailController.text,
+          numberPhoneController.text, passwordController.text);
+    } on FirebaseAuthException catch (e) {
+      isErrorFromServe = e.code.toString();
+      // print(isErrorFromServe);
+    } catch (e) {
+      isErrorFromServe = e.toString();
+      // print(isErrorFromServe);
+    }
+    if (isErrorFromServe == "") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyTypeUserSelectionScreen(
+                    countPopScreen: 2,
+                  )));
+    } else {
+      _showToast(isErrorFromServe);
+    }
   }
 
   @override
