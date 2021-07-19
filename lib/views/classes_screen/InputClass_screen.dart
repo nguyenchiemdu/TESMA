@@ -9,7 +9,6 @@ import 'package:flutter/rendering.dart';
 import '../../models/CheckBoxState.dart';
 import 'package:tesma/models/firebase_database.dart';
 
-
 class InputClassScreen extends StatefulWidget {
   InputClassScreen(this.rendering);
 
@@ -88,6 +87,7 @@ class _InputClassScreen extends State<InputClassScreen> {
 
     setState(() => endDate = newDate);
   }
+
   void _showToast(String context) {
     Fluttertoast.showToast(
       msg: context,
@@ -95,7 +95,9 @@ class _InputClassScreen extends State<InputClassScreen> {
       textColor: whiteColor,
       gravity: ToastGravity.CENTER,
     );
-  }  Widget buildCheckbox({
+  }
+
+  Widget buildCheckbox({
     @required CheckBoxState notification,
     @required VoidCallback onClicked,
   }) =>
@@ -122,8 +124,31 @@ class _InputClassScreen extends State<InputClassScreen> {
       );
   @override
   Widget build(BuildContext context) {
-    Future<void> classSetup(String classname, String subject,
-        String description, String startdate, String enddate, List<CheckBoxState> dayofweek) async {
+    Future<void> classsetup2(DocumentReference value2) async {
+      // fix teen
+      String adminid = FirebaseAuth.instance.currentUser.uid;
+      final currentUser = FirebaseFirestore.instance.collection('users');
+      await currentUser.doc(adminid).get().then((userSnapShot) {
+        print(userSnapShot.data()['listClass'] != null);
+        if (userSnapShot.data()['listClass'] != null) {
+          List<dynamic> listClass = userSnapShot.data()['listClass'];
+          listClass.add(value2.id);
+          currentUser.doc(adminid).update({'listClass': listClass});
+        } else {
+          List<dynamic> listClass;
+          listClass.add(value2.id);
+          currentUser.doc(adminid).update({'listClass': listClass});
+        }
+      });
+    }
+
+    Future<void> classSetup(
+        String classname,
+        String subject,
+        String description,
+        String startdate,
+        String enddate,
+        List<CheckBoxState> dayofweek) async {
       CollectionReference classes =
           FirebaseFirestore.instance.collection('classes');
       DateTime createdate = DateTime.now();
@@ -137,23 +162,7 @@ class _InputClassScreen extends State<InputClassScreen> {
         'Dayofweek': day,
         'adminID': adminid,
       }).then((value) {
-        final currentUser = FirebaseFirestore.instance.collection('users').doc(adminid);
-        currentUser.get().then((userSnapShot){
-          List<String> listClass = [];
-          if(userSnapShot.data().containsKey('listClass')){
-            listClass = userSnapShot.data()['listClass'];
-           listClass.add(value.id);
-           currentUser.update({
-             'listClass': listClass
-           });
-          } else{
-            listClass.add(value.id);
-            currentUser.update({
-              'listClass': listClass
-            });
-          }
-        });
-      }).then((value) {
+        classsetup2(value);
         newClass = {
           'className': classname,
           'createDate': createdate,
@@ -306,20 +315,21 @@ class _InputClassScreen extends State<InputClassScreen> {
                           onClicked: () => pickEndDate(context)),
                       ElevatedButton(
                         onPressed: () async {
-
                           try {
                             await Firebase.initializeApp();
-                            bool isNewClass =  await ClassInfor().isNewClass(classNameController.text.toString());
-                            if (isNewClass) {await classSetup(
+                            bool isNewClass = await ClassInfor().isNewClass(
+                                classNameController.text.toString());
+                            if (isNewClass) {
+                              await classSetup(
                                 classNameController.text,
                                 subjectController.text,
                                 descriptionController.text,
                                 getStartDate(),
                                 getEndDate(),
                                 dayOfWeek,
-                            );}
-                            else _showToast('Class name has already existed!');
-
+                              );
+                            } else
+                              _showToast('Class name has already existed!');
                           } on FirebaseAuthException catch (e) {
                             print(e.code);
                           } catch (e) {
