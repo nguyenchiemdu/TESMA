@@ -1,6 +1,7 @@
 // ở đây mình sẽ viết cái khung của màn hình chính, và thanh điều hướng, .....
 import 'package:flutter/material.dart';
 import 'package:tesma/views/login_screens/home_screen_logintest.dart';
+import 'package:tesma/views/main_screens/user_profile_screen/user_profile_screen.dart';
 import './home_screen/home_screen.dart';
 import 'placeholder_widget.dart';
 
@@ -19,21 +20,29 @@ class _MyHomePageState extends State<MyHomePage> {
     PlaceholderWidget(Colors.deepOrange),
     PlaceholderWidget(Colors.green),
     PlaceholderWidget(Colors.red),
-    HomePageLoginTest(),
+    UserProfile(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.orangeAccent,
-      //   title: Text('Trang chủ'),
-      // ),
       body: Container(
+        child: Container(
+            child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: _children[_currentIndex],
+            ),
+          ],
+        )),
+        //color: Colors.yellow,
         //height: 40,
         //width: 20,
-        child: _children[_currentIndex],
+        //child: _children[_currentIndex],
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
         currentIndex: _currentIndex,
