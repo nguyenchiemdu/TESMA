@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tesma/max_width_container.dart';
 import 'package:tesma/constants/size_config.dart';
 import '../../models/firebase_authen.dart';
@@ -34,6 +35,16 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
   final TextEditingController passwordController = TextEditingController();
 
   bool showPassword = false;
+  bool isFilledInAll = false;
+
+  void _showToast(String context) {
+    Fluttertoast.showToast(
+      msg: context,
+      backgroundColor: redColor,
+      textColor: whiteColor,
+      gravity: ToastGravity.CENTER,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,9 +244,20 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                             children: [
                               ElevatedButton(
                                   onPressed: () {
-                                    context.read<AuthService>().signIn(
-                                        userController.text,
-                                        passwordController.text);
+                                    if (userController.text == "" ||
+                                        passwordController.text == "") {
+                                      isFilledInAll = false;
+                                    } else {
+                                      isFilledInAll = true;
+                                    }
+                                    if (!isFilledInAll) {
+                                      _showToast(
+                                          'Bạn chưa điền đầy đủ thông tin');
+                                    } else {
+                                      context.read<AuthService>().signIn(
+                                          userController.text,
+                                          passwordController.text);
+                                    }
                                   },
                                   style: ButtonStyle(
                                       backgroundColor:

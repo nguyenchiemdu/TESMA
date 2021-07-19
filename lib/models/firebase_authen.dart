@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:tesma/constants/color.dart';
 
 class AuthService extends ChangeNotifier {
   final GoogleSignIn ggsignin = GoogleSignIn();
@@ -39,12 +41,14 @@ class AuthService extends ChangeNotifier {
 
   Future signIn(String user, String password) async {
     isSigningIn = true;
+    String err = "";
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: user, password: password);
       isSigningIn = false;
       print("Signed in");
     } on FirebaseAuthException catch (e) {
+      err = e.code;
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
@@ -52,6 +56,14 @@ class AuthService extends ChangeNotifier {
       }
     }
     isSigningIn = false;
+    Fluttertoast.showToast(
+      msg: err,
+      backgroundColor: redColor,
+      textColor: whiteColor,
+      gravity: ToastGravity.CENTER,
+    );
+    print(err);
+    return err;
   }
 
   Future signInWithGoogle() async {
