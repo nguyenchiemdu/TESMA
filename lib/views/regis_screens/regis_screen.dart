@@ -6,7 +6,6 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tesma/constants/size_config.dart';
-import 'package:tesma/views/regis_screens/select_user_type.dart';
 import 'package:tesma/constants/color.dart';
 
 const String patternVietnamese =
