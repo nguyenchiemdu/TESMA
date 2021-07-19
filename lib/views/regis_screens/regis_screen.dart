@@ -5,14 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:tesma/views/regis_screens/size_config.dart';
+import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/views/regis_screens/select_user_type.dart';
+import 'package:tesma/constants/color.dart';
 
-const darkPurpleColor = Color(0xFF45228B);
-const lightPurpleColor = Color(0xFF7243CF);
-const whiteColor = Color(0xFFFFFFFF);
-const greyColor = Color(0xFFD7CEE9);
-const redColor = Color(0xFFF74B46);
 const String patternVietnamese =
     '[^aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ0123456789 ]';
 

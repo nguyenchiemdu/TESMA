@@ -1,14 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tesma/max_width_container.dart';
-import 'package:tesma/views/login_screens/loading.dart';
-import 'package:tesma/views/regis_screens/size_config.dart';
+import 'package:tesma/constants/size_config.dart';
 import '../../models/firebase_authen.dart';
 import 'package:provider/provider.dart';
 import 'package:tesma/views/regis_screens/regis_screen.dart';
 import 'package:tesma/responsive_layout.dart';
+import 'package:tesma/constants/color.dart';
 
 class LoginForm extends StatelessWidget {
   @override
@@ -46,9 +44,9 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
         MaterialState.focused,
       };
       if (states.any(interactiveStates.contains)) {
-        return Color(0xff7243cf);
+        return lightPurpleColor;
       }
-      return Color(0xff45228b);
+      return darkPurpleColor;
     }
 
     return LayoutBuilder(builder: (context, constraints) {
@@ -58,7 +56,7 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
           resizeToAvoidBottomInset: true,
           body: SingleChildScrollView(
             child: Container(
-              color: Color(0xff45228b),
+              color: darkPurpleColor,
               child: Column(
                 children: [
                   Container(
@@ -111,7 +109,7 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontFamily: 'SegoeUI',
-                              color: Color(0xff000000),
+                              color: blackColor,
                               fontSize: 4.21 * SizeConfig.textMultiplier,
                               fontWeight: FontWeight.w900,
                             ),
@@ -123,7 +121,7 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontFamily: 'SegoeUI',
-                              color: Color(0xffd7cee9),
+                              color: greyColor,
                               fontWeight: FontWeight.w600,
                               fontSize: 2.10 * SizeConfig.textMultiplier,
                             ),
@@ -136,7 +134,7 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontFamily: 'SegoeUI',
-                              color: Color(0xff000000),
+                              color: blackColor,
                               fontSize: 2.10 * SizeConfig.textMultiplier,
                               fontWeight: FontWeight.w700,
                             ),
@@ -156,7 +154,7 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                                 labelStyle: TextStyle(
                                   height: 6.58 * SizeConfig.heightMultiplier,
                                   fontFamily: 'SegoeUI',
-                                  color: Color(0xffd7cee9),
+                                  color: greyColor,
                                   fontSize: 2.10 * SizeConfig.textMultiplier,
                                 ),
                                 border: OutlineInputBorder(),
@@ -175,7 +173,7 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontFamily: 'SegoeUI',
-                              color: Color(0xff000000),
+                              color: blackColor,
                               fontSize: 2.10 * SizeConfig.textMultiplier,
                               fontWeight: FontWeight.w700,
                             ),
@@ -204,7 +202,7 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                                 labelStyle: TextStyle(
                                   height: 6.58 * SizeConfig.heightMultiplier,
                                   fontFamily: 'SegoeUI',
-                                  color: Color(0xffd7cee9),
+                                  color: greyColor,
                                   fontSize: 2.10 * SizeConfig.textMultiplier,
                                 ),
                                 border: OutlineInputBorder(),
@@ -223,7 +221,7 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                   fontFamily: 'SegoeUI',
-                                  color: Color(0xff7243cf),
+                                  color: lightPurpleColor,
                                   fontSize: 2.10 * SizeConfig.textMultiplier,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -259,7 +257,7 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontFamily: 'SegoeUI',
-                                            color: Color(0xffffffff),
+                                            color: whiteColor,
                                             fontSize: 2.10 *
                                                 SizeConfig.textMultiplier,
                                             fontWeight: FontWeight.w900),
@@ -275,7 +273,7 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: 'SegoeUI',
-                                    color: Color(0xffd7cee9),
+                                    color: greyColor,
                                     fontSize: 2.10 * SizeConfig.textMultiplier,
                                   )),
                             ],
@@ -351,7 +349,7 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                                     text: "Don’t have an account ? ",
                                     style: TextStyle(
                                       fontFamily: 'SegoeUI',
-                                      color: Color(0xffd7cee9),
+                                      color: greyColor,
                                       fontSize:
                                           2.10 * SizeConfig.textMultiplier,
                                     ),
@@ -370,7 +368,7 @@ class _LoginMobileContentState extends State<LoginMobileContent> {
                                 child: new Text(
                                   "Sign up",
                                   style: TextStyle(
-                                      color: Color(0xff7243cf),
+                                      color: lightPurpleColor,
                                       fontSize:
                                           2.10 * SizeConfig.textMultiplier,
                                       fontFamily: 'SegoeUI',
