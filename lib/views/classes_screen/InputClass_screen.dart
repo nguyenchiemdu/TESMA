@@ -9,6 +9,7 @@ import 'package:tesma/views/regis_screens/regis_screen.dart';
 import '../../models/CheckBoxState.dart';
 import 'package:tesma/models/firebase_database.dart';
 
+
 class InputClassScreen extends StatefulWidget {
   InputClassScreen(this.rendering);
 
@@ -119,7 +120,6 @@ class _InputClassScreen extends State<InputClassScreen> {
           });
         },
       );
-
   @override
   Widget build(BuildContext context) {
     Future<void> classSetup(String classname, String subject,
@@ -153,6 +153,7 @@ class _InputClassScreen extends State<InputClassScreen> {
             });
           }
         });
+      }).then((value) {
         newClass = {
           'className': classname,
           'createDate': createdate,
