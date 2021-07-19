@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tesma/constants/color.dart';
 import 'package:tesma/views/classes_screen/button_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
-import 'package:tesma/views/regis_screens/regis_screen.dart';
 import '../../models/CheckBoxState.dart';
 import 'package:tesma/models/firebase_database.dart';
 
