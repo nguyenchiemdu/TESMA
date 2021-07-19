@@ -9,9 +9,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List <Widget> listClass = [];
-  void reRender (Map<String,dynamic> classItem){
-    List <Widget> temp = listClass;
+  List<Widget> listClass = [];
+  void reRender(Map<String, dynamic> classItem) {
+    List<Widget> temp = listClass;
     temp.add(Text(classItem['className']));
 
     setState(() {
@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     print(listClass);
   }
+
   Color getbackgroudcolor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
@@ -53,7 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => InputClassScreen(reRender)),
+              MaterialPageRoute(
+                  builder: (context) => InputClassScreen(reRender)),
             );
           },
           child: Icon(Icons.add_rounded),

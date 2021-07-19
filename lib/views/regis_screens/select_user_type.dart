@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tesma/views/regis_screens/size_config.dart';
-import 'package:tesma/views/regis_screens/regis_screen.dart';
+import 'package:tesma/constants/size_config.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-const lightGreyColor = Color(0xFFE5E8FB);
-const lightGreenColor = Color(0xFF3BDFB7);
+import 'package:tesma/constants/color.dart';
 
 Color getbackgroudcolor(Set<MaterialState> states) {
   const Set<MaterialState> interactiveStates = <MaterialState>{

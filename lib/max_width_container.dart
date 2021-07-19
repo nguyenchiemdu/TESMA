@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tesma/break_point.dart';
+import 'package:tesma/constants/break_point.dart';
 
 class MaxWidthContainer extends StatelessWidget {
   const MaxWidthContainer({
