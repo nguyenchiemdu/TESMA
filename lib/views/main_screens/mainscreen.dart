@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tesma/views/main_screens/notification_screen/notification_screen.dart';
 import 'package:tesma/views/main_screens/user_profile_screen/user_profile_screen.dart';
 import 'package:tesma/views/classes_screen/qr_class.dart';
+import 'package:tesma/views/main_screens/qr_scan_screen/qr_scan_screen.dart';
 import './home_screen/home_screen.dart';
 import 'placeholder_widget.dart';
 
@@ -18,7 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // PlaceholderWidget(Colors.white),
     HomeScreen(),
     PlaceholderWidget(Colors.deepOrange),
-    QrClass(),
+    QrScan(),
     NotificationScreens(),
     UserProfile(),
   ];
