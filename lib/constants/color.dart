@@ -10,3 +10,4 @@ const redColor = Color(0xFFF74B46);
 const lightGreyColor = Color(0xFFE5E8FB);
 const lightGreenColor = Color(0xFF3BDFB7);
 const mediumPink = Color(0xffef4874);
+const light_periwinkle = Color(0xffe5e8fb);
