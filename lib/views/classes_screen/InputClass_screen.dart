@@ -9,7 +9,6 @@ import 'package:flutter/rendering.dart';
 import '../../models/CheckBoxState.dart';
 import 'package:tesma/models/firebase_database.dart';
 
-
 class InputClassScreen extends StatefulWidget {
   InputClassScreen(this.rendering);
 
@@ -25,15 +24,10 @@ class _InputClassScreen extends State<InputClassScreen> {
   final TextEditingController classNameController = TextEditingController();
   final TextEditingController subjectController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController dateCreateController = TextEditingController();
-  final TextEditingController startDateController = TextEditingController();
-  final TextEditingController endDateController = TextEditingController();
-  final TextEditingController participantsController = TextEditingController();
 
   DateTime startDate;
   DateTime endDate;
   Map<String, dynamic> newClass = {};
-  String typeUser = '';
 
   final List<CheckBoxState> dayOfWeek = [
     CheckBoxState(title: 'Monday'),
@@ -88,6 +82,7 @@ class _InputClassScreen extends State<InputClassScreen> {
 
     setState(() => endDate = newDate);
   }
+
   void _showToast(String context) {
     Fluttertoast.showToast(
       msg: context,
@@ -95,7 +90,9 @@ class _InputClassScreen extends State<InputClassScreen> {
       textColor: whiteColor,
       gravity: ToastGravity.CENTER,
     );
-  }  Widget buildCheckbox({
+  }
+
+  Widget buildCheckbox({
     @required CheckBoxState notification,
     @required VoidCallback onClicked,
   }) =>
@@ -120,37 +117,40 @@ class _InputClassScreen extends State<InputClassScreen> {
           });
         },
       );
+
   @override
   Widget build(BuildContext context) {
-    Future<void> classSetup(String classname, String subject,
-        String description, String startdate, String enddate, List<CheckBoxState> dayofweek) async {
+    Future<void> classSetup(
+        String classname,
+        String subject,
+        String description,
+        String startdate,
+        String enddate,
+        List<CheckBoxState> dayofweek) async {
       CollectionReference classes =
           FirebaseFirestore.instance.collection('classes');
       DateTime createdate = DateTime.now();
-      List<bool> day = dayofweek.map((element) => element.value).toList();
-      String adminid = FirebaseAuth.instance.currentUser.uid;
+      List<bool> schedule = dayofweek.map((element) => element.value).toList();
+      String hostID = FirebaseAuth.instance.currentUser.uid;
       classes.add({
         'className': classname,
         'createDate': createdate,
         'start': startdate,
         'end': enddate,
-        'Dayofweek': day,
-        'adminID': adminid,
+        'Dayofweek': schedule,
+        'hostID': hostID,
       }).then((value) {
-        final currentUser = FirebaseFirestore.instance.collection('users').doc(adminid);
-        currentUser.get().then((userSnapShot){
+        final currentUser =
+            FirebaseFirestore.instance.collection('users').doc(hostID);
+        currentUser.get().then((userSnapShot) {
           List<String> listClass = [];
-          if(userSnapShot.data().containsKey('listClass')){
+          if (userSnapShot.data().containsKey('listClass')) {
             listClass = userSnapShot.data()['listClass'];
-           listClass.add(value.id);
-           currentUser.update({
-             'listClass': listClass
-           });
-          } else{
             listClass.add(value.id);
-            currentUser.update({
-              'listClass': listClass
-            });
+            currentUser.update({'listClass': listClass});
+          } else {
+            listClass.add(value.id);
+            currentUser.update({'listClass': listClass});
           }
         });
       }).then((value) {
@@ -159,8 +159,8 @@ class _InputClassScreen extends State<InputClassScreen> {
           'createDate': createdate,
           'start': startdate,
           'end': enddate,
-          'Dayofweek': day,
-          'adminID': adminid,
+          'Dayofweek': schedule,
+          'hostID': hostID,
         };
         widget.rendering(newClass);
         showDialog(
@@ -306,20 +306,21 @@ class _InputClassScreen extends State<InputClassScreen> {
                           onClicked: () => pickEndDate(context)),
                       ElevatedButton(
                         onPressed: () async {
-
                           try {
                             await Firebase.initializeApp();
-                            bool isNewClass =  await ClassInfor().isNewClass(classNameController.text.toString());
-                            if (isNewClass) {await classSetup(
+                            bool isNewClass = await ClassInfor().isNewClass(
+                                classNameController.text.toString());
+                            if (isNewClass) {
+                              await classSetup(
                                 classNameController.text,
                                 subjectController.text,
                                 descriptionController.text,
                                 getStartDate(),
                                 getEndDate(),
                                 dayOfWeek,
-                            );}
-                            else _showToast('Class name has already existed!');
-
+                              );
+                            } else
+                              _showToast('Class name has already existed!');
                           } on FirebaseAuthException catch (e) {
                             print(e.code);
                           } catch (e) {
