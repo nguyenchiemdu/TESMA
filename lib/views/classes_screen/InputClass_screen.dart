@@ -143,7 +143,7 @@ class _InputClassScreen extends State<InputClassScreen> {
         final currentUser =
             FirebaseFirestore.instance.collection('users').doc(hostID);
         currentUser.get().then((userSnapShot) {
-          List<String> listClass = [];
+          List<dynamic> listClass = [];
           if (userSnapShot.data().containsKey('listClass')) {
             listClass = userSnapShot.data()['listClass'];
             listClass.add(value.id);
