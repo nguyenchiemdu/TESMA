@@ -24,15 +24,10 @@ class _InputClassScreen extends State<InputClassScreen> {
   final TextEditingController classNameController = TextEditingController();
   final TextEditingController subjectController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController dateCreateController = TextEditingController();
-  final TextEditingController startDateController = TextEditingController();
-  final TextEditingController endDateController = TextEditingController();
-  final TextEditingController participantsController = TextEditingController();
 
   DateTime startDate;
   DateTime endDate;
   Map<String, dynamic> newClass = {};
-  String typeUser = '';
 
   final List<CheckBoxState> dayOfWeek = [
     CheckBoxState(title: 'Monday'),
@@ -122,26 +117,9 @@ class _InputClassScreen extends State<InputClassScreen> {
           });
         },
       );
+
   @override
   Widget build(BuildContext context) {
-    Future<void> classsetup2(DocumentReference value2) async {
-      // fix teen
-      String adminid = FirebaseAuth.instance.currentUser.uid;
-      final currentUser = FirebaseFirestore.instance.collection('users');
-      await currentUser.doc(adminid).get().then((userSnapShot) {
-        print(userSnapShot.data()['listClass'] != null);
-        if (userSnapShot.data()['listClass'] != null) {
-          List<dynamic> listClass = userSnapShot.data()['listClass'];
-          listClass.add(value2.id);
-          currentUser.doc(adminid).update({'listClass': listClass});
-        } else {
-          List<dynamic> listClass;
-          listClass.add(value2.id);
-          currentUser.doc(adminid).update({'listClass': listClass});
-        }
-      });
-    }
-
     Future<void> classSetup(
         String classname,
         String subject,
@@ -152,24 +130,37 @@ class _InputClassScreen extends State<InputClassScreen> {
       CollectionReference classes =
           FirebaseFirestore.instance.collection('classes');
       DateTime createdate = DateTime.now();
-      List<bool> day = dayofweek.map((element) => element.value).toList();
-      String adminid = FirebaseAuth.instance.currentUser.uid;
+      List<bool> schedule = dayofweek.map((element) => element.value).toList();
+      String hostID = FirebaseAuth.instance.currentUser.uid;
       classes.add({
         'className': classname,
         'createDate': createdate,
         'start': startdate,
         'end': enddate,
-        'Dayofweek': day,
-        'adminID': adminid,
+        'Dayofweek': schedule,
+        'hostID': hostID,
       }).then((value) {
-        classsetup2(value);
+        final currentUser =
+            FirebaseFirestore.instance.collection('users').doc(hostID);
+        currentUser.get().then((userSnapShot) {
+          List<dynamic> listClass = [];
+          if (userSnapShot.data().containsKey('listClass')) {
+            listClass = userSnapShot.data()['listClass'];
+            listClass.add(value.id);
+            currentUser.update({'listClass': listClass});
+          } else {
+            listClass.add(value.id);
+            currentUser.update({'listClass': listClass});
+          }
+        });
+      }).then((value) {
         newClass = {
           'className': classname,
           'createDate': createdate,
           'start': startdate,
           'end': enddate,
-          'Dayofweek': day,
-          'adminID': adminid,
+          'Dayofweek': schedule,
+          'hostID': hostID,
         };
         widget.rendering(newClass);
         showDialog(
