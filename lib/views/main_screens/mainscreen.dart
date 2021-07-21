@@ -1,6 +1,7 @@
 // ở đây mình sẽ viết cái khung của màn hình chính, và thanh điều hướng, .....
 import 'package:flutter/material.dart';
 import 'package:tesma/views/login_screens/home_screen_logintest.dart';
+import 'package:tesma/views/main_screens/notification_screen/notification_screen.dart';
 import './home_screen/home_screen.dart';
 import 'placeholder_widget.dart';
 import 'user_profile_screen/user_profile_screen.dart';
@@ -19,7 +20,7 @@ class _MyHomePageState extends State<MyHomePage> {
     HomeScreen(),
     PlaceholderWidget(Colors.deepOrange),
     PlaceholderWidget(Colors.green),
-    PlaceholderWidget(Colors.red),
+    NotificationScreens(),
     UserProfile(),
   ];
   @override
