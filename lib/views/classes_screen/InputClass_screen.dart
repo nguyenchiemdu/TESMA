@@ -2,14 +2,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tesma/constants/color.dart';
+import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/views/classes_screen/button_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
+import 'package:tesma/views/regis_screens/select_user_type.dart';
 import '../../models/CheckBoxState.dart';
 import 'package:tesma/models/firebase_database.dart';
 
-class InputClassScreen extends StatefulWidget {
+class InputClassScreen extends StatefulWidget {  //ignore: must_be_immutable
   InputClassScreen(this.rendering);
 
   @override
@@ -166,21 +168,20 @@ class _InputClassScreen extends State<InputClassScreen> {
         showDialog(
             context: context,
             builder: (context) {
-              return Dialog(
-                //child: Container(
-                child: new Column(
-                  children: <Widget>[
-                    Text("Create class successfully"),
-                    FloatingActionButton(
+              return AlertDialog(
+                title: Text("Create class successfully"),
+                actions: <Widget>[
+                  Container(
+                      child: Center(
+                    child: FloatingActionButton(
                       child: Text("OK"),
                       onPressed: () {
                         Navigator.pop(context);
                         Navigator.pop(context);
                       },
                     ),
-                  ],
-                  // ),
-                ),
+                  ))
+                ],
               );
             });
       }).onError((error, stackTrace) {
@@ -196,20 +197,23 @@ class _InputClassScreen extends State<InputClassScreen> {
         slivers: <Widget>[
           SliverToBoxAdapter(
               child: Container(
-                  padding: const EdgeInsets.all(40.0),
+                  padding: EdgeInsets.all(4 * SizeConfig.heightMultiplier),
                   child: new Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Row(children: [
-                        Text(
-                          "Class name",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: 'SegoeUI',
-                            color: Color(0xff000000),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Create class',
+                            style: TextStyle(
+                              color: darkPurpleColor,
+                              fontSize: 40,
+                              fontFamily: 'SegoeUI',
+                              fontWeight: FontWeight.w900,
+                            ),
                           ),
+                          height: 11.2 * SizeConfig.heightMultiplier,
                         ),
                       ]),
                       new TextField(
@@ -218,36 +222,12 @@ class _InputClassScreen extends State<InputClassScreen> {
                             labelText: "Enter your className"),
                         keyboardType: TextInputType.text,
                       ),
-                      Row(children: [
-                        Text(
-                          "Subject",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: 'SegoeUI',
-                            color: Color(0xff000000),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ]),
                       new TextField(
                         controller: subjectController,
                         decoration: new InputDecoration(
                             labelText: "Enter your subject"),
                         keyboardType: TextInputType.text,
                       ),
-                      Row(children: [
-                        Text(
-                          "Description",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: 'SegoeUI',
-                            color: Color(0xff000000),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ]),
                       new TextField(
                         controller: descriptionController,
                         decoration: new InputDecoration(
@@ -256,7 +236,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                       ),
                       Row(children: [
                         Text(
-                          "Select Schedule",
+                          "SCHEDULE",
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontFamily: 'SegoeUI',
@@ -272,38 +252,17 @@ class _InputClassScreen extends State<InputClassScreen> {
                           ...dayOfWeek.map(buildSingleCheckbox).toList(),
                         ],
                       ),
-                      Row(children: [
-                        Text(
-                          "Start date",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: 'SegoeUI',
-                            color: Color(0xff000000),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ]),
                       ButtonHeaderWidget(
                           title: 'Start date',
                           text: getStartDate(),
                           onClicked: () => pickStartDate(context)),
-                      Row(children: [
-                        Text(
-                          "End date",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: 'SegoeUI',
-                            color: Color(0xff000000),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ]),
                       ButtonHeaderWidget(
                           title: 'End date',
                           text: getEndDate(),
                           onClicked: () => pickEndDate(context)),
+                      Container(
+                        height: 5 * SizeConfig.heightMultiplier,
+                      ),
                       ElevatedButton(
                         onPressed: () async {
                           try {
@@ -327,13 +286,22 @@ class _InputClassScreen extends State<InputClassScreen> {
                             print(e.toString());
                           }
                         },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                                getbackgroudcolor),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ))),
                         child: Container(
+                          width: 50 * SizeConfig.widthMultiplier,
+                          height: 6 * SizeConfig.heightMultiplier,
                           child: Center(
                             child: Text(
                               'Create',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: 23,
                                 fontFamily: 'SegoeUI',
                                 fontWeight: FontWeight.w900,
                               ),
