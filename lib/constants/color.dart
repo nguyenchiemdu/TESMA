@@ -9,3 +9,4 @@ const greyColor = Color(0xFFD7CEE9);
 const redColor = Color(0xFFF74B46);
 const lightGreyColor = Color(0xFFE5E8FB);
 const lightGreenColor = Color(0xFF3BDFB7);
+const light_periwinkle = Color(0xffe5e8fb);
