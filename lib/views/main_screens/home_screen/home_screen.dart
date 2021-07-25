@@ -271,13 +271,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           left: 11.4 * SizeConfig.widthMultiplier,
                           right: 11.4 * SizeConfig.widthMultiplier,
                         ),
-                        children: listClass,
-                        // children: [
-                        //   singleClass(),
-                        //   singleClass(),
-                        //   singleClass(),
-                        //   singleClass(),
-                        // ],
+                        //children: listClass,
+                        children: [
+                          singleClass(),
+                          singleClass(),
+                          singleClass(),
+                          singleClass(),
+                        ],
                       ),
                     ),
                     Positioned(
