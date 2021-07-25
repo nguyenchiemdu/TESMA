@@ -70,6 +70,8 @@ flutter:
     - assets/image/facebook.png
     - assets/image/google.png
     - assets/image/paperplane.png
+    - images/monhoa.png
+    - images/montoan.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

@@ -1,10 +1,9 @@
 // ở đây mình sẽ viết cái khung của màn hình chính, và thanh điều hướng, .....
 import 'package:flutter/material.dart';
-import 'package:tesma/views/login_screens/home_screen_logintest.dart';
 import 'package:tesma/views/main_screens/notification_screen/notification_screen.dart';
+import 'package:tesma/views/main_screens/user_profile_screen/user_profile_screen.dart';
 import './home_screen/home_screen.dart';
 import 'placeholder_widget.dart';
-import 'user_profile_screen/user_profile_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -23,11 +22,27 @@ class _MyHomePageState extends State<MyHomePage> {
     NotificationScreens(),
     UserProfile(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //
-      body: _children[_currentIndex],
+      body: Container(
+        child: Container(
+            child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: _children[_currentIndex],
+            ),
+          ],
+        )),
+        //color: Colors.yellow,
+        //height: 40,
+        //width: 20,
+        //child: _children[_currentIndex],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
         currentIndex: _currentIndex,
@@ -37,23 +52,23 @@ class _MyHomePageState extends State<MyHomePage> {
           //Expanded(child: child)
           new BottomNavigationBarItem(
             icon: Icon(Icons.house_rounded),
-            title: Text('home'),
+            label: 'Home',
           ),
           new BottomNavigationBarItem(
             icon: Icon(Icons.manage_search_rounded),
-            title: Text('search'),
+            label: 'Search',
           ),
           new BottomNavigationBarItem(
             icon: Icon(Icons.qr_code_scanner_rounded),
-            title: Text('qr'),
+            label: 'QR',
           ),
           new BottomNavigationBarItem(
             icon: Icon(Icons.doorbell_rounded),
-            title: Text('notification'),
+            label: ('Notification'),
           ),
           new BottomNavigationBarItem(
             icon: Icon(Icons.list_alt_rounded),
-            title: Text('list'),
+            label: 'List',
           ),
         ],
       ),
