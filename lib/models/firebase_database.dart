@@ -14,14 +14,26 @@ class UserInfor {
     return ok;
   }
 }
-class ClassInfor{
-  Future<bool> isNewClass(String classname) async{
+
+class ClassInfor {
+  Future<bool> isNewClass(String classname) async {
     bool ok = false;
-    CollectionReference classes = FirebaseFirestore.instance.collection('classes');
-    await classes.where('className',isEqualTo: classname).get().then((value){
+    CollectionReference classes =
+        FirebaseFirestore.instance.collection('classes');
+    await classes.where('className', isEqualTo: classname).get().then((value) {
       if (value.docs.length == 0) ok = true;
     });
     return ok;
+  }
 
+  Future<void> searchClass() async {
+    CollectionReference classes =
+        FirebaseFirestore.instance.collection('classes');
+    await classes.get().then((querySnapshot) {
+      List<DocumentSnapshot> docs = querySnapshot.docs;
+      docs.forEach((element) {
+        print(element.data());
+      });
+    });
   }
 }
