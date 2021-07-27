@@ -1,15 +1,8 @@
 // ở đây mình sẽ viết cái khung của màn hình chính, và thanh điều hướng, .....
 import 'package:flutter/material.dart';
 import 'package:tesma/views/main_screens/notification_screen/notification_screen.dart';
-<<<<<<< HEAD
-<<<<<<< HEAD
 import 'package:tesma/views/main_screens/user_profile_screen/user_profile_screen.dart';
-=======
 import 'package:tesma/views/main_screens/search_screen/search_screen.dart';
->>>>>>> 670e6b0 (Create branch search)
-=======
-import 'package:tesma/views/main_screens/search_screen/search_screen.dart';
->>>>>>> 670e6b0bc6a56d84fd6bf1aa4514dbcfd1b73715
 import './home_screen/home_screen.dart';
 import 'placeholder_widget.dart';
 
@@ -25,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _children = [
     // PlaceholderWidget(Colors.white),
     HomeScreen(),
-    Filter(),
+    Search(),
     PlaceholderWidget(Colors.green),
     NotificationScreens(),
     UserProfile(),

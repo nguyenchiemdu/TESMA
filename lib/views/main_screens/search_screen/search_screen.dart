@@ -1,101 +1,124 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
-import 'package:tesma/models/CheckBoxState.dart';
-import 'package:tesma/models/firebase_database.dart';
+import 'package:tesma/views/main_screens/search_screen/classcard.dart';
+import 'package:tesma/views/main_screens/search_screen/filter.dart';
 
-class Filter extends StatefulWidget {
+class Search extends StatefulWidget {
   @override
-  _FilterState createState() => _FilterState();
+  _SearchState createState() => _SearchState();
 }
 
-class _FilterState extends State<Filter> {
-  Widget buildCheckbox({
-    @required CheckBoxState notification,
-    @required VoidCallback onClicked,
-  }) =>
-      ListTile(
-        onTap: onClicked,
-        leading: Checkbox(
-          value: notification.value,
-          onChanged: (value) => onClicked(),
-        ),
-        title: Text(
-          notification.title,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-      );
+class _SearchState extends State<Search> {
+  ScrollController controller = ScrollController();
 
-  Widget buildSingleCheckbox(CheckBoxState notification) => buildCheckbox(
-        notification: notification,
-        onClicked: () {
-          setState(() {
-            final newValue = !notification.value;
-            notification.value = newValue;
-          });
-        },
-      );
+  List _resultsList = [];
 
-  final List<CheckBoxState> grade = [
-    CheckBoxState(title: '10'),
-    CheckBoxState(title: '11'),
-    CheckBoxState(title: '12'),
-  ];
-
-  final List<CheckBoxState> subject = [
-    CheckBoxState(title: 'Math'),
-    CheckBoxState(title: 'English'),
-    CheckBoxState(title: 'Physics'),
-    CheckBoxState(title: 'Chemistry'),
-    CheckBoxState(title: 'Literature'),
-  ];
-
-  final List<CheckBoxState> status = [
-    CheckBoxState(title: 'Not start yet'),
-    CheckBoxState(title: 'Already started'),
-  ];
+  Color getbackgroudcolor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return mediumPink;
+    }
+    return mediumPink;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return OrientationBuilder(builder: (context, orientation) {
-        SizeConfig().init(constraints, orientation);
-        return Scaffold(
-          resizeToAvoidBottomInset: true,
-          body: SingleChildScrollView(
-            child: Container(
-              child: Column(
+    return Scaffold(
+      body: Container(
+        color: darkPurpleColor,
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              height: 18 * SizeConfig.heightMultiplier,
+              padding:
+                  EdgeInsets.fromLTRB(0, 6 * SizeConfig.heightMultiplier, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Grade"),
-                  ...grade.map(buildSingleCheckbox).toList(),
-                  Text("Subject"),
-                  ...subject.map(buildSingleCheckbox).toList(),
-                  Text("Status"),
-                  ...status.map(buildSingleCheckbox).toList(),
-                  ElevatedButton(
-                    onPressed: () {
-                      ClassInfor().searchClass();
-                    },
-                    child: Container(
-                      child: Center(
-                        child: Text(
-                          'Apply',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: 'SegoeUI',
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ),
+                  Text(
+                    "Search",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'SegoeUI',
+                      color: Colors.white,
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  Container(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Filter();
+                            });
+                      },
+                      child: Text("Filter"),
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-        );
-      });
-    });
+            Container(
+              alignment: Alignment.center,
+              height: 82 * SizeConfig.heightMultiplier,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                ),
+                color: lightPurpleColor,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    transform: Matrix4.translationValues(0.0, -20.0, 0.0),
+                    child: Container(
+                      height: 6.58 * SizeConfig.heightMultiplier,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: Colors.white,
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(10),
+                          labelStyle: TextStyle(
+                            height: 6.58 * SizeConfig.heightMultiplier,
+                            fontFamily: 'SegoeUI',
+                            color: greyColor,
+                            fontSize: 2.10 * SizeConfig.textMultiplier,
+                          ),
+                          border: OutlineInputBorder(),
+                          counterText: "",
+                          hintText: 'Enter a name',
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: Colors.white,
+                    child: Expanded(
+                        child: ListView.builder(
+                      itemCount: _resultsList.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          classCard(context, _resultsList[index]),
+                    )),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
