@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/color.dart';
@@ -11,9 +12,12 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  Future resultsLoaded;
+
   ScrollController controller = ScrollController();
 
   List _resultsList = [];
+  List _allresultList = [];
 
   Color getbackgroudcolor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -28,8 +32,42 @@ class _SearchState extends State<Search> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    //_searchController.removeListener(_onSearchChanged);
+    //_searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    resultsLoaded = getClassInfor();
+  }
+
+  getClassInfor() async {
+    var data = await FirebaseFirestore.instance.collection('classes').get();
+    // List<DocumentSnapshot> docs = data.docs;
+    // docs.forEach((element) {
+    //   print(element.data());
+    // });
+    setState(() {
+      _allresultList = data.docs;
+      // _allresultList.forEach((element) {
+      //   print(element.data());
+      // });
+    });
+    print('get class successful');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: darkPurpleColor,
         child: Column(
@@ -90,28 +128,30 @@ class _SearchState extends State<Search> {
                       ),
                       child: TextField(
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(10),
-                          labelStyle: TextStyle(
-                            height: 6.58 * SizeConfig.heightMultiplier,
-                            fontFamily: 'SegoeUI',
-                            color: greyColor,
-                            fontSize: 2.10 * SizeConfig.textMultiplier,
-                          ),
-                          border: OutlineInputBorder(),
-                          counterText: "",
-                          hintText: 'Enter a name',
-                        ),
+                            contentPadding: EdgeInsets.all(10),
+                            labelStyle: TextStyle(
+                              height: 6.58 * SizeConfig.heightMultiplier,
+                              fontFamily: 'SegoeUI',
+                              color: greyColor,
+                              fontSize: 2.10 * SizeConfig.textMultiplier,
+                            ),
+                            border: OutlineInputBorder(),
+                            counterText: "",
+                            hintText: 'Enter a name',
+                            prefixIcon: Icon(Icons.search)),
                       ),
                     ),
                   ),
-                  Container(
-                    color: Colors.white,
-                    child: Expanded(
-                        child: ListView.builder(
-                      itemCount: _resultsList.length,
+                  Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(
+                        left: 7.4 * SizeConfig.widthMultiplier,
+                        right: 7.4 * SizeConfig.widthMultiplier,
+                      ),
+                      itemCount: _allresultList.length,
                       itemBuilder: (BuildContext context, int index) =>
-                          classCard(context, _resultsList[index]),
-                    )),
+                          classCard(context, _allresultList[index]),
+                    ),
                   )
                 ],
               ),
