@@ -3,9 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
+<<<<<<< HEAD
 import 'package:tesma/models/CheckBoxState.dart';
 import 'package:tesma/models/classinf.dart';
 import 'package:tesma/views/main_screens/home_screen/class_info.dart';
+=======
+import 'package:tesma/models/classinf.dart';
+import 'package:tesma/models/firebase_database.dart';
+>>>>>>> ab7ccab (Class card UI and search by keyword)
 import 'package:tesma/views/main_screens/search_screen/classcard.dart';
 import 'package:tesma/views/main_screens/search_screen/filter.dart';
 
@@ -17,6 +22,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   Future resultsLoaded;
   TextEditingController searchController = TextEditingController();
+<<<<<<< HEAD
 
   final List<CheckBoxState> grade = [
     CheckBoxState(title: '10', value: true),
@@ -36,6 +42,8 @@ class _SearchState extends State<Search> {
     CheckBoxState(title: 'Not start yet', value: true),
     CheckBoxState(title: 'Already started', value: true),
   ];
+=======
+>>>>>>> ab7ccab (Class card UI and search by keyword)
 
   ScrollController controller = ScrollController();
 
@@ -64,6 +72,7 @@ class _SearchState extends State<Search> {
     searchResultsList();
   }
 
+<<<<<<< HEAD
   searchResultsListGrade() {
     var showResults = [];
     for (var Snapshot in _resultsList) {
@@ -128,6 +137,8 @@ class _SearchState extends State<Search> {
     searchResultsListStatus();
   }
 
+=======
+>>>>>>> ab7ccab (Class card UI and search by keyword)
   searchResultsList() {
     var showResults = [];
 
@@ -145,7 +156,10 @@ class _SearchState extends State<Search> {
     setState(() {
       _resultsList = showResults;
     });
+<<<<<<< HEAD
     searchResultsListwithFilter();
+=======
+>>>>>>> ab7ccab (Class card UI and search by keyword)
   }
 
   @override
@@ -207,6 +221,7 @@ class _SearchState extends State<Search> {
                         fontSize: 40.0,
                         fontWeight: FontWeight.w900,
                       ),
+<<<<<<< HEAD
                     ),
                     Container(
                       child: ElevatedButton(
@@ -227,6 +242,22 @@ class _SearchState extends State<Search> {
                               });
                         },
                         child: Icon(Icons.filter_alt),
+=======
+                      child: TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(10),
+                            labelStyle: TextStyle(
+                              height: 6.58 * SizeConfig.heightMultiplier,
+                              fontFamily: 'SegoeUI',
+                              color: greyColor,
+                              fontSize: 2.10 * SizeConfig.textMultiplier,
+                            ),
+                            border: OutlineInputBorder(),
+                            counterText: "",
+                            hintText: 'Enter a name',
+                            prefixIcon: Icon(Icons.search)),
+>>>>>>> ab7ccab (Class card UI and search by keyword)
                       ),
                     ),
                   ],
@@ -241,6 +272,7 @@ class _SearchState extends State<Search> {
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15),
                   ),
+<<<<<<< HEAD
                   color: lightPurpleColor,
                 ),
                 child: Column(
@@ -269,6 +301,17 @@ class _SearchState extends State<Search> {
                               prefixIcon: Icon(Icons.search)),
                         ),
                       ),
+=======
+                  Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(
+                        left: 5.5 * SizeConfig.widthMultiplier,
+                        right: 5.5 * SizeConfig.widthMultiplier,
+                      ),
+                      itemCount: _resultsList.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          classCard(context, _resultsList[index]),
+>>>>>>> ab7ccab (Class card UI and search by keyword)
                     ),
                     Expanded(
                       child: ListView.builder(
