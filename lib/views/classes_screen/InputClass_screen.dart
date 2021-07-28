@@ -415,7 +415,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                                 Container(
                                   alignment: Alignment.centerRight,
                                   child: DropdownButton(
-                                    hint: Text(""),
+                                    hint: Text(" "),
                                     icon: Icon(Icons.arrow_drop_down_sharp),
                                     iconSize: 35,
                                     value: valueChooseMinute,
@@ -453,20 +453,6 @@ class _InputClassScreen extends State<InputClassScreen> {
                       ),
                       ElevatedButton.icon(
                           onPressed: () => pickStartDate(context),
-                          // {
-                          //   DatePicker.showDatePicker(context,
-                          //       showTitleActions: true,
-                          //       minTime: DateTime.now(), onChanged: (date) {
-                          //     DateFormat('dd, MMM, yyyy').format(date);
-                          //     Timestamp startdate = Timestamp.fromDate(date);
-                          //     DateTime nowDate = startdate.toDate();
-                          //     startDate = nowDate;
-                          //   }, onConfirm: (date) {
-                          //     print('confirm $date');
-                          //   },
-                          //       currentTime: DateTime.now(),
-                          //       locale: LocaleType.vi);
-                          // },
                           style: ElevatedButton.styleFrom(
                             primary: Colors.white,
                             padding: EdgeInsets.symmetric(
