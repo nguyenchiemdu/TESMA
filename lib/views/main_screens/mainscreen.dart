@@ -3,12 +3,15 @@ import 'package:tesma/views/main_screens/notification_screen/notification_screen
 <<<<<<< HEAD
 <<<<<<< HEAD
 import 'package:tesma/views/main_screens/user_profile_screen/user_profile_screen.dart';
+<<<<<<< HEAD
 import 'package:tesma/views/main_screens/qr_scan_screen/qr_scan_screen.dart';
 =======
 >>>>>>> 670e6b0 (Create branch search)
 =======
 import 'package:tesma/views/main_screens/user_profile_screen/user_profile_screen.dart';
 >>>>>>> 5cdd52a (Create frame for search screen, add model class)
+=======
+>>>>>>> 7a96daee16bb65f414d125ec4570c1cf5fc9f6ec
 import 'package:tesma/views/main_screens/search_screen/search_screen.dart';
 import './home_screen/home_screen.dart';
 import 'placeholder_widget.dart';
@@ -26,6 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // PlaceholderWidget(Colors.white),
     HomeScreen(),
 <<<<<<< HEAD
+<<<<<<< HEAD
     Filter(),
 <<<<<<< HEAD
     QrScan(),
@@ -33,6 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
 =======
     Search(),
 >>>>>>> 5cdd52a (Create frame for search screen, add model class)
+=======
+    Search(),
+>>>>>>> 7a96daee16bb65f414d125ec4570c1cf5fc9f6ec
     PlaceholderWidget(Colors.green),
 >>>>>>> 670e6b0 (Create branch search)
     NotificationScreens(),
