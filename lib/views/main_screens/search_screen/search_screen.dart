@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
+import 'package:tesma/models/classinf.dart';
+import 'package:tesma/models/firebase_database.dart';
 import 'package:tesma/views/main_screens/search_screen/classcard.dart';
 import 'package:tesma/views/main_screens/search_screen/filter.dart';
 
@@ -13,6 +15,7 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   Future resultsLoaded;
+  TextEditingController searchController = TextEditingController();
 
   ScrollController controller = ScrollController();
 
@@ -34,6 +37,30 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
+    searchController.addListener(_onSearchChanged);
+  }
+
+  _onSearchChanged() {
+    searchResultsList();
+  }
+
+  searchResultsList() {
+    var showResults = [];
+
+    if (searchController.text != "") {
+      for (var Snapshot in _allresultList) {
+        var classname = ClassInf.fromSnapshot(Snapshot).classname.toLowerCase();
+
+        if (classname.contains(searchController.text.toLowerCase())) {
+          showResults.add(Snapshot);
+        }
+      }
+    } else {
+      showResults = List.from(_allresultList);
+    }
+    setState(() {
+      _resultsList = showResults;
+    });
   }
 
   @override
@@ -61,6 +88,7 @@ class _SearchState extends State<Search> {
       //   print(element.data());
       // });
     });
+    searchResultsList();
     print('get class successful');
   }
 
@@ -127,6 +155,7 @@ class _SearchState extends State<Search> {
                         color: Colors.white,
                       ),
                       child: TextField(
+                        controller: searchController,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(10),
                             labelStyle: TextStyle(
@@ -145,12 +174,12 @@ class _SearchState extends State<Search> {
                   Expanded(
                     child: ListView.builder(
                       padding: EdgeInsets.only(
-                        left: 7.4 * SizeConfig.widthMultiplier,
-                        right: 7.4 * SizeConfig.widthMultiplier,
+                        left: 5.5 * SizeConfig.widthMultiplier,
+                        right: 5.5 * SizeConfig.widthMultiplier,
                       ),
-                      itemCount: _allresultList.length,
+                      itemCount: _resultsList.length,
                       itemBuilder: (BuildContext context, int index) =>
-                          classCard(context, _allresultList[index]),
+                          classCard(context, _resultsList[index]),
                     ),
                   )
                 ],
