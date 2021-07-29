@@ -13,6 +13,7 @@ class ClassInf {
   int maxstudents;
   String time;
   String fee;
+  String grade;
 
   ClassInf(this.classname, this.subject, this.description, this.startdate,
       this.enddate, this.schedule, this.createdate, this.hostID);
@@ -29,5 +30,6 @@ class ClassInf {
         maxstudents = snapshot.data()['maxstudents'],
         time = snapshot.data()['time'],
         fee = snapshot.data()['fee'],
+        grade = snapshot.data()['grade'],
         hostID = snapshot.data()['hostID'];
 }
