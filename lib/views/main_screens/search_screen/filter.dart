@@ -76,6 +76,7 @@ class _FilterState extends State<Filter> {
               padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
               child: Column(
                 children: [
+<<<<<<< HEAD
                   Text(
                     "GRADE",
                     textAlign: TextAlign.left,
@@ -106,6 +107,13 @@ class _FilterState extends State<Filter> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
+=======
+                  Text("Grade"),
+                  ...widget.grade.map(buildSingleCheckbox).toList(),
+                  Text("Subject"),
+                  ...widget.subject.map(buildSingleCheckbox).toList(),
+                  Text("Status"),
+>>>>>>> 1e5283c (Complete filter function)
                   ...widget.status.map(buildSingleCheckbox).toList(),
                   ElevatedButton(
                     style: ButtonStyle(

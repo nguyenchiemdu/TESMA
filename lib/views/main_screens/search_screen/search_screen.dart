@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import 'package:tesma/models/CheckBoxState.dart';
 import 'package:tesma/models/classinf.dart';
 import 'package:tesma/views/main_screens/home_screen/class_info.dart';
@@ -11,6 +12,10 @@ import 'package:tesma/views/main_screens/home_screen/class_info.dart';
 import 'package:tesma/models/classinf.dart';
 import 'package:tesma/models/firebase_database.dart';
 >>>>>>> ab7ccab (Class card UI and search by keyword)
+=======
+import 'package:tesma/models/CheckBoxState.dart';
+import 'package:tesma/models/classinf.dart';
+>>>>>>> 1e5283c (Complete filter function)
 import 'package:tesma/views/main_screens/search_screen/classcard.dart';
 import 'package:tesma/views/main_screens/search_screen/filter.dart';
 
@@ -45,6 +50,25 @@ class _SearchState extends State<Search> {
 =======
 >>>>>>> ab7ccab (Class card UI and search by keyword)
 
+  final List<CheckBoxState> grade = [
+    CheckBoxState(title: '10', value: true),
+    CheckBoxState(title: '11', value: true),
+    CheckBoxState(title: '12', value: true),
+  ];
+
+  final List<CheckBoxState> subject = [
+    CheckBoxState(title: 'Math', value: true),
+    CheckBoxState(title: 'English', value: true),
+    CheckBoxState(title: 'Physics', value: true),
+    CheckBoxState(title: 'Chemistry', value: true),
+    CheckBoxState(title: 'Literature', value: true),
+  ];
+
+  final List<CheckBoxState> status = [
+    CheckBoxState(title: 'Not start yet', value: true),
+    CheckBoxState(title: 'Already started', value: true),
+  ];
+
   ScrollController controller = ScrollController();
 
   List _resultsList = [];
@@ -73,6 +97,9 @@ class _SearchState extends State<Search> {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1e5283c (Complete filter function)
   searchResultsListGrade() {
     var showResults = [];
     for (var Snapshot in _resultsList) {
@@ -137,8 +164,11 @@ class _SearchState extends State<Search> {
     searchResultsListStatus();
   }
 
+<<<<<<< HEAD
 =======
 >>>>>>> ab7ccab (Class card UI and search by keyword)
+=======
+>>>>>>> 1e5283c (Complete filter function)
   searchResultsList() {
     var showResults = [];
 
@@ -157,9 +187,13 @@ class _SearchState extends State<Search> {
       _resultsList = showResults;
     });
 <<<<<<< HEAD
+<<<<<<< HEAD
     searchResultsListwithFilter();
 =======
 >>>>>>> ab7ccab (Class card UI and search by keyword)
+=======
+    searchResultsListwithFilter();
+>>>>>>> 1e5283c (Complete filter function)
   }
 
   @override
@@ -222,6 +256,9 @@ class _SearchState extends State<Search> {
                         fontWeight: FontWeight.w900,
                       ),
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1e5283c (Complete filter function)
                     ),
                     Container(
                       child: ElevatedButton(
@@ -242,6 +279,7 @@ class _SearchState extends State<Search> {
                               });
                         },
                         child: Icon(Icons.filter_alt),
+<<<<<<< HEAD
 =======
                       child: TextField(
                         controller: searchController,
@@ -258,6 +296,8 @@ class _SearchState extends State<Search> {
                             hintText: 'Enter a name',
                             prefixIcon: Icon(Icons.search)),
 >>>>>>> ab7ccab (Class card UI and search by keyword)
+=======
+>>>>>>> 1e5283c (Complete filter function)
                       ),
                     ),
                   ],
@@ -273,6 +313,9 @@ class _SearchState extends State<Search> {
                     topRight: Radius.circular(15),
                   ),
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1e5283c (Complete filter function)
                   color: lightPurpleColor,
                 ),
                 child: Column(
@@ -300,6 +343,7 @@ class _SearchState extends State<Search> {
                               hintText: 'Enter a name',
                               prefixIcon: Icon(Icons.search)),
                         ),
+<<<<<<< HEAD
                       ),
 =======
                   Expanded(
@@ -312,6 +356,9 @@ class _SearchState extends State<Search> {
                       itemBuilder: (BuildContext context, int index) =>
                           classCard(context, _resultsList[index]),
 >>>>>>> ab7ccab (Class card UI and search by keyword)
+=======
+                      ),
+>>>>>>> 1e5283c (Complete filter function)
                     ),
                     Expanded(
                       child: ListView.builder(
@@ -321,6 +368,7 @@ class _SearchState extends State<Search> {
                         ),
                         itemCount: _resultsList.length,
                         itemBuilder: (BuildContext context, int index) =>
+<<<<<<< HEAD
                             GestureDetector(
                           child: classCard(context, _resultsList[index]),
                           onTap: () {
@@ -331,6 +379,9 @@ class _SearchState extends State<Search> {
                             );
                           },
                         ),
+=======
+                            classCard(context, _resultsList[index]),
+>>>>>>> 1e5283c (Complete filter function)
                       ),
                     )
                   ],
