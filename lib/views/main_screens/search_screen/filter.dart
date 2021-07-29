@@ -78,8 +78,11 @@ class _FilterState extends State<Filter> {
                 children: [
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 5065d0b (Filter UI)
+=======
+>>>>>>> d582998 (Filter UI)
                   Text(
                     "GRADE",
                     textAlign: TextAlign.left,
@@ -90,6 +93,7 @@ class _FilterState extends State<Filter> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
+<<<<<<< HEAD
 <<<<<<< HEAD
                   ...widget.grade.map(buildSingleCheckbox).toList(),
                   Text(
@@ -115,6 +119,8 @@ class _FilterState extends State<Filter> {
                   Text("Grade"),
 =======
 >>>>>>> 5065d0b (Filter UI)
+=======
+>>>>>>> d582998 (Filter UI)
                   ...widget.grade.map(buildSingleCheckbox).toList(),
                   Text(
                     "SUBJECT",
@@ -127,9 +133,12 @@ class _FilterState extends State<Filter> {
                   ),
                   ...widget.subject.map(buildSingleCheckbox).toList(),
 <<<<<<< HEAD
+<<<<<<< HEAD
                   Text("Status"),
 >>>>>>> 1e5283c (Complete filter function)
 =======
+=======
+>>>>>>> d582998 (Filter UI)
                   Text(
                     "STATUS",
                     style: TextStyle(
@@ -139,7 +148,10 @@ class _FilterState extends State<Filter> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
+<<<<<<< HEAD
 >>>>>>> 5065d0b (Filter UI)
+=======
+>>>>>>> d582998 (Filter UI)
                   ...widget.status.map(buildSingleCheckbox).toList(),
                   ElevatedButton(
                     style: ButtonStyle(
