@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,11 +25,12 @@ class _InputClassScreen extends State<InputClassScreen> {
   final TextEditingController classNameController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController feeController = TextEditingController();
+  final TextEditingController maxstudentsController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
   Map<String, dynamic> newClass = {};
 
-  DateTime startDate;
+  DateTime startDate = DateTime.now();
   int numberOfStudents = 0;
   int maxStudent = 15;
 
@@ -60,7 +62,7 @@ class _InputClassScreen extends State<InputClassScreen> {
 
   String getStartDate() {
     if (startDate == null) {
-      return 'Select Start Date';
+      return 'Date';
     } else {
       return '${startDate.day}/${startDate.month}/${startDate.year}';
     }
@@ -101,7 +103,7 @@ class _InputClassScreen extends State<InputClassScreen> {
         ),
         title: Text(
           notification.title,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
       );
 
@@ -121,13 +123,12 @@ class _InputClassScreen extends State<InputClassScreen> {
         String classname,
         String subject,
         String grade,
-        String description,
         String startdate,
         String time,
         String location,
         String fee,
         int numberofstudents,
-        int maxstudents,
+        String maxstudents,
         List<CheckBoxState> dayofweek) async {
       CollectionReference classes =
           FirebaseFirestore.instance.collection('classes');
@@ -299,54 +300,73 @@ class _InputClassScreen extends State<InputClassScreen> {
                               child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                Expanded(
-                                  flex: 5,
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.only(left: 10, right: 2),
-                                    child: DropdownButton(
-                                      hint: Text("Select Subject"),
-                                      icon: Icon(Icons.arrow_drop_down_sharp),
-                                      iconSize: 35,
-                                      value: valueChooseSubject,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          valueChooseSubject = newValue;
-                                        });
-                                        },
-                                      items: listSubject.map((valueItem) {
-                                        return DropdownMenuItem(
-                                          value: valueItem,
-                                          child: Text(valueItem),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
+                                      Expanded(
+                                        flex: 5,
+                                        child: Padding(
+                                          padding:
+                                          EdgeInsets.only(left: 10, right: 30),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            height: 5 * SizeConfig.heightMultiplier,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: Colors.black, width: 1),
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                              child: DropdownButton(
+                                                hint: Text("Subject"),
+                                                icon: Icon(Icons.arrow_drop_down_sharp),
+                                                iconSize: 35,
+                                                underline: SizedBox(),
+                                                value: valueChooseSubject,
+                                                onChanged: (newValue) {
+                                                  setState(() {
+                                                    valueChooseSubject = newValue;
+                                                  });
+                                                },
+                                                items: listSubject.map((valueItem) {
+                                                  return DropdownMenuItem(
+                                                    value: valueItem,
+                                                    child: Text(valueItem),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                  Expanded(
                                     flex: 5,
-                                    child: Padding(
-                                      padding:
-                                      EdgeInsets.only(left: 15, right: 10),
-                                      child: DropdownButton(
-                                        hint: Text("Select Grade"),
-                                        icon: Icon(Icons.arrow_drop_down_sharp),
-                                        iconSize: 35,
-                                        value: valueChooseGrade,
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            valueChooseGrade = newValue;
-                                          });
-                                          },
-                                        items: listGrade.map((valueItem) {
-                                          return DropdownMenuItem(
-                                            value: valueItem,
-                                            child: Text(valueItem),
-                                          );
-                                        }).toList(),
+                                      child: Padding(
+                                        padding:
+                                        EdgeInsets.only(left: 10, right: 50),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          height: 5 * SizeConfig.heightMultiplier,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: Colors.black, width: 1),
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                            child: DropdownButton(
+                                              hint: Text("Grade"),
+                                              icon: Icon(Icons.arrow_drop_down_sharp),
+                                              iconSize: 35,
+                                              underline: SizedBox(),
+                                              value: valueChooseGrade,
+                                              onChanged: (newValue) {
+                                                setState(() {
+                                                  valueChooseGrade = newValue;
+                                                });
+                                              },
+                                              items: listGrade.map((valueItem) {
+                                                return DropdownMenuItem(
+                                                  value: valueItem,
+                                                  child: Text(valueItem),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                ),]))),
+                                ]))),
                       Row(children: [
                         Text(
                           "SCHEDULE",
@@ -362,76 +382,138 @@ class _InputClassScreen extends State<InputClassScreen> {
                       Container(
                         height: MediaQuery.of(context).size.height / 2,
                         child: GridView.extent(
+                          childAspectRatio: 9/5,
                           primary: false,
                             maxCrossAxisExtent: 170,
-                          children: <Widget>[
-                            Divider(),
-                            ...dayOfWeek.map(buildSingleCheckbox).toList(),
-                          ],
+                          children: dayOfWeek.map(buildSingleCheckbox).toList(),
                         ),
                       ),
-                      Row(children: [
-                        Text(
-                          "TIME",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontFamily: 'SegoeUI',
-                            color: Color(0xff000000),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ]),
+                      Container(
+                          padding:
+                          EdgeInsets.all(2 * SizeConfig.heightMultiplier),
+                          child: Container(
+                              child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 5,
+                                      child: Padding(
+                                        padding:
+                                        EdgeInsets.only(right: 10),
+                                        child: Text(
+                                          'TIME',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontFamily: 'SegoeUI',
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 5,
+                                      child: Padding(
+                                        padding:
+                                        EdgeInsets.only(left: 15, right: 10),
+                                        child: Text(
+                                          'FEE',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontFamily: 'SegoeUI',
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ]))),
                       Container(
                         child: Container(
                           child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: DropdownButton(
-                                    hint: Text(""),
-                                    icon: Icon(Icons.arrow_drop_down_sharp),
-                                    iconSize: 35,
-                                    value: valueChooseHour,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        valueChooseHour = newValue;
-                                      });
-                                    },
-                                    items: listHour.map((valueItem) {
-                                      return DropdownMenuItem(
-                                        value: valueItem,
-                                        child: Text(valueItem),
-                                      );
-                                    }).toList(),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.only(left: 7),
+                                    child: Container(
+                                      alignment: Alignment.centerRight,
+                                      height: 5 * SizeConfig.heightMultiplier,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.black, width: 1),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: DropdownButton(
+                                        hint: Text(""),
+                                        icon: Icon(Icons.arrow_drop_down_sharp),
+                                        iconSize: 35,
+                                        underline: SizedBox(),
+                                        value: valueChooseHour,
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            valueChooseHour = newValue;
+                                          });
+                                        },
+                                        items: listHour.map((valueItem) {
+                                          return DropdownMenuItem(
+                                            value: valueItem,
+                                            child: Text(valueItem),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
                                   ),
-                                  height: 5 * SizeConfig.heightMultiplier,
                                 ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: 5 * SizeConfig.widthMultiplier,
+                                Expanded(
+                                  flex: 3,
+                                    child: Padding(
+                                      padding:
+                                      EdgeInsets.only(left: 15, right: 23),
+                                      child: Container(
+                                        height: 5 * SizeConfig.heightMultiplier,
+                                        alignment: Alignment.centerRight,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.black, width: 1),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: DropdownButton(
+                                          hint: Text(""),
+                                          icon: Icon(Icons.arrow_drop_down_sharp),
+                                          iconSize: 35,
+                                          underline: SizedBox(),
+                                          value: valueChooseMinute,
+                                          onChanged: (newValue) {
+                                            setState(() {
+                                              valueChooseMinute = newValue;
+                                            });
+                                          },
+                                          items: listMinute.map((valueItem) {
+                                            return DropdownMenuItem(
+                                              value: valueItem,
+                                              child: Text(valueItem),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ),
                                 ),
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  child: DropdownButton(
-                                    hint: Text(" "),
-                                    icon: Icon(Icons.arrow_drop_down_sharp),
-                                    iconSize: 35,
-                                    value: valueChooseMinute,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        valueChooseMinute = newValue;
-                                      });
-                                    },
-                                    items: listMinute.map((valueItem) {
-                                      return DropdownMenuItem(
-                                        value: valueItem,
-                                        child: Text(valueItem),
-                                      );
-                                    }).toList(),
+                                Expanded(
+                                  flex: 5,
+                                  child: Container(
+                                    height: 5 * SizeConfig.heightMultiplier,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 15, right: 2),
+                                      child: TextField(
+                                        controller: feeController,
+                                        decoration: new InputDecoration(
+                                          border: OutlineInputBorder(),
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                      ),
+                                    ),
                                   ),
-                                  height: 5 * SizeConfig.heightMultiplier,
                                 ),
                               ]),
                         ),
@@ -440,176 +522,134 @@ class _InputClassScreen extends State<InputClassScreen> {
                         height: 5 * SizeConfig.heightMultiplier,
                       ),
                       Container(
-                          child: Text(
-                            "START DATE",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontFamily: 'SegoeUI',
-                              color: Color(0xff000000),
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                      ),
-                      ElevatedButton.icon(
-                          onPressed: () => pickStartDate(context),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 120),
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(10)),
-                          ),
-                          icon: Icon(Icons.date_range_sharp, color: Colors.blue,),
-                            label: Text(
-                              '$startDate',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 16,
-                                fontFamily: 'SegoeUI',
-                                fontWeight: FontWeight.normal,
-                              ),
-                            )
-                          ),
-                      Container(
                         height: 5 * SizeConfig.heightMultiplier,
                       ),
                       Container(
-                        height: 5 * SizeConfig.heightMultiplier,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Expanded(
-                              flex: 3,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 2),
-                                child: Text(
-                                  'Amount',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontFamily: 'SegoeUI',
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Padding(
-                                padding: EdgeInsets.only(right: 2),
-                                child: Text(
-                                  '$numberOfStudents',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontFamily: 'SegoeUI',
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 10, right: 2),
-                                child: Text(
-                                  'Maximum quantity',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontFamily: 'SegoeUI',
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 2, right: 2),
-                                child: TextField(
-                                  decoration: new InputDecoration(
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 5 * SizeConfig.heightMultiplier,
-                      ),
-                      Container(
+                          padding:
+                          EdgeInsets.all(2 * SizeConfig.heightMultiplier),
                           child: Container(
                               child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'LOCATION',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: 'SegoeUI',
-                                      fontWeight: FontWeight.w900,
+                                    Expanded(
+                                      flex: 5,
+                                      child: Padding(
+                                        padding:
+                                        EdgeInsets.only(right: 10),
+                                        child: Text(
+                                          'START DATE',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontFamily: 'SegoeUI',
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  height: 3 * SizeConfig.heightMultiplier,
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: 31 * SizeConfig.widthMultiplier,
-                                ),
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    'FEE',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: 'SegoeUI',
-                                      fontWeight: FontWeight.w900,
+                                    Expanded(
+                                      flex: 5,
+                                      child: Padding(
+                                        padding:
+                                        EdgeInsets.only(left: 15, right: 10),
+                                        child: Text(
+                                          'STUDENTS',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontFamily: 'SegoeUI',
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  height: 3 * SizeConfig.heightMultiplier,
-                                ),
-                              ]))),
+                                  ]))),
                       Container(
+                          padding:
+                          EdgeInsets.all(1 * SizeConfig.heightMultiplier),
                           child: Container(
-                              height: 5 * SizeConfig.heightMultiplier,
-                              child: Row(children: <Widget>[
-                                Expanded(
-                                  flex: 6,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 2, right: 50),
-                                    child: TextField(
-                                      controller: locationController,
-                                      decoration: new InputDecoration(
-                                        border: OutlineInputBorder(),
+                              child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 5,
+                                        child: Container(
+                                          height: 5 * SizeConfig.heightMultiplier,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: Colors.black, width: 1),
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: ElevatedButton.icon(
+                                              onPressed: () => pickStartDate(context),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Colors.white,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 20),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius.circular(10)),
+                                              ),
+                                              icon: Icon(Icons.date_range_sharp, color: Colors.blue,),
+                                              label: Text(
+                                                getStartDate(),
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  color: Colors.blue,
+                                                  fontSize: 16,
+                                                  fontFamily: 'SegoeUI',
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              )
+                                          ),
+                                        ),
+                                      ),
+                                    Expanded(
+                                      flex: 5,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 10, right: 50),
+                                        child: Container(
+                                          height: 5 * SizeConfig.heightMultiplier,
+                                          child: NumberInputWithIncrementDecrement(
+                                            controller: maxstudentsController,
+                                            initialValue: maxStudent,
+                                            min: 0,
+                                            max: 100,
+                                            incIconSize: 27,
+                                            decIconSize: 27,
+                                            buttonArrangement: ButtonArrangement.incRightDecLeft,
+                                            onChanged: (value) => setState(() { maxStudent = value;}),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 4,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 5, right: 2),
-                                    child: TextField(
-                                      controller: feeController,
-                                      decoration: new InputDecoration(
-                                        border: OutlineInputBorder(),
-                                      ),
-                                      keyboardType: TextInputType.number,
-                                    ),
-                                  ),
-                                ),
-                              ]))),
+                                  ]))),
+                      Container(
+                        height: 5 * SizeConfig.heightMultiplier,
+                      ),
+                      Container(
+                        child: Text(
+                          'LOCATION',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'SegoeUI',
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 5 * SizeConfig.heightMultiplier,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: TextField(
+                            controller: locationController,
+                            decoration: new InputDecoration(
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.text,
+                          ),
+                        ),
+                      ),
                       Container(
                         height: 2 * SizeConfig.heightMultiplier,
                       ),
@@ -669,7 +709,6 @@ class _InputClassScreen extends State<InputClassScreen> {
                                                 classNameController.text,
                                                 valueChooseSubject,
                                                 valueChooseGrade,
-                                                descriptionController.text,
                                                 startDate.toString(),
                                                 valueChooseHour +
                                                     ":" +
@@ -677,7 +716,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                                                 locationController.text,
                                                 feeController.text,
                                                 numberOfStudents,
-                                                maxStudent,
+                                                maxstudentsController.text,
                                                 dayOfWeek,
                                               );
                                             } else
