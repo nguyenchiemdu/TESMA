@@ -186,15 +186,11 @@ class _InputClassScreen extends State<InputClassScreen> {
         ),
         title: Text(
           notification.title,
-<<<<<<< HEAD
           style: TextStyle(
             fontFamily: 'SegoeUI',
             fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
-=======
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
->>>>>>> 964d5f8 (complete UI create class)
         ),
       );
 
@@ -441,7 +437,6 @@ class _InputClassScreen extends State<InputClassScreen> {
                               child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-<<<<<<< HEAD
                                 Expanded(
                                   flex: 5,
                                   child: Padding(
@@ -511,78 +506,6 @@ class _InputClassScreen extends State<InputClassScreen> {
                                   ),
                                 ),
                               ]))),
-=======
-                                      Expanded(
-                                        flex: 5,
-                                        child: Padding(
-                                          padding:
-                                          EdgeInsets.only(left: 10, right: 30),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            height: 5 * SizeConfig.heightMultiplier,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(color: Colors.black, width: 1),
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                              child: DropdownButton(
-                                                hint: Text("Subject"),
-                                                icon: Icon(Icons.arrow_drop_down_sharp),
-                                                iconSize: 35,
-                                                underline: SizedBox(),
-                                                value: valueChooseSubject,
-                                                onChanged: (newValue) {
-                                                  setState(() {
-                                                    valueChooseSubject = newValue;
-                                                  });
-                                                },
-                                                items: listSubject.map((valueItem) {
-                                                  return DropdownMenuItem(
-                                                    value: valueItem,
-                                                    child: Text(valueItem),
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                  // Expanded(
-                                  //   flex: 2,
-                                  // ),
-                                  Expanded(
-                                    flex: 5,
-                                      child: Padding(
-                                        padding:
-                                        EdgeInsets.only(left: 10, right: 50),
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          height: 5 * SizeConfig.heightMultiplier,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: Colors.black, width: 1),
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                            child: DropdownButton(
-                                              hint: Text("Grade"),
-                                              icon: Icon(Icons.arrow_drop_down_sharp),
-                                              iconSize: 35,
-                                              underline: SizedBox(),
-                                              value: valueChooseGrade,
-                                              onChanged: (newValue) {
-                                                setState(() {
-                                                  valueChooseGrade = newValue;
-                                                });
-                                              },
-                                              items: listGrade.map((valueItem) {
-                                                return DropdownMenuItem(
-                                                  value: valueItem,
-                                                  child: Text(valueItem),
-                                                );
-                                              }).toList(),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                ]))),
->>>>>>> 964d5f8 (complete UI create class)
                       Row(children: [
                         Text(
                           "SCHEDULE",
@@ -598,7 +521,6 @@ class _InputClassScreen extends State<InputClassScreen> {
                       Container(
                         height: MediaQuery.of(context).size.height / 2,
                         child: GridView.extent(
-<<<<<<< HEAD
                           childAspectRatio: 9 / 5,
                           primary: false,
                           maxCrossAxisExtent: 170,
@@ -623,94 +545,11 @@ class _InputClassScreen extends State<InputClassScreen> {
                                         fontSize: 16,
                                         fontFamily: 'SegoeUI',
                                         fontWeight: FontWeight.w900,
-=======
-                          childAspectRatio: 9/5,
-                          primary: false,
-                            maxCrossAxisExtent: 170,
-                          children: dayOfWeek.map(buildSingleCheckbox).toList(),
-                        ),
-                      ),
-                      Container(
-                          padding:
-                          EdgeInsets.all(2 * SizeConfig.heightMultiplier),
-                          child: Container(
-                              child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Expanded(
-                                      flex: 5,
-                                      child: Padding(
-                                        padding:
-                                        EdgeInsets.only(right: 10),
-                                        child: Text(
-                                          'TIME',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontFamily: 'SegoeUI',
-                                            fontWeight: FontWeight.w900,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 5,
-                                      child: Padding(
-                                        padding:
-                                        EdgeInsets.only(left: 15, right: 10),
-                                        child: Text(
-                                          'FEE',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontFamily: 'SegoeUI',
-                                            fontWeight: FontWeight.w900,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ]))),
-                      Container(
-                        child: Container(
-                          child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.only(left: 7),
-                                    child: Container(
-                                      alignment: Alignment.centerRight,
-                                      height: 5 * SizeConfig.heightMultiplier,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.black, width: 1),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: DropdownButton(
-                                        hint: Text(""),
-                                        icon: Icon(Icons.arrow_drop_down_sharp),
-                                        iconSize: 35,
-                                        underline: SizedBox(),
-                                        value: valueChooseHour,
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            valueChooseHour = newValue;
-                                          });
-                                        },
-                                        items: listHour.map((valueItem) {
-                                          return DropdownMenuItem(
-                                            value: valueItem,
-                                            child: Text(valueItem),
-                                          );
-                                        }).toList(),
->>>>>>> 964d5f8 (complete UI create class)
                                       ),
                                     ),
                                   ),
                                 ),
                                 Expanded(
-<<<<<<< HEAD
                                   flex: 5,
                                   child: Padding(
                                     padding:
@@ -722,57 +561,10 @@ class _InputClassScreen extends State<InputClassScreen> {
                                         fontSize: 16,
                                         fontFamily: 'SegoeUI',
                                         fontWeight: FontWeight.w900,
-=======
-                                  flex: 3,
-                                    child: Padding(
-                                      padding:
-                                      EdgeInsets.only(left: 15, right: 23),
-                                      child: Container(
-                                        height: 5 * SizeConfig.heightMultiplier,
-                                        alignment: Alignment.centerRight,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.black, width: 1),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child: DropdownButton(
-                                          hint: Text(""),
-                                          icon: Icon(Icons.arrow_drop_down_sharp),
-                                          iconSize: 35,
-                                          underline: SizedBox(),
-                                          value: valueChooseMinute,
-                                          onChanged: (newValue) {
-                                            setState(() {
-                                              valueChooseMinute = newValue;
-                                            });
-                                          },
-                                          items: listMinute.map((valueItem) {
-                                            return DropdownMenuItem(
-                                              value: valueItem,
-                                              child: Text(valueItem),
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ),
-                                    ),
-                                ),
-                                Expanded(
-                                  flex: 5,
-                                  child: Container(
-                                    height: 5 * SizeConfig.heightMultiplier,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 15, right: 2),
-                                      child: TextField(
-                                        controller: feeController,
-                                        decoration: new InputDecoration(
-                                          border: OutlineInputBorder(),
-                                        ),
-                                        keyboardType: TextInputType.number,
->>>>>>> 964d5f8 (complete UI create class)
                                       ),
                                     ),
                                   ),
                                 ),
-<<<<<<< HEAD
                               ]))),
                       Container(
                         child: Container(
@@ -863,32 +655,19 @@ class _InputClassScreen extends State<InputClassScreen> {
                                     ),
                                   ),
                                 ),
-=======
->>>>>>> 964d5f8 (complete UI create class)
                               ]),
                         ),
                       ),
                       Container(
-<<<<<<< HEAD
-=======
-                        height: 5 * SizeConfig.heightMultiplier,
-                      ),
-                      Container(
->>>>>>> 964d5f8 (complete UI create class)
                         height: 5 * SizeConfig.heightMultiplier,
                       ),
                       Container(
                           padding:
-<<<<<<< HEAD
                               EdgeInsets.all(2 * SizeConfig.heightMultiplier),
-=======
-                          EdgeInsets.all(2 * SizeConfig.heightMultiplier),
->>>>>>> 964d5f8 (complete UI create class)
                           child: Container(
                               child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-<<<<<<< HEAD
                                 Expanded(
                                   flex: 5,
                                   child: Padding(
@@ -924,49 +703,10 @@ class _InputClassScreen extends State<InputClassScreen> {
                       Container(
                           padding:
                               EdgeInsets.all(1 * SizeConfig.heightMultiplier),
-=======
-                                    Expanded(
-                                      flex: 5,
-                                      child: Padding(
-                                        padding:
-                                        EdgeInsets.only(right: 10),
-                                        child: Text(
-                                          'START DATE',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontFamily: 'SegoeUI',
-                                            fontWeight: FontWeight.w900,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 5,
-                                      child: Padding(
-                                        padding:
-                                        EdgeInsets.only(left: 15, right: 10),
-                                        child: Text(
-                                          'STUDENTS',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontFamily: 'SegoeUI',
-                                            fontWeight: FontWeight.w900,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ]))),
-                      Container(
-                          padding:
-                          EdgeInsets.all(1 * SizeConfig.heightMultiplier),
->>>>>>> 964d5f8 (complete UI create class)
                           child: Container(
                               child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-<<<<<<< HEAD
                                 Expanded(
                                   flex: 5,
                                   child: Container(
@@ -1021,63 +761,10 @@ class _InputClassScreen extends State<InputClassScreen> {
                                         onChanged: (value) => setState(() {
                                           maxStudent = value;
                                         }),
-=======
-                                    Expanded(
-                                      flex: 5,
-                                        child: Container(
-                                          height: 5 * SizeConfig.heightMultiplier,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: Colors.black, width: 1),
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: ElevatedButton.icon(
-                                              onPressed: () => pickStartDate(context),
-                                              style: ElevatedButton.styleFrom(
-                                                primary: Colors.white,
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 20),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius.circular(10)),
-                                              ),
-                                              icon: Icon(Icons.date_range_sharp, color: Colors.blue,),
-                                              label: Text(
-                                                getStartDate(),
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  color: Colors.blue,
-                                                  fontSize: 16,
-                                                  fontFamily: 'SegoeUI',
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                              )
-                                          ),
-                                        ),
-                                      ),
-                                    // Expanded(
-                                    //   flex: 2,
-                                    // ),
-                                    Expanded(
-                                      flex: 5,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(left: 10, right: 50),
-                                        child: Container(
-                                          height: 5 * SizeConfig.heightMultiplier,
-                                          child: NumberInputWithIncrementDecrement(
-                                            controller: maxstudentsController,
-                                            initialValue: maxStudent,
-                                            min: 0,
-                                            max: 100,
-                                            incIconSize: 27,
-                                            decIconSize: 27,
-                                            buttonArrangement: ButtonArrangement.incRightDecLeft,
-                                            onChanged: (value) => setState(() { maxStudent = value;}),
-                                          ),
-                                        ),
->>>>>>> 964d5f8 (complete UI create class)
                                       ),
                                     ),
-                                  ]))),
+                                  ),
+                                  )]))),
                       Container(
                         height: 5 * SizeConfig.heightMultiplier,
                       ),
@@ -1179,7 +866,6 @@ class _InputClassScreen extends State<InputClassScreen> {
                                       padding:
                                           EdgeInsets.only(left: 20, right: 2),
                                       child: ElevatedButton(
-<<<<<<< HEAD
                                         onPressed: () {
                                           if (classNameController.text == "" ||
                                               feeController.text == "" ||
@@ -1206,37 +892,6 @@ class _InputClassScreen extends State<InputClassScreen> {
                                           else {
                                             isErrorFromServe = "";
                                             createClassOnServe();
-=======
-                                        onPressed: () async {
-                                          try {
-                                            await Firebase.initializeApp();
-                                            bool isNewClass = await ClassInfor()
-                                                .isNewClass(classNameController
-                                                    .text
-                                                    .toString());
-                                            if (isNewClass) {
-                                              await classSetup(
-                                                classNameController.text,
-                                                valueChooseSubject,
-                                                valueChooseGrade,
-                                                startDate.toString(),
-                                                valueChooseHour +
-                                                    ":" +
-                                                    valueChooseMinute,
-                                                locationController.text,
-                                                feeController.text,
-                                                numberOfStudents,
-                                                maxstudentsController.text,
-                                                dayOfWeek,
-                                              );
-                                            } else
-                                              _showToast(
-                                                  'Class name has already existed!');
-                                          } on FirebaseAuthException catch (e) {
-                                            print(e.code);
-                                          } catch (e) {
-                                            print(e.toString());
->>>>>>> 964d5f8 (complete UI create class)
                                           }
                                         },
                                         style: ElevatedButton.styleFrom(
