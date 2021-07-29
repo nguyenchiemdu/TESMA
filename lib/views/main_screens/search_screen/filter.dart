@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/CheckBoxState.dart';
 
+// ignore: must_be_immutable
 class Filter extends StatefulWidget {
   Filter({
     Key key,
@@ -19,6 +21,18 @@ class Filter extends StatefulWidget {
 }
 
 class _FilterState extends State<Filter> {
+  Color getbackgroudcolor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return mediumPink;
+    }
+    return mediumPink;
+  }
+
   Widget buildCheckbox({
     @required CheckBoxState notification,
     @required VoidCallback onClicked,
@@ -31,7 +45,12 @@ class _FilterState extends State<Filter> {
         ),
         title: Text(
           notification.title,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontFamily: 'SegoeUI',
+            color: royalBlueColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       );
 
@@ -54,26 +73,62 @@ class _FilterState extends State<Filter> {
           resizeToAvoidBottomInset: true,
           body: SingleChildScrollView(
             child: Container(
+              padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
               child: Column(
                 children: [
-                  Text("Grade"),
+                  Text(
+                    "GRADE",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: 'SegoeUI',
+                      color: royalBlueColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   ...widget.grade.map(buildSingleCheckbox).toList(),
-                  Text("Subject"),
+                  Text(
+                    "SUBJECT",
+                    style: TextStyle(
+                      fontFamily: 'SegoeUI',
+                      color: royalBlueColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   ...widget.subject.map(buildSingleCheckbox).toList(),
-                  Text("Status"),
+                  Text(
+                    "STATUS",
+                    style: TextStyle(
+                      fontFamily: 'SegoeUI',
+                      color: royalBlueColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   ...widget.status.map(buildSingleCheckbox).toList(),
                   ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            getbackgroudcolor),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ))),
                     onPressed: () {
                       //ClassInfor().searchClass();
                       Navigator.pop(context, "Filter Successful");
                     },
                     child: Container(
+                      width: 115,
+                      height: 25,
                       child: Center(
                         child: Text(
                           'Apply',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'SegoeUI',
                             fontWeight: FontWeight.w900,
                           ),
