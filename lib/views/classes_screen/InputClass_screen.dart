@@ -474,8 +474,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                                 Expanded(
                                   flex: 5,
                                   child: Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 10, right: 50),
+                                    padding:                                     EdgeInsets.only(left: 10, right: 50),
                                     child: Container(
                                       alignment: Alignment.center,
                                       height: 5 * SizeConfig.heightMultiplier,
