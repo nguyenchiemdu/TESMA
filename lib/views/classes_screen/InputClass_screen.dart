@@ -333,9 +333,6 @@ class _InputClassScreen extends State<InputClassScreen> {
                                             ),
                                           ),
                                         ),
-                                  // Expanded(
-                                  //   flex: 2,
-                                  // ),
                                   Expanded(
                                     flex: 5,
                                       child: Padding(
@@ -606,9 +603,6 @@ class _InputClassScreen extends State<InputClassScreen> {
                                           ),
                                         ),
                                       ),
-                                    // Expanded(
-                                    //   flex: 2,
-                                    // ),
                                     Expanded(
                                       flex: 5,
                                       child: Padding(
