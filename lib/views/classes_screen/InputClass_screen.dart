@@ -130,6 +130,7 @@ class _InputClassScreen extends State<InputClassScreen> {
         int numberofstudents,
         String maxstudents,
         List<CheckBoxState> dayofweek) async {
+      int students = int.parse(maxstudents);
       CollectionReference classes =
           FirebaseFirestore.instance.collection('classes');
       DateTime createdate = DateTime.now();
@@ -147,7 +148,7 @@ class _InputClassScreen extends State<InputClassScreen> {
         'fee' : fee,
         'hostID': hostID,
         'numberofstudents': numberofstudents,
-        'maxstudents' : maxstudents,
+        'maxstudents' : students,
       }).then((value) {
         final currentUser =
             FirebaseFirestore.instance.collection('users').doc(hostID);
@@ -175,7 +176,7 @@ class _InputClassScreen extends State<InputClassScreen> {
           'fee' : fee,
           'hostID': hostID,
           'numberofstudents': numberofstudents,
-          'maxstudents' : maxstudents,
+          'maxstudents' : students,
         };
         widget.rendering(newClass);
         showDialog(
