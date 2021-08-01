@@ -1,14 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/CheckBoxState.dart';
-import 'package:tesma/models/firebase_database.dart';
 
+// ignore: must_be_immutable
 class Filter extends StatefulWidget {
+  Filter({
+    Key key,
+    @required this.grade,
+    @required this.subject,
+    @required this.status,
+  }) : super(key: key);
+
+  List<CheckBoxState> grade;
+  List<CheckBoxState> subject;
+  List<CheckBoxState> status;
+
   @override
   _FilterState createState() => _FilterState();
 }
 
 class _FilterState extends State<Filter> {
+  Color getbackgroudcolor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return mediumPink;
+    }
+    return mediumPink;
+  }
+
   Widget buildCheckbox({
     @required CheckBoxState notification,
     @required VoidCallback onClicked,
@@ -21,7 +45,12 @@ class _FilterState extends State<Filter> {
         ),
         title: Text(
           notification.title,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontFamily: 'SegoeUI',
+            color: royalBlueColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       );
 
@@ -35,25 +64,6 @@ class _FilterState extends State<Filter> {
         },
       );
 
-  final List<CheckBoxState> grade = [
-    CheckBoxState(title: '10'),
-    CheckBoxState(title: '11'),
-    CheckBoxState(title: '12'),
-  ];
-
-  final List<CheckBoxState> subject = [
-    CheckBoxState(title: 'Math'),
-    CheckBoxState(title: 'English'),
-    CheckBoxState(title: 'Physics'),
-    CheckBoxState(title: 'Chemistry'),
-    CheckBoxState(title: 'Literature'),
-  ];
-
-  final List<CheckBoxState> status = [
-    CheckBoxState(title: 'Not start yet'),
-    CheckBoxState(title: 'Already started'),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -63,25 +73,62 @@ class _FilterState extends State<Filter> {
           resizeToAvoidBottomInset: true,
           body: SingleChildScrollView(
             child: Container(
+              padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
               child: Column(
                 children: [
-                  Text("Grade"),
-                  ...grade.map(buildSingleCheckbox).toList(),
-                  Text("Subject"),
-                  ...subject.map(buildSingleCheckbox).toList(),
-                  Text("Status"),
-                  ...status.map(buildSingleCheckbox).toList(),
+                  Text(
+                    "GRADE",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: 'SegoeUI',
+                      color: royalBlueColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  ...widget.grade.map(buildSingleCheckbox).toList(),
+                  Text(
+                    "SUBJECT",
+                    style: TextStyle(
+                      fontFamily: 'SegoeUI',
+                      color: royalBlueColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  ...widget.subject.map(buildSingleCheckbox).toList(),
+                  Text(
+                    "STATUS",
+                    style: TextStyle(
+                      fontFamily: 'SegoeUI',
+                      color: royalBlueColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  ...widget.status.map(buildSingleCheckbox).toList(),
                   ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            getbackgroudcolor),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ))),
                     onPressed: () {
-                      ClassInfor().searchClass();
+                      //ClassInfor().searchClass();
+                      Navigator.pop(context, "Filter Successful");
                     },
                     child: Container(
+                      width: 115,
+                      height: 25,
                       child: Center(
                         child: Text(
                           'Apply',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'SegoeUI',
                             fontWeight: FontWeight.w900,
                           ),

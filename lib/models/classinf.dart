@@ -6,20 +6,30 @@ class ClassInf {
   String description;
   String startdate;
   String enddate;
-  List<bool> schedule;
+  List<dynamic> schedule;
   DateTime createdate;
   String hostID;
+  int numberofstudents;
+  int maxstudents;
+  String time;
+  String fee;
+  String grade;
 
   ClassInf(this.classname, this.subject, this.description, this.startdate,
       this.enddate, this.schedule, this.createdate, this.hostID);
 
   ClassInf.fromSnapshot(DocumentSnapshot snapshot)
-      : classname = snapshot.data()['classname'],
+      : classname = snapshot.data()['className'],
         subject = snapshot.data()['subject'],
         description = snapshot.data()['description'],
-        startdate = snapshot.data()['startdate'],
+        startdate = snapshot.data()['start'],
         enddate = snapshot.data()['enddate'],
-        schedule = snapshot.data()['schedule'],
+        schedule = snapshot.data()['dayofweek'],
         createdate = snapshot.data()['createdate'],
+        numberofstudents = snapshot.data()['numberofstudents'],
+        maxstudents = snapshot.data()['maxstudents'],
+        time = snapshot.data()['time'],
+        fee = snapshot.data()['fee'],
+        grade = snapshot.data()['grade'],
         hostID = snapshot.data()['hostID'];
 }
