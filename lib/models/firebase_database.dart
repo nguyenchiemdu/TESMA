@@ -15,13 +15,16 @@ class UserInfor {
   }
 }
 class ClassInfor{
-  Future<bool> isNewClass(String classname) async{
+  Future<bool> isNewClass(String classname) async {
     bool ok = false;
-    CollectionReference classes = FirebaseFirestore.instance.collection('classes');
-    await classes.where('className',isEqualTo: classname).get().then((value){
+    CollectionReference classes = FirebaseFirestore.instance.collection(
+        'classes');
+    await classes.where('className', isEqualTo: classname).get().then((value) {
       if (value.docs.length == 0) ok = true;
     });
     return ok;
+  }
+  Future<bool> getListClass(List<String> listUid) async{
 
   }
 }
