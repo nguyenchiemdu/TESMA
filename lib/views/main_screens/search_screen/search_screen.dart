@@ -5,6 +5,7 @@ import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import 'package:tesma/models/CheckBoxState.dart';
 import 'package:tesma/models/classinf.dart';
 import 'package:tesma/views/main_screens/home_screen/class_info.dart';
@@ -16,6 +17,10 @@ import 'package:tesma/models/firebase_database.dart';
 import 'package:tesma/models/CheckBoxState.dart';
 import 'package:tesma/models/classinf.dart';
 >>>>>>> 1e5283c (Complete filter function)
+=======
+import 'package:tesma/models/CheckBoxState.dart';
+import 'package:tesma/models/classinf.dart';
+>>>>>>> d7c1f94d7dedec2ebcdac194025ca73aef7a60a6
 import 'package:tesma/views/main_screens/search_screen/classcard.dart';
 import 'package:tesma/views/main_screens/search_screen/filter.dart';
 
@@ -27,6 +32,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   Future resultsLoaded;
   TextEditingController searchController = TextEditingController();
+<<<<<<< HEAD
 <<<<<<< HEAD
 
   final List<CheckBoxState> grade = [
@@ -49,6 +55,8 @@ class _SearchState extends State<Search> {
   ];
 =======
 >>>>>>> ab7ccab (Class card UI and search by keyword)
+=======
+>>>>>>> d7c1f94d7dedec2ebcdac194025ca73aef7a60a6
 
   final List<CheckBoxState> grade = [
     CheckBoxState(title: '10', value: true),
@@ -98,8 +106,11 @@ class _SearchState extends State<Search> {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 1e5283c (Complete filter function)
+=======
+>>>>>>> d7c1f94d7dedec2ebcdac194025ca73aef7a60a6
   searchResultsListGrade() {
     var showResults = [];
     for (var Snapshot in _resultsList) {
@@ -165,10 +176,13 @@ class _SearchState extends State<Search> {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> ab7ccab (Class card UI and search by keyword)
 =======
 >>>>>>> 1e5283c (Complete filter function)
+=======
+>>>>>>> d7c1f94d7dedec2ebcdac194025ca73aef7a60a6
   searchResultsList() {
     var showResults = [];
 
@@ -188,12 +202,16 @@ class _SearchState extends State<Search> {
     });
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     searchResultsListwithFilter();
 =======
 >>>>>>> ab7ccab (Class card UI and search by keyword)
 =======
     searchResultsListwithFilter();
 >>>>>>> 1e5283c (Complete filter function)
+=======
+    searchResultsListwithFilter();
+>>>>>>> d7c1f94d7dedec2ebcdac194025ca73aef7a60a6
   }
 
   @override
@@ -257,8 +275,11 @@ class _SearchState extends State<Search> {
                       ),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 1e5283c (Complete filter function)
+=======
+>>>>>>> d7c1f94d7dedec2ebcdac194025ca73aef7a60a6
                     ),
                     Container(
                       child: ElevatedButton(
@@ -280,6 +301,7 @@ class _SearchState extends State<Search> {
                         },
                         child: Icon(Icons.filter_alt),
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
                       child: TextField(
                         controller: searchController,
@@ -298,6 +320,8 @@ class _SearchState extends State<Search> {
 >>>>>>> ab7ccab (Class card UI and search by keyword)
 =======
 >>>>>>> 1e5283c (Complete filter function)
+=======
+>>>>>>> d7c1f94d7dedec2ebcdac194025ca73aef7a60a6
                       ),
                     ),
                   ],
@@ -314,8 +338,11 @@ class _SearchState extends State<Search> {
                   ),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 1e5283c (Complete filter function)
+=======
+>>>>>>> d7c1f94d7dedec2ebcdac194025ca73aef7a60a6
                   color: lightPurpleColor,
                 ),
                 child: Column(
@@ -344,6 +371,7 @@ class _SearchState extends State<Search> {
                               prefixIcon: Icon(Icons.search)),
                         ),
 <<<<<<< HEAD
+<<<<<<< HEAD
                       ),
 =======
                   Expanded(
@@ -359,6 +387,9 @@ class _SearchState extends State<Search> {
 =======
                       ),
 >>>>>>> 1e5283c (Complete filter function)
+=======
+                      ),
+>>>>>>> d7c1f94d7dedec2ebcdac194025ca73aef7a60a6
                     ),
                     Expanded(
                       child: ListView.builder(
@@ -368,6 +399,7 @@ class _SearchState extends State<Search> {
                         ),
                         itemCount: _resultsList.length,
                         itemBuilder: (BuildContext context, int index) =>
+<<<<<<< HEAD
 <<<<<<< HEAD
                             GestureDetector(
                           child: classCard(context, _resultsList[index]),
@@ -382,6 +414,9 @@ class _SearchState extends State<Search> {
 =======
                             classCard(context, _resultsList[index]),
 >>>>>>> 1e5283c (Complete filter function)
+=======
+                            classCard(context, _resultsList[index]),
+>>>>>>> d7c1f94d7dedec2ebcdac194025ca73aef7a60a6
                       ),
                     )
                   ],
