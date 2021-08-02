@@ -5,6 +5,7 @@ import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/CheckBoxState.dart';
 import 'package:tesma/models/classinf.dart';
+import 'package:tesma/views/main_screens/home_screen/class_info.dart';
 import 'package:tesma/views/main_screens/search_screen/classcard.dart';
 import 'package:tesma/views/main_screens/search_screen/filter.dart';
 
@@ -271,14 +272,23 @@ class _SearchState extends State<Search> {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        padding: EdgeInsets.only(
-                          left: 5.5 * SizeConfig.widthMultiplier,
-                          right: 5.5 * SizeConfig.widthMultiplier,
-                        ),
-                        itemCount: _resultsList.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            classCard(context, _resultsList[index]),
-                      ),
+                          padding: EdgeInsets.only(
+                            left: 5.5 * SizeConfig.widthMultiplier,
+                            right: 5.5 * SizeConfig.widthMultiplier,
+                          ),
+                          itemCount: _resultsList.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              GestureDetector(
+                                child: classCard(context, _resultsList[index]),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ClassInfoScreen()),
+                                  );
+                                },
+                              )),
                     )
                   ],
                 ),
