@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ClassInf {
+  String classid;
   String classname;
   String subject;
   String description;
@@ -19,7 +20,8 @@ class ClassInf {
       this.enddate, this.schedule, this.createdate, this.hostID);
 
   ClassInf.fromSnapshot(DocumentSnapshot snapshot)
-      : classname = snapshot.data()['className'],
+      : classid = snapshot.id,
+        classname = snapshot.data()['className'],
         subject = snapshot.data()['subject'],
         description = snapshot.data()['description'],
         startdate = snapshot.data()['start'],
