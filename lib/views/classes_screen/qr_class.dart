@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tesma/constants/color.dart';
@@ -23,18 +21,17 @@ class _QrClassState extends State<QrClass> {
     return redColor;
   }
 
-  String _qrCode;
+  //String _qrCode;
 
   @override
   Widget build(BuildContext context) {
-    Future<void> qrCodeSetup(
-        String qrcode,
-        String timestart,
-        String timeend,
-    ) async{
-
-      String hostID = FirebaseAuth.instance.currentUser.uid;
-    }
+    // Future<void> qrCodeSetup(
+    //     String qrcode,
+    //     String timestart,
+    //     String timeend,
+    // ) async{
+    //   String hostID = FirebaseAuth.instance.currentUser.uid;
+    // }
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizeConfig().init(constraints, orientation);
