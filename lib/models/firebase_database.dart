@@ -26,7 +26,6 @@ class ClassInfor {
     return ok;
   }
 
-
   Future<void> searchClass() async {
     CollectionReference classes =
         FirebaseFirestore.instance.collection('classes');
