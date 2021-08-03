@@ -121,7 +121,7 @@ packages:
     source: hosted
     version: "1.1.0"
   firebase_analytics_web:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: firebase_analytics_web
       url: "https://pub.dartlang.org"
