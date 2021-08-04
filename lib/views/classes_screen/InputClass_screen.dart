@@ -216,6 +216,9 @@ class _InputClassScreen extends State<InputClassScreen> {
       DateTime createdate = DateTime.now();
       List<bool> schedule = dayofweek.map((element) => element.value).toList();
       String hostID = FirebaseAuth.instance.currentUser.uid;
+      final currentUser =
+          FirebaseFirestore.instance.collection('users').doc(hostID);
+      var datauser = await currentUser.get();
       classes.add({
         'className': classname,
         'subject': subject,
@@ -229,9 +232,8 @@ class _InputClassScreen extends State<InputClassScreen> {
         'hostID': hostID,
         'numberofstudents': numberofstudents,
         'maxstudents': students,
+        'teachername': datauser.data()['userName'],
       }).then((value) {
-        final currentUser =
-            FirebaseFirestore.instance.collection('users').doc(hostID);
         currentUser.get().then((userSnapShot) {
           List<dynamic> listClass = [];
           if (userSnapShot.data().containsKey('listClass')) {
@@ -259,7 +261,7 @@ class _InputClassScreen extends State<InputClassScreen> {
           'maxstudents': students,
         };
         Notif().createNotif(
-            'You have successfully created a new class',
+            'You have successfully created a new class: ' + classname,
             'You have successfully created a new class',
             'class',
             hostID,
@@ -287,7 +289,6 @@ class _InputClassScreen extends State<InputClassScreen> {
       }).onError((error, stackTrace) {
         print(error.code);
       });
-
       return;
     }
 
