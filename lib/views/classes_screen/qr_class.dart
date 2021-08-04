@@ -6,7 +6,6 @@ import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/classinf.dart';
 import 'dart:math';
-import 'package:tesma/views/main_screens/home_screen/main_class_info.dart';
 
 class QrClass extends StatefulWidget {
   final DocumentSnapshot documentclass;
