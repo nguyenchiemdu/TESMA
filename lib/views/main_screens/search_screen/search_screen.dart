@@ -36,9 +36,13 @@ class _SearchState extends State<Search> {
     CheckBoxState(title: 'Not start yet', value: true),
     CheckBoxState(title: 'Already started', value: true),
   ];
+  final scrollController = ScrollController();
+  final controller = ScrollController();
 
-  ScrollController controller = ScrollController();
-
+  String errorMessage = '';
+  int documentLimit = 3;
+  bool hasNext = true;
+  bool isFetching = false;
   List _resultsList = [];
   List _allresultList = [];
 
@@ -58,10 +62,20 @@ class _SearchState extends State<Search> {
   void initState() {
     super.initState();
     searchController.addListener(_onSearchChanged);
+    scrollController.addListener(scrollListener);
   }
 
   _onSearchChanged() {
     searchResultsList();
+  }
+
+  void scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      if (hasNext) {
+        getClassInfor();
+      }
+    }
   }
 
   searchResultsListGrade() {
@@ -146,12 +160,14 @@ class _SearchState extends State<Search> {
       _resultsList = showResults;
     });
     searchResultsListwithFilter();
+    if (_resultsList.isEmpty && hasNext) getClassInfor();
   }
 
   @override
   void dispose() {
     searchController.removeListener(_onSearchChanged);
     searchController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -162,19 +178,29 @@ class _SearchState extends State<Search> {
   }
 
   getClassInfor() async {
-    var data = await FirebaseFirestore.instance.collection('classes').get();
-    // List<DocumentSnapshot> docs = data.docs;
-    // docs.forEach((element) {
-    //   print(element.data());
-    // });
-    setState(() {
-      _allresultList = data.docs;
-      // _allresultList.forEach((element) {
-      //   print(element.data());
-      // });
-    });
-    searchResultsList();
-    print('get class successful');
+    if (isFetching) return;
+    errorMessage = '';
+    isFetching = true;
+    try {
+      var classes =
+          FirebaseFirestore.instance.collection('classes').limit(documentLimit);
+      final startAfter = _allresultList.isNotEmpty ? _allresultList.last : null;
+      var data;
+      if (startAfter == null) {
+        data = await classes.get();
+      } else {
+        data = await classes.startAfterDocument(startAfter).get();
+      }
+      setState(() {
+        _allresultList.addAll(data.docs);
+      });
+      if (data.docs.length < documentLimit) hasNext = false;
+      searchResultsList();
+      print('get class successful');
+    } catch (error) {
+      errorMessage = error.toString();
+    }
+    isFetching = false;
   }
 
   @override
@@ -272,13 +298,32 @@ class _SearchState extends State<Search> {
                     ),
                     Expanded(
                       child: ListView.builder(
+                          controller: scrollController,
                           padding: EdgeInsets.only(
                             left: 5.5 * SizeConfig.widthMultiplier,
                             right: 5.5 * SizeConfig.widthMultiplier,
+                            bottom: 3.5 * SizeConfig.widthMultiplier,
                           ),
-                          itemCount: _resultsList.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              GestureDetector(
+                          itemCount: _resultsList.length + 1,
+                          itemBuilder: (BuildContext context, int index) {
+                            if (index >= _resultsList.length) {
+                              if (hasNext && _resultsList.length > 0) {
+                                return Center(
+                                  child: Container(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              } else {
+                                return Center(
+                                    child: Text(
+                                  'No more Result',
+                                  style: TextStyle(color: Colors.white),
+                                ));
+                              }
+                            } else {
+                              return GestureDetector(
                                 child: classCard(context, _resultsList[index]),
                                 onTap: () {
                                   Navigator.push(
@@ -288,7 +333,9 @@ class _SearchState extends State<Search> {
                                             ClassInfoScreen()),
                                   );
                                 },
-                              )),
+                              );
+                            }
+                          }),
                     )
                   ],
                 ),
