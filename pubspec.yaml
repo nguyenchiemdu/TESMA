@@ -67,6 +67,9 @@ flutter:
             style: italic
           - asset: assets/fonts/SegoeUIBold.ttf          
             weight: 700  
+      - family: SegoeUIB
+        fonts:
+          - asset: assets/fonts/SEGOEUIB.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

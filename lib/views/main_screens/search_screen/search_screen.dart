@@ -46,18 +46,6 @@ class _SearchState extends State<Search> {
   List _resultsList = [];
   List _allresultList = [];
 
-  Color getbackgroudcolor(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.pressed,
-      MaterialState.hovered,
-      MaterialState.focused,
-    };
-    if (states.any(interactiveStates.contains)) {
-      return mediumPink;
-    }
-    return mediumPink;
-  }
-
   @override
   void initState() {
     super.initState();
@@ -300,8 +288,6 @@ class _SearchState extends State<Search> {
                       child: ListView.builder(
                           controller: scrollController,
                           padding: EdgeInsets.only(
-                            left: 5.5 * SizeConfig.widthMultiplier,
-                            right: 5.5 * SizeConfig.widthMultiplier,
                             bottom: 3.5 * SizeConfig.widthMultiplier,
                           ),
                           itemCount: _resultsList.length + 1,
