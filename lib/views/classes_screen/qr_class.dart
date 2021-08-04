@@ -58,7 +58,6 @@ class _QrClassState extends State<QrClass> {
           body: SingleChildScrollView(
               child: Container(
                 //height: 120 * SizeConfig.heightMultiplier,
-                width: 100 * SizeConfig.widthMultiplier,
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 87),
                 color: light_periwinkle,
                 child: Column(
