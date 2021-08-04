@@ -117,13 +117,14 @@ class _QrScanState extends State<QrScan> {
                         padding: EdgeInsets.only(left: 10, right: 10),
                         child: Container(
                           margin: EdgeInsets.all(8),
+                          width: 200,
                           child: Text(
                             'Place your teacher code inside the frame to scan ',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               color: royalBlueColor,
                               fontSize: 16,
                               fontFamily: 'SegoeUI',
-                              fontWeight: FontWeight.w900,
                             ),
                           ),
                         ),
