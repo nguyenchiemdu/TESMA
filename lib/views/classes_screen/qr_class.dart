@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
+import 'package:tesma/models/classinf.dart';
+import 'dart:math';
 
 class QrClass extends StatefulWidget {
   @override
@@ -21,17 +25,22 @@ class _QrClassState extends State<QrClass> {
     return redColor;
   }
 
-  //String _qrCode;
-
   @override
   Widget build(BuildContext context) {
-    // Future<void> qrCodeSetup(
-    //     String qrcode,
-    //     String timestart,
-    //     String timeend,
-    // ) async{
-    //   String hostID = FirebaseAuth.instance.currentUser.uid;
-    // }
+    Random random = new Random();
+    DocumentSnapshot document;
+    final classinf = ClassInf.fromSnapshot(document);
+    String _qrCode;
+    String createQrCode(){
+      DateTime startTime = DateTime.now();
+      DateTime endTime = DateTime(startTime.hour + 3);
+      DateTime time;
+      if(_qrCode == null || time == endTime){
+        return 'NO QR CODE';
+      } else {
+        return classinf.classid + (random.nextInt(900000) + 100000).toString();
+      }
+    }
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizeConfig().init(constraints, orientation);
@@ -50,9 +59,21 @@ class _QrClassState extends State<QrClass> {
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                   child: QrImage(
-                    data: "Xem cái gì mà xem",
+                    data: createQrCode(),
                     version: QrVersions.auto,
                     size: 250.0,
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                    child: TextButton(
+                      onPressed: createQrCode,
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all<Color>(royalBlueColor),
+                      ),
+                    ),
                   ),
                 ),
                 Expanded(
