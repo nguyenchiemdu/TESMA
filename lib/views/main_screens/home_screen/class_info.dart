@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/size_config.dart';
-import 'package:tesma/views/main_screens/home_screen/home_screen.dart';
+// import 'package:tesma/views/main_screens/home_screen/home_screen.dart';
+import 'package:tesma/models/classinf.dart';
 
 class ClassInfoScreen extends StatefulWidget {
+  final ClassInf classinf;
+  const ClassInfoScreen({Key key, @required this.classinf}) : super(key: key);
   @override
   _ClassInfoScreenState createState() => _ClassInfoScreenState();
 }
@@ -169,7 +172,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: 'Le Dinh Nhat',
+                                    text: widget.classinf.classname,
                                     style: TextStyle(
                                       color: Color(0xff181a54),
                                       fontSize: 16,

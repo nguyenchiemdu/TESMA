@@ -9,8 +9,7 @@ import 'package:tesma/models/classinf.dart';
 
 class TabControllerScreen extends StatefulWidget {
   final ClassInf classinf;
-  const TabControllerScreen({Key key, @required this.classinf})
-      : super(key: key);
+  const TabControllerScreen({Key key, this.classinf}) : super(key: key);
   @override
   _TabControllerScreenState createState() => _TabControllerScreenState();
 }
@@ -78,7 +77,7 @@ class _TabControllerScreenState extends State<TabControllerScreen>
             child: Container(
               child: _getTabBarView(
                 <Widget>[
-                  ClassInfoScreen(),
+                  ClassInfoScreen(classinf: widget.classinf),
                   QrClass(),
                   AttendanceScreen(classinf: widget.classinf),
                   UploadFileScreen(classinf: widget.classinf),

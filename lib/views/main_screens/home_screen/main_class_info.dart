@@ -7,7 +7,7 @@ import 'package:tesma/constants/size_config.dart';
 
 class MyClassPage extends StatefulWidget {
   final DocumentSnapshot resultList;
-  const MyClassPage({Key key, @required this.resultList}) : super(key: key);
+  const MyClassPage({Key key, this.resultList}) : super(key: key);
   @override
   _MyClassPageState createState() => _MyClassPageState();
 }
