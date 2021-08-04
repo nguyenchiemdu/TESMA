@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/size_config.dart';
-// import 'package:tesma/views/main_screens/home_screen/home_screen.dart';
 import 'package:tesma/models/classinf.dart';
 
 class ClassInfoScreen extends StatefulWidget {
@@ -20,92 +19,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
           body: SingleChildScrollView(
               child: Container(
                   height: 120 * SizeConfig.heightMultiplier,
-                  // width: 100 * SizeConfig.widthMultiplier,
                   child: Column(children: [
-                    // Container(
-                    //   height: 38.9,
-                    // ),
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.circular(15),
-                    //     image: new DecorationImage(
-                    //       image: AssetImage(
-                    //         'images/montoan.png',
-                    //       ),
-                    //       fit: BoxFit.fitWidth,
-                    //     ),
-                    //   ),
-                    //   height: 21.2 * SizeConfig.heightMultiplier,
-                    //   //width: 77.2 * SizeConfig.widthMultiplier,
-                    // ),
-                    // Container(
-                    //   height: 10.7 * SizeConfig.heightMultiplier,
-                    //   child: Center(
-                    //     child: Text(
-                    //       'Class 10 Math',
-                    //       style: TextStyle(
-                    //         color: Color(0xff181a54),
-                    //         fontSize: 32,
-                    //         fontFamily: 'SegoeUI',
-                    //         fontWeight: FontWeight.w900,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // Container(
-                    //   child: Row(
-                    //     children: [
-                    //       Container(
-                    //         child: Container(
-                    //           child: Icon(
-                    //             Icons.add,
-                    //             color: Colors.white,
-                    //             size: 4 * SizeConfig.heightMultiplier,
-                    //           ),
-                    //           height: 3.68 * SizeConfig.heightMultiplier,
-                    //           margin: EdgeInsets.only(
-                    //             left: 8 * SizeConfig.widthMultiplier,
-                    //             right: 9.1 * SizeConfig.widthMultiplier,
-                    //           ),
-                    //         ),
-                    //         width: 25 * SizeConfig.widthMultiplier,
-                    //         height: 7 * SizeConfig.heightMultiplier,
-                    //         decoration: BoxDecoration(
-                    //           color: Color(0xfffff35f),
-                    //         ),
-                    //       ),
-                    //       Expanded(
-                    //         child: Icon(
-                    //           Icons.add,
-                    //           color: Colors.redAccent,
-                    //           size: 4 * SizeConfig.heightMultiplier,
-                    //         ),
-                    //       ),
-                    //       Expanded(
-                    //         child: Icon(
-                    //           Icons.add,
-                    //           color: Colors.redAccent,
-                    //           size: 4 * SizeConfig.heightMultiplier,
-                    //         ),
-                    //       ),
-                    //       Expanded(
-                    //         child: Icon(
-                    //           Icons.add,
-                    //           color: Colors.redAccent,
-                    //           size: 4 * SizeConfig.heightMultiplier,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    //   height: 7 * SizeConfig.heightMultiplier,
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.white,
-                    //     border: Border.all(
-                    //       color: Color(0xfffff35f),
-                    //       width: 1,
-                    //     ),
-                    //   ),
-                    // ),
                     Container(
                       height: 7.5 * SizeConfig.heightMultiplier,
                       width: 55.6 * SizeConfig.widthMultiplier,
@@ -172,7 +86,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: widget.classinf.classname,
+                                    text: 'Le Dinh Nhat',
                                     style: TextStyle(
                                       color: Color(0xff181a54),
                                       fontSize: 16,
