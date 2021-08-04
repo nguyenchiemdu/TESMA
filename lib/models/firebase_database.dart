@@ -28,8 +28,8 @@ class ClassInfor {
 }
 
 class Notif {
-  Future<void> createNotif(
-      String title, String content, String navigation, String uid) async {
+  Future<void> createNotif(String title, String content, String navigation,
+      String uid, DateTime datecreate) async {
     CollectionReference notifications =
         FirebaseFirestore.instance.collection('notifications');
     await notifications.add({
@@ -37,6 +37,7 @@ class Notif {
       'content': content,
       'uid': uid,
       'navigation': navigation,
+      'datecreate': datecreate,
     });
     return;
   }
