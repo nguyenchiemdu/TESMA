@@ -129,32 +129,6 @@ class _QrScanState extends State<QrScan> {
                           ),
                         ),
                       ),
-                  Container(
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.pop(context),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.deepOrange,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 120),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(20)),
-                      ),
-                      child: Container(
-                        child: Center(
-                          child: Text(
-                            'Back',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'SegoeUI',
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                     ],
                   ),
               ),

@@ -41,6 +41,7 @@ class _QrClassState extends State<QrClass> {
     //     return classInf.classid + (random.nextInt(900000) + 100000).toString();
     //   }
     // }
+
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizeConfig().init(constraints, orientation);
@@ -64,6 +65,7 @@ class _QrClassState extends State<QrClass> {
                         data: 'createQrCode',
                         version: QrVersions.auto,
                         size: 250.0,
+
                       ),
                     ),
                     // Expanded(
@@ -117,19 +119,7 @@ class _QrClassState extends State<QrClass> {
                                       RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15.0),
                                   ))),
-                              child: Container(
-                                  width: 49.74 * SizeConfig.widthMultiplier,
-                                  height: 5.66 * SizeConfig.heightMultiplier,
-                                  child: Center(
-                                      child: Text(
-                                    "Back",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontFamily: 'SegoeUI',
-                                        color: whiteColor,
-                                        fontSize: 2.10 * SizeConfig.textMultiplier,
-                                        fontWeight: FontWeight.w900),
-                                  )))),
+                              ),
                         ],
                       ),
                     ),
