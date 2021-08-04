@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:tesma/models/firebase_database.dart';
 import 'package:tesma/views/main_screens/notification_screen/notification_screen.dart';
 import 'package:tesma/views/main_screens/user_profile_screen/user_profile_screen.dart';
 import 'package:tesma/views/main_screens/qr_scan_screen/qr_scan_screen.dart';
@@ -12,14 +12,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  initState() async {
+    super.initState();
+    userdata = await UserInfor().userData();
+    _children = [
+      HomeScreen(
+        userdata: userdata,
+      ),
+      Search(),
+      QrScan(),
+      NotificationScreens(),
+      UserProfile(),
+    ];
+  }
+
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    HomeScreen(),
-    Search(),
-    QrScan(),
-    NotificationScreens(),
-    UserProfile(),
-  ];
+  var userdata;
+  List<Widget> _children;
 
   @override
   Widget build(BuildContext context) {

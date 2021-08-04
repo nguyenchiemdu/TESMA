@@ -13,6 +13,14 @@ class UserInfor {
     print(ok);
     return ok;
   }
+
+  Future<DocumentSnapshot> userData() async {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String uid = auth.currentUser.uid.toString();
+    DocumentSnapshot data = await users.doc(uid).get();
+    return data;
+  }
 }
 
 class ClassInfor {

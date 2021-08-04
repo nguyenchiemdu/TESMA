@@ -1,16 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tesma/models/userinf.dart';
 import 'package:tesma/views/classes_screen/InputClass_screen.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/views/main_screens/home_screen/main_class_info.dart';
 import '../home_screen/single_class.dart';
 
 class HomeScreen extends StatefulWidget {
+  final DocumentSnapshot userdata;
+  const HomeScreen({Key key, @required this.userdata}) : super(key: key);
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    userinf = UserInf.fromSnapshot(widget.userdata);
+  }
+
+  var userinf;
   Future resultsLoaded;
   List _allresultList = [];
   List listClass = [];
