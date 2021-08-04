@@ -84,7 +84,7 @@ Widget classCard(BuildContext context, DocumentSnapshot document) {
                       ),
                     ),
                     Text(
-                      classinf.hostID,
+                      classinf.teachername,
                       style: TextStyle(
                         color: mediumPink,
                         fontSize: 12,

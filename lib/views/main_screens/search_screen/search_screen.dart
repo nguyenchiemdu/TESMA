@@ -329,7 +329,8 @@ class _SearchState extends State<Search> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MyClassPage()),
+                                        builder: (context) => MyClassPage(
+                                            resultList: _allresultList[index])),
                                   );
                                 },
                               );

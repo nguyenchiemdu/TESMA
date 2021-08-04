@@ -15,6 +15,7 @@ class ClassInf {
   String time;
   String fee;
   String grade;
+  String teachername;
 
   ClassInf(this.classname, this.subject, this.description, this.startdate,
       this.enddate, this.schedule, this.createdate, this.hostID);
@@ -33,5 +34,6 @@ class ClassInf {
         time = snapshot.data()['time'],
         fee = snapshot.data()['fee'],
         grade = snapshot.data()['grade'],
+        teachername = snapshot.data()['teachername'],
         hostID = snapshot.data()['hostID'];
 }
