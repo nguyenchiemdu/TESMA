@@ -258,7 +258,12 @@ class _InputClassScreen extends State<InputClassScreen> {
           'numberofstudents': numberofstudents,
           'maxstudents': students,
         };
-        widget.rendering(newClass);
+        Notif().createNotif(
+            'You have successfully created a new class',
+            'You have successfully created a new class',
+            'class',
+            hostID,
+            createdate);
         showDialog(
             context: context,
             builder: (context) {
@@ -278,16 +283,16 @@ class _InputClassScreen extends State<InputClassScreen> {
                 ],
               );
             });
+        widget.rendering(newClass);
       }).onError((error, stackTrace) {
         print(error.code);
       });
-      Notif().createNotif('You have successfully created a new class',
-          'You have successfully created a new class', 'class', hostID);
+
       return;
     }
 
     return new Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: new CustomScrollView(
         slivers: <Widget>[
