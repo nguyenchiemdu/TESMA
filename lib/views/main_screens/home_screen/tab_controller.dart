@@ -3,8 +3,14 @@ import 'package:tesma/constants/size_config.dart';
 
 import 'package:tesma/views/classes_screen/qr_class.dart';
 import 'package:tesma/views/main_screens/home_screen/class_info.dart';
+import 'package:tesma/views/classes_screen/attendance_screen.dart';
+import 'package:tesma/views/classes_screen/uploadFile_screen.dart';
+import 'package:tesma/models/classinf.dart';
 
 class TabControllerScreen extends StatefulWidget {
+  final ClassInf classinf;
+  const TabControllerScreen({Key key, @required this.classinf})
+      : super(key: key);
   @override
   _TabControllerScreenState createState() => _TabControllerScreenState();
 }
@@ -68,8 +74,8 @@ class _TabControllerScreenState extends State<TabControllerScreen>
                 <Widget>[
                   ClassInfoScreen(),
                   QrClass(),
-                  Icon(Icons.ring_volume),
-                  Icon(Icons.car_rental),
+                  AttendanceScreen(classinf: widget.classinf),
+                  UploadFileScreen(classinf: widget.classinf),
                 ],
               ),
             ),
