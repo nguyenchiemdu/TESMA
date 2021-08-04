@@ -69,7 +69,8 @@ class _NotificationScreensState extends State<NotificationScreens> {
       var notif = FirebaseFirestore.instance
           .collection('notifications')
           .limit(documentLimit)
-          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser.uid);
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+          .orderBy("datecreate", descending: true);
       final startAfter = _allresultList.isNotEmpty ? _allresultList.last : null;
       var data;
       if (startAfter == null) {

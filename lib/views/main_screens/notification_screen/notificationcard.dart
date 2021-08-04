@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/color.dart';
-import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/notification.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 Widget notifcard(BuildContext context, DocumentSnapshot document) {
   final notif = Notif.fromSnapshot(document);
@@ -11,7 +11,7 @@ Widget notifcard(BuildContext context, DocumentSnapshot document) {
     padding: EdgeInsets.all(20),
     margin: EdgeInsets.fromLTRB(0, 0, 0, 25),
     decoration: BoxDecoration(
-        color: Colors.white,
+        color: notif.status == "unread" ? Colors.white : greyColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
@@ -39,7 +39,7 @@ Widget notifcard(BuildContext context, DocumentSnapshot document) {
             Container(
               width: 220,
               child: Text(
-                "Please update your information!",
+                notif.content,
                 style: TextStyle(
                   fontFamily: 'SegoeUI',
                   color: blackColor,
@@ -65,7 +65,7 @@ Widget notifcard(BuildContext context, DocumentSnapshot document) {
                     width: 5.0,
                   ),
                   Text(
-                    "15 minutes ago",
+                    timeago.format(notif.datecreate),
                     style: TextStyle(
                       fontFamily: 'SegoeUI',
                       color: blackColor,

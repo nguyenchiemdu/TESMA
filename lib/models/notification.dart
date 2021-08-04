@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Notif {
   String content;
-  Timestamp datecreate;
+  DateTime datecreate;
   String navigation;
   String status;
   String title;
@@ -14,7 +14,7 @@ class Notif {
   Notif.fromSnapshot(DocumentSnapshot snapshot)
       : notifid = snapshot.id,
         content = snapshot.data()['content'],
-        datecreate = snapshot.data()['datecreate'],
+        datecreate = snapshot.data()['datecreate'].toDate(),
         navigation = snapshot.data()['navigation'],
         status = snapshot.data()['status'],
         title = snapshot.data()['title'],
