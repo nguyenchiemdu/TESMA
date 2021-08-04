@@ -536,11 +536,9 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                           Center(
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => HomeScreen(),
-                                    ));
+                                Navigator.pop(
+                                  context,
+                                );
                               },
                             ),
                           ),
