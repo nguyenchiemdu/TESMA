@@ -38,6 +38,7 @@ class Notif {
       'uid': uid,
       'navigation': navigation,
       'datecreate': datecreate,
+      'status': 'unread',
     });
     return;
   }
