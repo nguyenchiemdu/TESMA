@@ -5,7 +5,7 @@ import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/CheckBoxState.dart';
 import 'package:tesma/models/classinf.dart';
-import 'package:tesma/views/main_screens/home_screen/class_info.dart';
+import 'package:tesma/views/main_screens/home_screen/main_class_info.dart';
 import 'package:tesma/views/main_screens/search_screen/classcard.dart';
 import 'package:tesma/views/main_screens/search_screen/filter.dart';
 
@@ -329,8 +329,7 @@ class _SearchState extends State<Search> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            ClassInfoScreen()),
+                                        builder: (context) => MyClassPage()),
                                   );
                                 },
                               );
