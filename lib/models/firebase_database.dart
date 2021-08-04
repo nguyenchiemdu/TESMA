@@ -25,15 +25,19 @@ class ClassInfor {
     });
     return ok;
   }
+}
 
-  Future<void> searchClass() async {
-    CollectionReference classes =
-        FirebaseFirestore.instance.collection('classes');
-    await classes.get().then((querySnapshot) {
-      List<DocumentSnapshot> docs = querySnapshot.docs;
-      docs.forEach((element) {
-        print(element.data());
-      });
+class Notif {
+  Future<void> createNotif(
+      String title, String content, String navigation, String uid) async {
+    CollectionReference notifications =
+        FirebaseFirestore.instance.collection('notifications');
+    await notifications.add({
+      'title': title,
+      'content': content,
+      'uid': uid,
+      'navigation': navigation,
     });
+    return;
   }
 }
