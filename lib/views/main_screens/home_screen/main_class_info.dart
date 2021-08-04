@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tesma/views/main_screens/home_screen/tab_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tesma/models/classinf.dart';
 
 import 'package:tesma/constants/size_config.dart';
 
 class MyClassPage extends StatefulWidget {
+  final DocumentSnapshot resultList;
+  const MyClassPage({Key key, @required this.resultList}) : super(key: key);
   @override
   _MyClassPageState createState() => _MyClassPageState();
 }
@@ -11,6 +15,7 @@ class MyClassPage extends StatefulWidget {
 class _MyClassPageState extends State<MyClassPage> {
   @override
   Widget build(BuildContext context) {
+    final classinf = ClassInf.fromSnapshot(widget.resultList);
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizeConfig().init(constraints, orientation);
@@ -38,7 +43,7 @@ class _MyClassPageState extends State<MyClassPage> {
                 height: 10.7 * SizeConfig.heightMultiplier,
                 child: Center(
                   child: Text(
-                    'Class 10 Math',
+                    'Class ' + classinf.grade + ' ' + classinf.subject,
                     style: TextStyle(
                       color: Color(0xff181a54),
                       fontSize: 32,
@@ -50,7 +55,7 @@ class _MyClassPageState extends State<MyClassPage> {
               ),
               SingleChildScrollView(
                 child: Container(
-                  child: TabControllerScreen(),
+                  child: TabControllerScreen(classinf: classinf),
                   height: 100 * SizeConfig.heightMultiplier,
                 ),
               ),
