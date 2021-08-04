@@ -285,7 +285,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             width: 5.6 * SizeConfig.widthMultiplier,
                             //margin: EdgeInsets.only(left: 8.3 * SizeConfig.widthMultiplier),
                             child: Icon(
-                              Icons.add,
+                              Icons.location_on_outlined,
                               color: Colors.red,
                               size: 4 * SizeConfig.heightMultiplier,
                             ),
@@ -345,7 +345,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                           ),
                           Container(
                             child: Icon(
-                              Icons.add,
+                              Icons.person,
                               color: Colors.red,
                               size: 4 * SizeConfig.heightMultiplier,
                             ),
@@ -363,7 +363,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                           ),
                           Container(
                             child: Icon(
-                              Icons.add,
+                              Icons.star,
                               color: Colors.red,
                               size: 4 * SizeConfig.heightMultiplier,
                             ),
@@ -382,7 +382,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                           ),
                           Container(
                             child: Icon(
-                              Icons.add,
+                              Icons.star,
                               color: Colors.red,
                               size: 4 * SizeConfig.heightMultiplier,
                             ),
@@ -401,7 +401,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                           ),
                           Container(
                             child: Icon(
-                              Icons.add,
+                              Icons.star,
                               color: Colors.red,
                               size: 4 * SizeConfig.heightMultiplier,
                             ),
@@ -420,7 +420,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                           ),
                           Container(
                             child: Icon(
-                              Icons.add,
+                              Icons.star,
                               color: Colors.red,
                               size: 4 * SizeConfig.heightMultiplier,
                             ),
@@ -439,7 +439,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                           ),
                           Container(
                             child: Icon(
-                              Icons.add,
+                              Icons.star,
                               color: Colors.red,
                               size: 4 * SizeConfig.heightMultiplier,
                             ),
@@ -490,6 +490,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                           Container(
                             height: (35 / 7.6) * SizeConfig.heightMultiplier,
                             width: (35 / 3.6) * SizeConfig.widthMultiplier,
+                            child: Icon(Icons.person),
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: Color(0xffe5e8fb),
