@@ -262,7 +262,7 @@ class _InputClassScreen extends State<InputClassScreen> {
         };
         Notif().createNotif(
             'You have successfully created a new class: ' + classname,
-            'You have successfully created a new class',
+            'You have successfully created a new class  ' + classname,
             'class',
             hostID,
             createdate);
