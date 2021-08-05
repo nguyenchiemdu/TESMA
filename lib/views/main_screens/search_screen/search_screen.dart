@@ -310,7 +310,7 @@ class _SearchState extends State<Search> {
                               }
                             } else {
                               return GestureDetector(
-                                child: classCard(context, _resultsList[index]),
+                                child: ClassCard(document: _resultsList[index]),
                                 onTap: () {
                                   Navigator.push(
                                     context,

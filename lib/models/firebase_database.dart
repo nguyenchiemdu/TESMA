@@ -33,6 +33,29 @@ class ClassInfor {
     });
     return ok;
   }
+
+  Future<void> enroll(String idClass, String uid) async {
+    final classes =
+        FirebaseFirestore.instance.collection('classes').doc(idClass);
+    await classes.get().then((snapshot) {
+      List<dynamic> liststudent = [];
+      int numberofstudents = 1;
+      if (snapshot.data().containsKey('liststudent')) {
+        liststudent = snapshot.data()['liststudent'];
+        numberofstudents = snapshot.data()['numberofstudents'];
+        if (!liststudent.contains(uid)) {
+          liststudent.add(uid);
+          numberofstudents++;
+        }
+        classes.update(
+            {'liststudent': liststudent, 'numberofstudents': numberofstudents});
+      } else {
+        liststudent.add(uid);
+        classes.update(
+            {'liststudent': liststudent, 'numberofstudents': numberofstudents});
+      }
+    });
+  }
 }
 
 class Notif {
