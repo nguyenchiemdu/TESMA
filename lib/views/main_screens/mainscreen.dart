@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tesma/models/firebase_database.dart';
 import 'package:tesma/views/main_screens/notification_screen/notification_screen.dart';
 import 'package:tesma/views/main_screens/user_profile_screen/user_profile_screen.dart';
 import 'package:tesma/views/main_screens/qr_scan_screen/qr_scan_screen.dart';
@@ -7,18 +7,20 @@ import 'package:tesma/views/main_screens/search_screen/search_screen.dart';
 import './home_screen/home_screen.dart';
 
 class MyHomePage extends StatefulWidget {
+  final DocumentSnapshot userdata;
+  const MyHomePage({Key key, @required this.userdata}) : super(key: key);
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
-  initState() async {
+  initState() {
     super.initState();
-    userdata = await UserInfor().userData();
+    //print(data.data());
     _children = [
       HomeScreen(
-        userdata: userdata,
+        userdata: widget.userdata,
       ),
       Search(),
       QrScan(),
@@ -28,7 +30,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   int _currentIndex = 0;
-  var userdata;
   List<Widget> _children;
 
   @override

@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     userinf = UserInf.fromSnapshot(widget.userdata);
   }
 
-  var userinf;
+  UserInf userinf;
   Future resultsLoaded;
   List _allresultList = [];
   List listClass = [];
@@ -31,6 +31,50 @@ class _HomeScreenState extends State<HomeScreen> {
       listClass = temp;
     });
     print(listClass);
+  }
+
+  Positioned CreateClass() {
+    return Positioned(
+      height: 4.2 * SizeConfig.heightMultiplier,
+      top: 13.9 * SizeConfig.heightMultiplier,
+      right: 11.4 * SizeConfig.widthMultiplier,
+      child: Container(
+        alignment: Alignment.center,
+        width: 36 * SizeConfig.widthMultiplier,
+        decoration: BoxDecoration(
+          color: Color(0xffef4874),
+          borderRadius: BorderRadius.circular(35),
+        ),
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => InputClassScreen(reRender)),
+            );
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'New Class',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontFamily: 'SegoeUI',
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 4 * SizeConfig.heightMultiplier,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -141,48 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    Positioned(
-                      height: 4.2 * SizeConfig.heightMultiplier,
-                      top: 13.9 * SizeConfig.heightMultiplier,
-                      right: 11.4 * SizeConfig.widthMultiplier,
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 36 * SizeConfig.widthMultiplier,
-                        decoration: BoxDecoration(
-                          color: Color(0xffef4874),
-                          borderRadius: BorderRadius.circular(35),
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      InputClassScreen(reRender)),
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'New Class',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'SegoeUI',
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                              Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 4 * SizeConfig.heightMultiplier,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    if (userinf.userType == 'teacher') CreateClass(),
                   ],
                 ),
               ),

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tesma/views/login_screens/loading.dart';
 import 'package:tesma/views/login_screens/login_screen.dart';
+import 'package:tesma/views/main_screens/userinformation.dart';
 import 'package:tesma/views/regis_screens/select_user_type.dart';
-import '../../views/main_screens/mainscreen.dart';
 import '../../models/firebase_authen.dart';
 import '../../models/firebase_database.dart';
 
@@ -29,12 +29,11 @@ class AuthenticationWrapper extends StatelessWidget {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               final provider = Provider.of<AuthService>(context);
-
               if (provider.isSigningIn) {
                 return Loading();
               } else if (snapshot.hasData) {
                 newUser(context);
-                return MyHomePage();
+                return UserInformation();
               } else {
                 return LoginForm();
               }
