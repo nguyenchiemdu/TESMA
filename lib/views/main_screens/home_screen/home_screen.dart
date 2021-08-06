@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future resultsLoaded;
   List _allresultList = [];
   List listClass = [];
+  List<dynamic> listClasses = [];
   void reRender(Map<String, dynamic> classItem) {
     List<Widget> temp = listClass;
 
@@ -33,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print(listClass);
   }
 
-  Positioned CreateClass() {
+  Positioned createClass() {
     return Positioned(
       height: 4.2 * SizeConfig.heightMultiplier,
       top: 13.9 * SizeConfig.heightMultiplier,
@@ -84,18 +85,25 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getClassInfor() async {
-    var data = await FirebaseFirestore.instance.collection('classes').get();
-    // List<DocumentSnapshot> docs = data.docs;
-    // docs.forEach((element) {
-    //   print(element.data());
-    // });
-    setState(() {
-      _allresultList = data.docs;
-      // _allresultList.forEach((element) {
-      //   print(element.data());
-      // });
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userinf.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      setState(() {
+        listClasses = documentSnapshot.data()['listClass'];
+      });
     });
-    print('get class successful');
+    if (listClasses != null) {
+      var data = await FirebaseFirestore.instance
+          .collection('classes')
+          .where(FieldPath.documentId, whereIn: listClasses)
+          .get();
+      setState(() {
+        _allresultList = data.docs;
+        print(listClasses);
+      });
+    }
   }
 
   Color getbackgroudcolor(Set<MaterialState> states) {
@@ -186,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    if (userinf.userType == 'teacher') CreateClass(),
+                    if (userinf.userType == 'teacher') createClass(),
                   ],
                 ),
               ),
