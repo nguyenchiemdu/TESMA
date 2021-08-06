@@ -1,19 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:tesma/models/firebase_authen.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
+//import 'package:tesma/models/firebase_authen.dart';
+//import 'package:provider/provider.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/constants/color.dart';
-import 'package:tesma/views/main_screens/user_profile_screen/edit_profile.dart';
 
-class UserProfile extends StatelessWidget {
-  final String currentUid = FirebaseAuth.instance.currentUser.uid;
+class EditProfile extends StatelessWidget {
+  final TextEditingController highSchoolController = TextEditingController(); 
+  final TextEditingController faceBookController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    return Scaffold(           
+      body: 
+      Stack(
         children: [
         Positioned(
             top: -5 * SizeConfig.heightMultiplier,
@@ -340,16 +340,16 @@ class UserProfile extends StatelessWidget {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       ),
               onPressed: () {
-                context.read<AuthService>().signOut();
+                Navigator.pop(context);
               },
               child: Text(
-                "Sign Out",
+                "Update",
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
                   fontFamily: 'SegoeUI',
                   letterSpacing: 2,
                 ),               
-              ),            
+              ),             
             ),
           ),
         ),
@@ -359,4 +359,3 @@ class UserProfile extends StatelessWidget {
     );
   }
 }
-
