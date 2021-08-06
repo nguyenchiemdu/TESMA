@@ -5,13 +5,16 @@ import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/classinf.dart';
 import 'package:tesma/models/firebase_database.dart';
+import 'package:tesma/models/userinf.dart';
 
 // ignore: must_be_immutable
 class ClassCard extends StatefulWidget {
-  DocumentSnapshot document;
+  DocumentSnapshot documentclass;
+  DocumentSnapshot documentuser;
   ClassCard({
     Key key,
-    @required this.document,
+    @required this.documentclass,
+    @required this.documentuser,
   }) : super(key: key);
   @override
   _ClassCardState createState() => new _ClassCardState();
@@ -48,17 +51,20 @@ class _ClassCardState extends State<ClassCard> {
   @override
   void initState() {
     super.initState();
-    document = widget.document;
+    document = widget.documentclass;
     classinf = ClassInf.fromSnapshot(document);
-    Setup();
+    document = widget.documentuser;
+    userinf = UserInf.fromSnapshot(document);
+    setup();
   }
 
   String uid = FirebaseAuth.instance.currentUser.uid;
   var classinf;
+  UserInf userinf;
   DocumentSnapshot document;
   String startdateText;
 
-  void Setup() {
+  void setup() {
     // Setup scheduleText ---------------------------
     // for (var i = 0; i < 7; i++) {
     //   if (classinf.schedule[i] == true)
@@ -93,16 +99,20 @@ class _ClassCardState extends State<ClassCard> {
 
     void _enrollfucn() {
       print(_isButtonDisabled);
-      setState(() {
-        _isButtonDisabled = false;
-        classinf.numberofstudents++;
-        print(classinf.numberofstudents);
-        studentsText = " " +
-            classinf.numberofstudents.toString() +
-            "/" +
-            classinf.maxstudents.toString();
-      });
-      ClassInfor().enroll(classinf.classid, uid);
+      try {
+        ClassInfor().enroll(classinf.classid, uid);
+        setState(() {
+          _isButtonDisabled = false;
+          classinf.numberofstudents++;
+          print(classinf.numberofstudents);
+          studentsText = " " +
+              classinf.numberofstudents.toString() +
+              "/" +
+              classinf.maxstudents.toString();
+        });
+      } catch (error) {
+        print(error.toString());
+      }
     }
 
     return Container(
@@ -238,34 +248,35 @@ class _ClassCardState extends State<ClassCard> {
                     ],
                   ),
                 ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  padding: EdgeInsets.fromLTRB(
-                      5.5 * SizeConfig.widthMultiplier, 0, 0, 10),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          enrollbtn() && _isButtonDisabled
-                              ? backgroudcolorenable
-                              : backgroudcolordisabled),
+                if (userinf.userType == "student")
+                  Container(
+                    alignment: Alignment.topLeft,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    onPressed:
-                        enrollbtn() && _isButtonDisabled ? _enrollfucn : null,
-                    child: Text(
-                      "Enroll",
-                      style: TextStyle(
-                        color: royalBlueColor,
-                        fontSize: 12,
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w900,
+                    padding: EdgeInsets.fromLTRB(
+                        5.5 * SizeConfig.widthMultiplier, 0, 0, 10),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            enrollbtn() && _isButtonDisabled
+                                ? backgroudcolorenable
+                                : backgroudcolordisabled),
+                      ),
+                      onPressed:
+                          enrollbtn() && _isButtonDisabled ? _enrollfucn : null,
+                      child: Text(
+                        "Enroll",
+                        style: TextStyle(
+                          color: royalBlueColor,
+                          fontSize: 12,
+                          fontFamily: 'SegoeUI',
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
