@@ -14,6 +14,7 @@ class QrClass extends StatefulWidget {
 
 class _QrClassState extends State<QrClass> {
   ClassInf classinf;
+  String qrcode = "";
   @override
   void initState() {
     super.initState();
@@ -31,20 +32,25 @@ class _QrClassState extends State<QrClass> {
     return redColor;
   }
 
+  Random random = new Random();
+  void createQrCode(){
+    DateTime startTime = DateTime.now();
+    DateTime endTime = DateTime(startTime.hour + 3);
+    DateTime time;
+    if(qrcode == null || time == endTime){
+      setState(() {
+        qrcode = 'NO QR CODE';
+      });
+    } else {
+      setState(() {
+        qrcode =classinf.classid + (random.nextInt(900000) + 100000).toString();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Random random = new Random();
-    String _qrCode;
-    String createQrCode(){
-      DateTime startTime = DateTime.now();
-      DateTime endTime = DateTime(startTime.hour + 3);
-      DateTime time;
-      if(_qrCode == null || time == endTime){
-        return 'NO QR CODE';
-      } else {
-        return classinf.classid + (random.nextInt(900000) + 100000).toString();
-      }
-    }
+
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizeConfig().init(constraints, orientation);
@@ -65,7 +71,7 @@ class _QrClassState extends State<QrClass> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: QrImage(
-                        data: 'createQrCode',
+                        data: qrcode,
                         version: QrVersions.auto,
                         size: 250.0,
                       ),
@@ -78,6 +84,7 @@ class _QrClassState extends State<QrClass> {
                           style: ButtonStyle(
                             foregroundColor: MaterialStateProperty.all<Color>(royalBlueColor),
                           ),
+                          child: Text('CREATE QR CODE FOR CLASS'),
                         ),
                       ),
                     ),
