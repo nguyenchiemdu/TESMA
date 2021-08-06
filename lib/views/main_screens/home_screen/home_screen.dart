@@ -84,8 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getClassInfor() async {
-    var data =
-        await FirebaseFirestore.instance.collection('classes').limit(2).get();
+    var data = await FirebaseFirestore.instance.collection('classes').get();
     // List<DocumentSnapshot> docs = data.docs;
     // docs.forEach((element) {
     //   print(element.data());
