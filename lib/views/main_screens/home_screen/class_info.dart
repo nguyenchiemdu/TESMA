@@ -28,7 +28,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                           top: 2.9 * SizeConfig.heightMultiplier,
                           right: 28 * SizeConfig.widthMultiplier),
                       child: Text(
-                        'Already starts Jun 21, 2021',
+                        'Already starts ' + widget.classinf.startdate,
                         style: TextStyle(
                           color: Color(0xff181a54),
                           fontSize: 16,
@@ -50,7 +50,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             width: 5.6 * SizeConfig.widthMultiplier,
                             //margin: EdgeInsets.only(left: 8.3 * SizeConfig.widthMultiplier),
                             child: Icon(
-                              Icons.add,
+                              Icons.school_outlined,
                               color: Colors.red,
                               size: 4 * SizeConfig.heightMultiplier,
                             ),
@@ -86,7 +86,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: 'Le Dinh Nhat',
+                                    text: widget.classinf.teachername,
                                     style: TextStyle(
                                       color: Color(0xff181a54),
                                       fontSize: 16,
@@ -121,7 +121,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             width: 5.6 * SizeConfig.widthMultiplier,
                             //margin: EdgeInsets.only(left: 8.3 * SizeConfig.widthMultiplier),
                             child: Icon(
-                              Icons.add,
+                              Icons.date_range_outlined,
                               color: Colors.red,
                               size: 4 * SizeConfig.heightMultiplier,
                             ),
@@ -135,7 +135,9 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             height: 2.8 * SizeConfig.heightMultiplier,
                             // margin:
                             //     EdgeInsets.only(left: 17.8 * SizeConfig.widthMultiplier),
+
                             child: Text(
+                              //widget.classinf.schedule,
                               'Mon.Wed.Fri - 19:00',
                               style: TextStyle(
                                 color: Color(0xff181a54),
@@ -161,7 +163,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             width: 5.6 * SizeConfig.widthMultiplier,
                             //margin: EdgeInsets.only(left: 8.3 * SizeConfig.widthMultiplier),
                             child: Icon(
-                              Icons.add,
+                              Icons.sell_outlined,
                               color: Colors.red,
                               size: 4 * SizeConfig.heightMultiplier,
                             ),
@@ -176,7 +178,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             // margin:
                             //     EdgeInsets.only(left: 17.8 * SizeConfig.widthMultiplier),
                             child: Text(
-                              '250.000VND/month',
+                              widget.classinf.fee + 'VND/month',
                               style: TextStyle(
                                 color: Color(0xffef4874),
                                 fontSize: 16,
@@ -279,13 +281,15 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             width: 3.6 * SizeConfig.widthMultiplier,
                           ),
                           Container(
-                            child: Icon(
-                              Icons.star,
-                              color: Colors.red,
-                              size: 4 * SizeConfig.heightMultiplier,
+                            child: Center(
+                              child: Icon(
+                                Icons.star,
+                                color: Colors.red,
+                                size: 3.5 * SizeConfig.heightMultiplier,
+                              ),
                             ),
-                            height: 3.3 * SizeConfig.heightMultiplier,
-                            width: 6.9 * SizeConfig.widthMultiplier,
+                            height: 3.4 * SizeConfig.heightMultiplier,
+                            width: 7 * SizeConfig.widthMultiplier,
                             // margin: EdgeInsets.only(
                             //   left: 48,
                             //   right: 48,
@@ -298,13 +302,15 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             width: 0.83 * SizeConfig.widthMultiplier,
                           ),
                           Container(
-                            child: Icon(
-                              Icons.star,
-                              color: Colors.red,
-                              size: 4 * SizeConfig.heightMultiplier,
+                            child: Center(
+                              child: Icon(
+                                Icons.star,
+                                color: Colors.red,
+                                size: 3.5 * SizeConfig.heightMultiplier,
+                              ),
                             ),
-                            height: 3.3 * SizeConfig.heightMultiplier,
-                            width: 6.9 * SizeConfig.widthMultiplier,
+                            height: 3.4 * SizeConfig.heightMultiplier,
+                            width: 7 * SizeConfig.widthMultiplier,
                             // margin: EdgeInsets.only(
                             //   left: 48,
                             //   right: 48,
@@ -317,13 +323,15 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             width: 0.83 * SizeConfig.widthMultiplier,
                           ),
                           Container(
-                            child: Icon(
-                              Icons.star,
-                              color: Colors.red,
-                              size: 4 * SizeConfig.heightMultiplier,
+                            child: Center(
+                              child: Icon(
+                                Icons.star,
+                                color: Colors.red,
+                                size: 3.5 * SizeConfig.heightMultiplier,
+                              ),
                             ),
-                            height: 3.3 * SizeConfig.heightMultiplier,
-                            width: 6.9 * SizeConfig.widthMultiplier,
+                            height: 3.4 * SizeConfig.heightMultiplier,
+                            width: 7 * SizeConfig.widthMultiplier,
                             // margin: EdgeInsets.only(
                             //   left: 48,
                             //   right: 48,
@@ -336,13 +344,15 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             width: 0.83 * SizeConfig.widthMultiplier,
                           ),
                           Container(
-                            child: Icon(
-                              Icons.star,
-                              color: Colors.red,
-                              size: 4 * SizeConfig.heightMultiplier,
+                            child: Center(
+                              child: Icon(
+                                Icons.star,
+                                color: Colors.red,
+                                size: 3.5 * SizeConfig.heightMultiplier,
+                              ),
                             ),
-                            height: 3.3 * SizeConfig.heightMultiplier,
-                            width: 6.9 * SizeConfig.widthMultiplier,
+                            height: 3.4 * SizeConfig.heightMultiplier,
+                            width: 7 * SizeConfig.widthMultiplier,
                             // margin: EdgeInsets.only(
                             //   left: 48,
                             //   right: 48,
@@ -355,13 +365,15 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             width: 0.83 * SizeConfig.widthMultiplier,
                           ),
                           Container(
-                            child: Icon(
-                              Icons.star,
-                              color: Colors.red,
-                              size: 4 * SizeConfig.heightMultiplier,
+                            child: Center(
+                              child: Icon(
+                                Icons.star,
+                                color: Colors.red,
+                                size: 3.5 * SizeConfig.heightMultiplier,
+                              ),
                             ),
-                            height: 3.3 * SizeConfig.heightMultiplier,
-                            width: 6.9 * SizeConfig.widthMultiplier,
+                            height: 3.4 * SizeConfig.heightMultiplier,
+                            width: 7 * SizeConfig.widthMultiplier,
                             // margin: EdgeInsets.only(
                             //   left: 48,
                             //   right: 48,

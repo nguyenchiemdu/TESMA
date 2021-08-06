@@ -35,7 +35,9 @@ class _TabControllerScreenState extends State<TabControllerScreen>
       tabs: <Widget>[
         Container(
             height: 7 * SizeConfig.heightMultiplier,
-            child: Tab(icon: Icon(Icons.home, color: Colors.redAccent))),
+            child: Tab(
+                icon: Icon(Icons.sticky_note_2_outlined,
+                    color: Colors.redAccent))),
         Container(
             height: 7 * SizeConfig.heightMultiplier,
             child: Tab(
