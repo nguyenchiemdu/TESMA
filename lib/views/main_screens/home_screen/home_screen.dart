@@ -148,7 +148,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => MyClassPage(
-                                            resultList: _allresultList[index])),
+                                              resultList: _allresultList[index],
+                                              currentUser: userinf,
+                                            )),
                                   );
                                 },
                               )

@@ -2,23 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:quiver/time.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tesma/models/classinf.dart';
 
 final now = new DateTime.now();
 List<String> listCalendar = [];
 
-class AttendanceScreen extends StatefulWidget {
+class AttendanceScreenForStudent extends StatefulWidget {
   final ClassInf classinf;
-  const AttendanceScreen({Key key, @required this.classinf}) : super(key: key);
+  final String currentUserID;
+  const AttendanceScreenForStudent(
+      {Key key, @required this.classinf, this.currentUserID})
+      : super(key: key);
   @override
-  _AttendanceScreenState createState() => _AttendanceScreenState();
+  _AttendanceScreenForStudentState createState() =>
+      _AttendanceScreenForStudentState();
 }
 
-class _AttendanceScreenState extends State<AttendanceScreen> {
+class _AttendanceScreenForStudentState
+    extends State<AttendanceScreenForStudent> {
   int currentYear = now.year;
   int currentMonth = now.month;
   int firstDayOfMonth = DateTime.utc(now.year, now.month, 1).weekday;
+  String requestedUserName = 'loading...';
   List<String> listOfMonths = [
     "Jan",
     "Feb",
@@ -42,6 +48,27 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     "Sa",
     "Su",
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    getUserInfor();
+  }
+
+  getUserInfor() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.currentUserID)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          requestedUserName = documentSnapshot.data()['userName'];
+          print('get userName successfully');
+        });
+      }
+    });
+  }
 
   Container currentCalendar() {
     listCalendar.clear();
@@ -139,10 +166,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          widget.classinf.classname,
+                          requestedUserName,
                           style: TextStyle(
                             color: Color(0xff181a54),
-                            fontFamily: 'SegoeUI',
+                            fontFamily: 'SegoeUIB',
                             fontWeight: FontWeight.w600,
                           ),
                         ),
