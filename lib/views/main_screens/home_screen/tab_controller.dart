@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/size_config.dart';
+import 'package:tesma/views/classes_screen/attendance_screen_teacher.dart';
 
 import 'package:tesma/views/classes_screen/qr_class.dart';
 import 'package:tesma/views/main_screens/home_screen/class_info.dart';
@@ -81,7 +82,7 @@ class _TabControllerScreenState extends State<TabControllerScreen>
                 <Widget>[
                   ClassInfoScreen(classinf: widget.classinf),
                   QrClass(classinf: widget.classinf),
-                  AttendanceScreen(classinf: widget.classinf),
+                  AttendanceScreenTeacher(classinf: widget.classinf),
                   UploadFileScreen(classinf: widget.classinf),
                 ],
               ),

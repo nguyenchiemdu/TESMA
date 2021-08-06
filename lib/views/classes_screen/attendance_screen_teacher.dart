@@ -130,9 +130,8 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
                                     alignment: Alignment.center,
                                     child: Text(
                                       snapshot.data
-                                          .data()['liststudent'][index]
-                                          .toString()
-                                          .substring(0, 10),
+                                          .data()['liststudentname'][index]
+                                          .toString(),
                                       style: TextStyle(
                                         color: Color(0xff181a54),
                                         fontFamily: 'SegoeUI',

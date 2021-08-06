@@ -17,6 +17,7 @@ class ClassInf {
   String grade;
   String teachername;
   List<dynamic> liststudent;
+  List<dynamic> liststudentname;
 
   ClassInf(this.classname, this.subject, this.description, this.startdate,
       this.enddate, this.schedule, this.createdate, this.hostID);
@@ -38,6 +39,9 @@ class ClassInf {
         teachername = snapshot.data()['teachername'],
         liststudent = snapshot.data()['liststudent'] != null
             ? snapshot.data()['liststudent']
+            : [],
+        liststudentname = snapshot.data()['liststudentname'] != null
+            ? snapshot.data()['liststudentname']
             : [],
         hostID = snapshot.data()['hostID'];
 }
