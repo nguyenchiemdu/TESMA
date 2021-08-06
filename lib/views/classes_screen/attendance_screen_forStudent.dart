@@ -25,6 +25,7 @@ class _AttendanceScreenForStudentState
   int currentMonth = now.month;
   int firstDayOfMonth = DateTime.utc(now.year, now.month, 1).weekday;
   String requestedUserName = 'loading...';
+  List attendenceList;
   List<String> listOfMonths = [
     "Jan",
     "Feb",
@@ -68,15 +69,53 @@ class _AttendanceScreenForStudentState
         });
       }
     });
+    await FirebaseFirestore.instance
+        .collection('classes')
+        .doc(widget.classinf.classid)
+        .collection('schedule')
+        .doc(widget.currentUserID)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          attendenceList = documentSnapshot.data()['attendance'];
+        });
+      }
+    });
   }
 
   Container currentCalendar() {
     listCalendar.clear();
     listCalendar.addAll(dayOfWeek);
     listCalendar.addAll(List.generate(firstDayOfMonth - 1, (index) => ""));
+    int indexOfTheStartDay = 7 + firstDayOfMonth - 2;
+    String tmpString;
+    Map attend = Map<int, bool>();
+    if (attendenceList != null) {
+      for (int i = 0; i < attendenceList.length; i++) {
+        tmpString = attendenceList[i].toString();
+        if (currentMonth == int.parse(tmpString.substring(3, 5)) &&
+            currentYear == int.parse(tmpString.substring(6, 10))) {
+          attend[int.parse(tmpString.substring(0, 2)) + indexOfTheStartDay] =
+              true;
+        }
+      }
+    }
     listCalendar.addAll(List.generate(daysInMonth(currentYear, currentMonth),
         (index) => (index + 1).toString()));
-    int indexOfTheStartDay = 7 + firstDayOfMonth - 1;
+
+    bool checkInRangeOfLearningDays(int aDay) {
+      if (aDay <= 0) return true;
+      var startDate = new DateTime.utc(
+          int.parse(widget.classinf.startdate.substring(0, 4)),
+          int.parse(widget.classinf.startdate.substring(5, 7)),
+          int.parse(widget.classinf.startdate.substring(8, 10)));
+      var considerDate = new DateTime.utc(currentYear, currentMonth, aDay);
+      return considerDate.compareTo(startDate) >= 0 &&
+              considerDate.compareTo(now) < 0
+          ? false
+          : true;
+    }
 
     return Container(
       height: 26.5 * SizeConfig.heightMultiplier,
@@ -102,9 +141,15 @@ class _AttendanceScreenForStudentState
               ),
             ),
             decoration: BoxDecoration(
-              color: indexOfTheStartDay <= index && index % 2 == 1
-                  ? mediumPink
-                  : lightGreenColor,
+              color: attend.containsKey(index)
+                  ? lightGreenColor
+                  : indexOfTheStartDay >= index ||
+                          widget.classinf.schedule[index % 7] == false ||
+                          checkInRangeOfLearningDays(
+                                  index - indexOfTheStartDay) ==
+                              true
+                      ? whiteColor
+                      : mediumPink,
               shape: BoxShape.circle,
             ),
           ),
