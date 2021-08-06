@@ -5,11 +5,14 @@ import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/CheckBoxState.dart';
 import 'package:tesma/models/classinf.dart';
+import 'package:tesma/models/userinf.dart';
 import 'package:tesma/views/main_screens/home_screen/main_class_info.dart';
 import 'package:tesma/views/main_screens/search_screen/classcard.dart';
 import 'package:tesma/views/main_screens/search_screen/filter.dart';
 
 class Search extends StatefulWidget {
+  final DocumentSnapshot userdata;
+  const Search({Key key, @required this.userdata}) : super(key: key);
   @override
   _SearchState createState() => _SearchState();
 }
@@ -310,7 +313,10 @@ class _SearchState extends State<Search> {
                               }
                             } else {
                               return GestureDetector(
-                                child: ClassCard(document: _resultsList[index]),
+                                child: ClassCard(
+                                  documentclass: _resultsList[index],
+                                  documentuser: widget.userdata,
+                                ),
                                 onTap: () {
                                   Navigator.push(
                                     context,

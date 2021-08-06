@@ -35,26 +35,60 @@ class ClassInfor {
   }
 
   Future<void> enroll(String idClass, String uid) async {
-    final classes =
-        FirebaseFirestore.instance.collection('classes').doc(idClass);
-    await classes.get().then((snapshot) {
-      List<dynamic> liststudent = [];
-      int numberofstudents = 1;
-      if (snapshot.data().containsKey('liststudent')) {
-        liststudent = snapshot.data()['liststudent'];
-        numberofstudents = snapshot.data()['numberofstudents'];
-        if (!liststudent.contains(uid)) {
+    try {
+      final classes =
+          FirebaseFirestore.instance.collection('classes').doc(idClass);
+      final schedule = FirebaseFirestore.instance
+          .collection('classes')
+          .doc(idClass)
+          .collection('schedule')
+          .doc(uid);
+      final users = FirebaseFirestore.instance.collection('users').doc(uid);
+      DocumentSnapshot data = await users.get();
+      String username = data.data()['userName'];
+      await classes.get().then((snapshot) {
+        List<dynamic> liststudent = [];
+        List<dynamic> liststudentname = [];
+        int numberofstudents = 1;
+        if (snapshot.data().containsKey('liststudent')) {
+          liststudent = snapshot.data()['liststudent'];
+          liststudentname = snapshot.data()['liststudentname'];
+          numberofstudents = snapshot.data()['numberofstudents'];
+          if (!liststudent.contains(uid)) {
+            liststudent.add(uid);
+            liststudentname.add(username);
+            numberofstudents++;
+          }
+          classes.update({
+            'liststudent': liststudent,
+            'liststudentname': liststudentname,
+            'numberofstudents': numberofstudents
+          });
+        } else {
           liststudent.add(uid);
-          numberofstudents++;
+          liststudentname.add(username);
+          classes.update({
+            'liststudent': liststudent,
+            'liststudentname': liststudentname,
+            'numberofstudents': numberofstudents
+          });
         }
-        classes.update(
-            {'liststudent': liststudent, 'numberofstudents': numberofstudents});
-      } else {
-        liststudent.add(uid);
-        classes.update(
-            {'liststudent': liststudent, 'numberofstudents': numberofstudents});
-      }
-    });
+      });
+      schedule.set({'today': false});
+      users.get().then((userSnapShot) {
+        List<dynamic> listClass = [];
+        if (userSnapShot.data().containsKey('listClass')) {
+          listClass = userSnapShot.data()['listClass'];
+          listClass.add(idClass);
+          users.update({'listClass': listClass});
+        } else {
+          listClass.add(idClass);
+          users.update({'listClass': listClass});
+        }
+      });
+    } catch (error) {
+      print(error.toString());
+    }
   }
 }
 

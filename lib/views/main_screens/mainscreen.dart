@@ -22,7 +22,9 @@ class _MyHomePageState extends State<MyHomePage> {
       HomeScreen(
         userdata: widget.userdata,
       ),
-      Search(),
+      Search(
+        userdata: widget.userdata,
+      ),
       QrScan(),
       NotificationScreens(),
       UserProfile(),
