@@ -7,7 +7,9 @@ import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/classinf.dart';
 import 'dart:math';
 
+
 import 'package:tesma/views/main_screens/home_screen/main_class_info.dart';
+
 
 class QrClass extends StatefulWidget {
   final DocumentSnapshot documentclass;
@@ -51,6 +53,7 @@ class _QrClassState extends State<QrClass> {
         return classinf.classid + (random.nextInt(900000) + 100000).toString();
       }
     }
+
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizeConfig().init(constraints, orientation);
