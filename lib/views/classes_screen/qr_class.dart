@@ -7,12 +7,24 @@ import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/classinf.dart';
 import 'dart:math';
 
+import 'package:tesma/views/main_screens/home_screen/main_class_info.dart';
+
 class QrClass extends StatefulWidget {
+  final DocumentSnapshot documentclass;
+  const QrClass({Key key, @required this.documentclass}) : super(key: key);
   @override
   _QrClassState createState() => _QrClassState();
 }
 
 class _QrClassState extends State<QrClass> {
+  DocumentSnapshot document;
+  ClassInf classinf;
+  @override
+  void initState() {
+    super.initState();
+    document = widget.documentclass;
+    classinf = ClassInf.fromSnapshot(document);
+  }
   Color getbackgroudcolor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
@@ -27,20 +39,18 @@ class _QrClassState extends State<QrClass> {
 
   @override
   Widget build(BuildContext context) {
-    // Random random = new Random();
-    // //DocumentSnapshot document;
-    // //final classInf = ClassInf.fromSnapshot(document);
-    // String _qrCode;
-    // String createQrCode(){
-    //   DateTime startTime = DateTime.now();
-    //   DateTime endTime = DateTime(startTime.hour + 3);
-    //   DateTime time;
-    //   if(_qrCode == null || time == endTime){
-    //     return 'NO QR CODE';
-    //   } else {
-    //     return classInf.classid + (random.nextInt(900000) + 100000).toString();
-    //   }
-    // }
+    Random random = new Random();
+    String _qrCode;
+    String createQrCode(){
+      DateTime startTime = DateTime.now();
+      DateTime endTime = DateTime(startTime.hour + 3);
+      DateTime time;
+      if(_qrCode == null || time == endTime){
+        return 'NO QR CODE';
+      } else {
+        return classinf.classid + (random.nextInt(900000) + 100000).toString();
+      }
+    }
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizeConfig().init(constraints, orientation);
@@ -49,6 +59,7 @@ class _QrClassState extends State<QrClass> {
           body: SingleChildScrollView(
               child: Container(
                 //height: 120 * SizeConfig.heightMultiplier,
+                width: 100 * SizeConfig.widthMultiplier,
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 87),
                 color: light_periwinkle,
                 child: Column(
@@ -100,37 +111,6 @@ class _QrClassState extends State<QrClass> {
                           color: royalBlueColor,
                           fontSize: 16.0,
                         ),
-                      ),
-                    ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                              onPressed: () {},
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                          getbackgroudcolor),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ))),
-                              child: Container(
-                                  width: 49.74 * SizeConfig.widthMultiplier,
-                                  height: 5.66 * SizeConfig.heightMultiplier,
-                                  child: Center(
-                                      child: Text(
-                                    "Back",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontFamily: 'SegoeUI',
-                                        color: whiteColor,
-                                        fontSize: 2.10 * SizeConfig.textMultiplier,
-                                        fontWeight: FontWeight.w900),
-                                  )))),
-                        ],
                       ),
                     ),
                   ],
