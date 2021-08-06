@@ -6,31 +6,24 @@ import 'package:tesma/models/classinf.dart';
 
 Widget singleClass(BuildContext context, DocumentSnapshot document) {
   final classinf = ClassInf.fromSnapshot(document);
+  List listSubject = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  String scheduleText = "";
+  String feeText;
+  String startdateText;
+  void setup() {
+    // Setup scheduleText ---------------------------
+    for (var i = 0; i < 7; i++) {
+      if (classinf.schedule[i] == true)
+        scheduleText += (scheduleText == "" ? "" : ".") + listSubject[i];
+    }
+    scheduleText += " - " + classinf.time;
 
-  // List listSubject = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  // String scheduleText = "";
-  // String feeText;
-  // String startdateText;
-  // String studentsText;
+    // // Setup feeText -----------------------------
+    feeText = classinf.fee + "VND/Month";
 
-  // // Setup scheduleText ---------------------------
-  // for (var i = 0; i < 7; i++) {
-  //   if (classinf.schedule[i] == true)
-  //     scheduleText += (scheduleText == "" ? "" : ".") + listSubject[i];
-  // }
-  // scheduleText += " - " + classinf.time;
-
-  // // Setup feeText -----------------------------
-  // feeText = classinf.fee + "VND/Month";
-
-  // // Setup startdateText -----------------------------
-  // startdateText = "Start " + classinf.startdate;
-
-  // // Setup studentsText -----------------------------
-  // studentsText = " " +
-  //     classinf.numberofstudents.toString() +
-  //     "/" +
-  //     classinf.maxstudents.toString();
+    // Setup startdateText -----------------------------
+    startdateText = "Start " + classinf.startdate;
+  }
 
   return Container(
     child: Column(
@@ -46,7 +39,7 @@ Widget singleClass(BuildContext context, DocumentSnapshot document) {
             ),
           ),
           height: 12.5 * SizeConfig.heightMultiplier,
-          width: 77.2 * SizeConfig.widthMultiplier,
+          //width: 77.2 * SizeConfig.widthMultiplier,
         ),
         Container(
           child: Column(
@@ -57,7 +50,7 @@ Widget singleClass(BuildContext context, DocumentSnapshot document) {
                     top: 1.3 * SizeConfig.heightMultiplier),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Tues.Thus.Sat - 15:00',
+                  'Tues.Thus.Sat - ' + classinf.time,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 12,
@@ -73,7 +66,7 @@ Widget singleClass(BuildContext context, DocumentSnapshot document) {
                   style: TextStyle(
                     color: Color(0xff181a54),
                     fontSize: 24,
-                    fontFamily: 'SegoeUI',
+                    fontFamily: 'SegoeUIB',
                     fontWeight: FontWeight.w900,
                   ),
                 ),
