@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tesma/constants/color.dart';
@@ -8,20 +6,18 @@ import 'package:tesma/models/classinf.dart';
 import 'dart:math';
 
 class QrClass extends StatefulWidget {
-  final DocumentSnapshot documentclass;
-  const QrClass({Key key, @required this.documentclass}) : super(key: key);
+  final ClassInf classinf;
+  const QrClass({Key key, @required this.classinf}) : super(key: key);
   @override
   _QrClassState createState() => _QrClassState();
 }
 
 class _QrClassState extends State<QrClass> {
-  DocumentSnapshot document;
   ClassInf classinf;
   @override
   void initState() {
     super.initState();
-    document = widget.documentclass;
-    classinf = ClassInf.fromSnapshot(document);
+    classinf = widget.classinf;
   }
   Color getbackgroudcolor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -74,18 +70,17 @@ class _QrClassState extends State<QrClass> {
                         size: 250.0,
                       ),
                     ),
-                    // Expanded(
-                    //   flex: 2,
-                    //   child: Container(
-                    //     margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                    //     child: TextButton(
-                    //       onPressed: createQrCode,
-                    //       style: ButtonStyle(
-                    //         foregroundColor: MaterialStateProperty.all<Color>(royalBlueColor),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
+                    Container(
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                        child: TextButton(
+                          onPressed: createQrCode,
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(royalBlueColor),
+                          ),
+                        ),
+                      ),
+                    ),
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                       child: Text(
