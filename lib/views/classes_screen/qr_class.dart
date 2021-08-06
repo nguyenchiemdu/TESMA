@@ -2,13 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
+import 'package:tesma/models/classinf.dart';
+import 'dart:math';
 
 class QrClass extends StatefulWidget {
+  final ClassInf classinf;
+  const QrClass({Key key, @required this.classinf}) : super(key: key);
   @override
   _QrClassState createState() => _QrClassState();
 }
 
 class _QrClassState extends State<QrClass> {
+  ClassInf classinf;
+  @override
+  void initState() {
+    super.initState();
+    classinf = widget.classinf;
+  }
   Color getbackgroudcolor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
@@ -21,104 +31,84 @@ class _QrClassState extends State<QrClass> {
     return redColor;
   }
 
-  //String _qrCode;
-
   @override
   Widget build(BuildContext context) {
-    // Future<void> qrCodeSetup(
-    //     String qrcode,
-    //     String timestart,
-    //     String timeend,
-    // ) async{
-    //   String hostID = FirebaseAuth.instance.currentUser.uid;
-    // }
+    Random random = new Random();
+    String _qrCode;
+    String createQrCode(){
+      DateTime startTime = DateTime.now();
+      DateTime endTime = DateTime(startTime.hour + 3);
+      DateTime time;
+      if(_qrCode == null || time == endTime){
+        return 'NO QR CODE';
+      } else {
+        return classinf.classid + (random.nextInt(900000) + 100000).toString();
+      }
+    }
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizeConfig().init(constraints, orientation);
         return Scaffold(
           //resizeToAvoidBottomInset: false,
-          body: Container(
-            padding: EdgeInsets.fromLTRB(0, 124, 0, 87),
-            color: light_periwinkle,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: QrImage(
-                    data: "Xem cái gì mà xem",
-                    version: QrVersions.auto,
-                    size: 250.0,
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                    child: Text(
-                      'QR SCAN',
-                      style: TextStyle(
-                        fontFamily: 'SegoeUI',
-                        color: royalBlueColor,
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.w900,
+          body: SingleChildScrollView(
+              child: Container(
+                //height: 120 * SizeConfig.heightMultiplier,
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 87),
+                color: light_periwinkle,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: QrImage(
+                        data: 'createQrCode',
+                        version: QrVersions.auto,
+                        size: 250.0,
                       ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    width: 200,
-                    child: Text(
-                      "Give this code to your student to make a roll-call",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'SegoeUI',
-                        color: royalBlueColor,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                          onPressed: () {},
+                    Container(
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                        child: TextButton(
+                          onPressed: createQrCode,
                           style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                      getbackgroudcolor),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ))),
-                          child: Container(
-                              width: 49.74 * SizeConfig.widthMultiplier,
-                              height: 5.66 * SizeConfig.heightMultiplier,
-                              child: Center(
-                                  child: Text(
-                                "Back",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontFamily: 'SegoeUI',
-                                    color: whiteColor,
-                                    fontSize: 2.10 * SizeConfig.textMultiplier,
-                                    fontWeight: FontWeight.w900),
-                              )))),
-                    ],
-                  ),
+                            foregroundColor: MaterialStateProperty.all<Color>(royalBlueColor),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                      child: Text(
+                        'QR SCAN',
+                        style: TextStyle(
+                          fontFamily: 'SegoeUI',
+                          color: royalBlueColor,
+                          fontSize: 40.0,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 200,
+                      child: Text(
+                        "Give this code to your student to make a roll-call",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'SegoeUI',
+                          color: royalBlueColor,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
         );
       });
     });

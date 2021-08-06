@@ -37,7 +37,7 @@ class SizeConfig {
     heightMultiplier = _blockHeight;
     widthMultiplier = _blockWidth;
 
-    print("heightMultiplier: " + heightMultiplier.toString());
-    print("widthMultiplier: " + widthMultiplier.toString());
+    // print("heightMultiplier: " + heightMultiplier.toString());
+    // print("widthMultiplier: " + widthMultiplier.toString());
   }
 }

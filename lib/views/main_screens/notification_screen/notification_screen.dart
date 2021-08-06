@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
+import 'package:tesma/views/main_screens/home_screen/main_class_info.dart';
+import 'package:tesma/views/main_screens/notification_screen/notificationcard.dart';
 
 class NotificationScreens extends StatefulWidget {
   @override
@@ -8,6 +12,16 @@ class NotificationScreens extends StatefulWidget {
 }
 
 class _NotificationScreensState extends State<NotificationScreens> {
+  final scrollController = ScrollController();
+  final controller = ScrollController();
+
+  Future resultsLoaded;
+  String errorMessage = '';
+  int documentLimit = 6;
+  bool hasNext = true;
+  bool isFetching = false;
+  List _allresultList = [];
+
   Color getbackgroudcolor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
@@ -18,6 +32,61 @@ class _NotificationScreensState extends State<NotificationScreens> {
       return mediumPink;
     }
     return mediumPink;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(scrollListener);
+  }
+
+  void scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      if (hasNext) {
+        getNotif();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    resultsLoaded = getNotif();
+  }
+
+  getNotif() async {
+    if (isFetching) return;
+    errorMessage = '';
+    isFetching = true;
+    try {
+      var notif = FirebaseFirestore.instance
+          .collection('notifications')
+          .limit(documentLimit)
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+          .orderBy("datecreate", descending: true);
+      final startAfter = _allresultList.isNotEmpty ? _allresultList.last : null;
+      var data;
+      if (startAfter == null) {
+        data = await notif.get();
+      } else {
+        data = await notif.startAfterDocument(startAfter).get();
+      }
+      setState(() {
+        _allresultList.addAll(data.docs);
+      });
+      if (data.docs.length < documentLimit) hasNext = false;
+      print('get notification successful');
+    } catch (error) {
+      errorMessage = error.toString();
+    }
+    isFetching = false;
   }
 
   @override
@@ -109,7 +178,49 @@ class _NotificationScreensState extends State<NotificationScreens> {
                             ],
                           ),
                         ),
-                        Notifications(),
+                        Expanded(
+                          child: ListView.builder(
+                              controller: scrollController,
+                              padding: EdgeInsets.only(
+                                left: 5.5 * SizeConfig.widthMultiplier,
+                                right: 5.5 * SizeConfig.widthMultiplier,
+                                bottom: 3.5 * SizeConfig.widthMultiplier,
+                              ),
+                              itemCount: _allresultList.length + 1,
+                              itemBuilder: (BuildContext context, int index) {
+                                if (index >= _allresultList.length) {
+                                  if (hasNext && _allresultList.length > 0) {
+                                    return Center(
+                                      child: Container(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  } else {
+                                    if (index == 0) {
+                                      return NotificationsEmpty();
+                                    } else {
+                                      return Text("");
+                                    }
+                                  }
+                                } else {
+                                  return GestureDetector(
+                                    child: notifcard(
+                                        context, _allresultList[index]),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => MyClassPage(
+                                                resultList:
+                                                    _allresultList[index])),
+                                      );
+                                    },
+                                  );
+                                }
+                              }),
+                        ),
                       ],
                     ),
                   )
@@ -118,395 +229,6 @@ class _NotificationScreensState extends State<NotificationScreens> {
             ));
       });
     });
-  }
-}
-
-class Notifications extends StatefulWidget {
-  @override
-  _NotificationsState createState() => _NotificationsState();
-}
-
-class _NotificationsState extends State<Notifications> {
-  ScrollController controller = ScrollController();
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Expanded(
-        child: SingleChildScrollView(
-          controller: controller,
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.fromLTRB(25, 0, 25, 25),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 15,
-                        spreadRadius: 5,
-                      )
-                    ]),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.access_time_filled,
-                        size: 40,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 40,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 220,
-                          child: Text(
-                            "Please update your information!",
-                            style: TextStyle(
-                              fontFamily: 'SegoeUI',
-                              color: blackColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Container(
-                          height: 17,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.lock_clock,
-                                size: 10,
-                              ),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Text(
-                                "15 minutes ago",
-                                style: TextStyle(
-                                  fontFamily: 'SegoeUI',
-                                  color: blackColor,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.fromLTRB(25, 0, 25, 25),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 15,
-                        spreadRadius: 5,
-                      )
-                    ]),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.document_scanner,
-                        size: 40,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 40,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 220,
-                          child: Text(
-                            "You got a new post from class 11 Physics - Huynh Thi Ky",
-                            style: TextStyle(
-                              fontFamily: 'SegoeUI',
-                              color: blackColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Container(
-                          height: 17,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.lock_clock,
-                                size: 10,
-                              ),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Text(
-                                "15 minutes ago",
-                                style: TextStyle(
-                                  fontFamily: 'SegoeUI',
-                                  color: blackColor,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.fromLTRB(25, 0, 25, 25),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 15,
-                        spreadRadius: 5,
-                      )
-                    ]),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.document_scanner,
-                        size: 40,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 40,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 220,
-                          child: Text(
-                            "You got a new post from class 11 Physics - Huynh Thi Ky",
-                            style: TextStyle(
-                              fontFamily: 'SegoeUI',
-                              color: blackColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Container(
-                          height: 17,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.lock_clock,
-                                size: 10,
-                              ),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Text(
-                                "15 minutes ago",
-                                style: TextStyle(
-                                  fontFamily: 'SegoeUI',
-                                  color: blackColor,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.fromLTRB(25, 0, 25, 25),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 15,
-                        spreadRadius: 5,
-                      )
-                    ]),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.document_scanner,
-                        size: 40,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 40,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 220,
-                          child: Text(
-                            "You got a new post from class 11 Physics - Huynh Thi Ky",
-                            style: TextStyle(
-                              fontFamily: 'SegoeUI',
-                              color: blackColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Container(
-                          height: 17,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.lock_clock,
-                                size: 10,
-                              ),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Text(
-                                "15 minutes ago",
-                                style: TextStyle(
-                                  fontFamily: 'SegoeUI',
-                                  color: blackColor,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.fromLTRB(25, 0, 25, 25),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 15,
-                        spreadRadius: 5,
-                      )
-                    ]),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.document_scanner,
-                        size: 40,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 40,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 220,
-                          child: Text(
-                            "You got a new post from class 11 Physics - Huynh Thi Ky",
-                            style: TextStyle(
-                              fontFamily: 'SegoeUI',
-                              color: blackColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Container(
-                          height: 17,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.lock_clock,
-                                size: 10,
-                              ),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Text(
-                                "15 minutes ago",
-                                style: TextStyle(
-                                  fontFamily: 'SegoeUI',
-                                  color: blackColor,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }
 

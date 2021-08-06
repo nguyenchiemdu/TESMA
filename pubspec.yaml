@@ -23,10 +23,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: "^0.7.0"
-  firebase_auth: "^0.20.1"
+  firebase_core: "^0.5.3"
+  firebase_analytics: "^6.3.0"
+  firebase_auth: "^0.18.4+1"
   google_sign_in: "^4.5.1"
-  cloud_firestore: "^0.16.0+1"
+  cloud_firestore: "^0.14.4"
   fluttertoast: ^8.0.7
   flutter_native_splash: ^1.2.0
   flutter_facebook_auth: "^1.0.0"
@@ -41,6 +42,8 @@ dependencies:
   flutter_datetime_picker: ^1.5.1
   intl: ^0.16.1
   number_inc_dec: ^0.7.0
+  firebase_analytics_web: ^0.1.1
+  timeago: ^3.1.0
 
 flutter_native_splash:
   color: "#ffffff"
@@ -64,6 +67,9 @@ flutter:
             style: italic
           - asset: assets/fonts/SegoeUIBold.ttf          
             weight: 700  
+      - family: SegoeUIB
+        fonts:
+          - asset: assets/fonts/SEGOEUIB.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
