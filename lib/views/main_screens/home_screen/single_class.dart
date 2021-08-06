@@ -1,28 +1,63 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/classinf.dart';
 
 Widget singleClass(BuildContext context, DocumentSnapshot document) {
   final classinf = ClassInf.fromSnapshot(document);
   List listSubject = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  List<String> listOfMonths = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
   String scheduleText = "";
-  String feeText;
-  String startdateText;
-  void setup() {
-    // Setup scheduleText ---------------------------
-    for (var i = 0; i < 7; i++) {
+  String lesson = "";
+
+  String scheduleTextt() {
+    for (int i = 0; i < 7; i++) {
       if (classinf.schedule[i] == true)
         scheduleText += (scheduleText == "" ? "" : ".") + listSubject[i];
     }
     scheduleText += " - " + classinf.time;
+    return scheduleText;
+  }
 
-    // // Setup feeText -----------------------------
-    feeText = classinf.fee + "VND/Month";
+  String nextlesson() {
+    final now = new DateTime.now();
+    int count = 0;
+    int nextday = now.weekday - 1;
+    if ((now.hour.toString() + ":" + now.minute.toString())
+            .compareTo(classinf.time) ==
+        1) {
+      nextday++;
+      count++;
+    }
+    while (classinf.schedule[nextday % 7] == false) {
+      nextday = (nextday + 1) % 7;
+      count++;
+    }
 
-    // Setup startdateText -----------------------------
-    startdateText = "Start " + classinf.startdate;
+    var dayoption = DateTime.now().add(new Duration(days: count));
+    lesson = listSubject[nextday] +
+        ", " +
+        dayoption.day.toString() +
+        " " +
+        listOfMonths[dayoption.month - 1] +
+        ", " +
+        dayoption.year.toString();
+
+    return lesson;
   }
 
   return Container(
@@ -50,7 +85,7 @@ Widget singleClass(BuildContext context, DocumentSnapshot document) {
                     top: 1.3 * SizeConfig.heightMultiplier),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Tues.Thus.Sat - ' + classinf.time,
+                  scheduleTextt(),
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 12,
@@ -60,11 +95,19 @@ Widget singleClass(BuildContext context, DocumentSnapshot document) {
               ),
               Container(
                 alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(left: 8.5 * SizeConfig.widthMultiplier),
+                margin: EdgeInsets.only(
+                  left: 8.5 * SizeConfig.widthMultiplier,
+                  right: 8.5 * SizeConfig.widthMultiplier,
+                  //top: 2.5 * SizeConfig.widthMultiplier
+                ),
                 child: Text(
+                  // (classinf.classname.length > 22)
+                  //     ? classinf.classname.substring(0, 19) + "..."
+                  //     : classinf.classname,
                   classinf.classname,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: Color(0xff181a54),
+                    color: royalBlueColor,
                     fontSize: 24,
                     fontFamily: 'SegoeUIB',
                     fontWeight: FontWeight.w900,
@@ -91,7 +134,7 @@ Widget singleClass(BuildContext context, DocumentSnapshot document) {
                     margin: EdgeInsets.only(
                         left: 1.84 * SizeConfig.widthMultiplier),
                     child: Text(
-                      'Sat, 17 Jul, 2021',
+                      nextlesson(),
                       style: TextStyle(
                         color: Color(0xffef4874),
                         fontSize: 8,
@@ -107,7 +150,10 @@ Widget singleClass(BuildContext context, DocumentSnapshot document) {
         ),
       ],
     ),
-    height: 25 * SizeConfig.heightMultiplier,
+    padding: EdgeInsets.only(
+      bottom: 1.5 * SizeConfig.heightMultiplier,
+    ),
+    //height: 25 * SizeConfig.heightMultiplier,
     width: 77.2 * SizeConfig.widthMultiplier,
     margin: EdgeInsets.only(
       bottom: 1.5 * SizeConfig.heightMultiplier,

@@ -18,6 +18,7 @@ class ClassInf {
   String teachername;
   List<dynamic> liststudent;
   List<dynamic> liststudentname;
+  String location;
 
   ClassInf(this.classname, this.subject, this.description, this.startdate,
       this.enddate, this.schedule, this.createdate, this.hostID);
@@ -43,5 +44,6 @@ class ClassInf {
         liststudentname = snapshot.data()['liststudentname'] != null
             ? snapshot.data()['liststudentname']
             : [],
-        hostID = snapshot.data()['hostID'];
+        hostID = snapshot.data()['hostID'],
+        location = snapshot.data()['location'];
 }

@@ -10,6 +10,14 @@ class ClassInfoScreen extends StatefulWidget {
 }
 
 class _ClassInfoScreenState extends State<ClassInfoScreen> {
+  //ClassInf classinf;
+  //String feeText = widget.classinf.fee + "VND/Month";
+  // var classinf;
+  // String startdateText="";
+  // void startdateTextt(){
+  //   startdateText = "Start " + classinf.startdate;
+  // }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -28,7 +36,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                           top: 2.9 * SizeConfig.heightMultiplier,
                           right: 28 * SizeConfig.widthMultiplier),
                       child: Text(
-                        'Already starts ' + widget.classinf.startdate,
+                        'Start ' + widget.classinf.startdate,
                         style: TextStyle(
                           color: Color(0xff181a54),
                           fontSize: 16,
@@ -178,7 +186,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             // margin:
                             //     EdgeInsets.only(left: 17.8 * SizeConfig.widthMultiplier),
                             child: Text(
-                              widget.classinf.fee + 'VND/month',
+                              widget.classinf.fee + ' VND/month',
                               style: TextStyle(
                                 color: Color(0xffef4874),
                                 fontSize: 16,
@@ -219,7 +227,8 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                             // margin:
                             //     EdgeInsets.only(left: 17.8 * SizeConfig.widthMultiplier),
                             child: Text(
-                              '235 Tran Cao Van street, An Son ward',
+                              //'235 Tran Cao Van street, An Son ward',
+                              widget.classinf.location,
                               style: TextStyle(
                                 color: Color(0xff181a54),
                                 fontSize: 16,
