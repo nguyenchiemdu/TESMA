@@ -506,6 +506,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                                   ),
                                 ),
                               ]))),
+
                       Row(children: [
                         Text(
                           "SCHEDULE",
@@ -545,6 +546,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                                         fontSize: 16,
                                         fontFamily: 'SegoeUI',
                                         fontWeight: FontWeight.w900,
+
                                       ),
                                     ),
                                   ),
@@ -764,8 +766,34 @@ class _InputClassScreen extends State<InputClassScreen> {
                                       ),
                                     ),
                                   ),
-                                ),
-                              ]))),
+                                )]))),
+                      Container(
+                        height: 5 * SizeConfig.heightMultiplier,
+                      ),
+                      Container(
+                        child: Text(
+                          'LOCATION',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'SegoeUI',
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 5 * SizeConfig.heightMultiplier,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: TextField(
+                            controller: locationController,
+                            decoration: new InputDecoration(
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.text,
+                          ),
+                        ),
+                      ),
                       Container(
                         height: 5 * SizeConfig.heightMultiplier,
                       ),
