@@ -26,6 +26,7 @@ class _AttendanceScreenForStudentState
   int firstDayOfMonth = DateTime.utc(now.year, now.month, 1).weekday;
   String requestedUserName = 'loading...';
   List attendenceList;
+  DateTime startDate;
   List<String> listOfMonths = [
     "Jan",
     "Feb",
@@ -54,6 +55,10 @@ class _AttendanceScreenForStudentState
   void initState() {
     super.initState();
     getUserInfor();
+    startDate = new DateTime.utc(
+        int.parse(widget.classinf.startdate.substring(0, 4)),
+        int.parse(widget.classinf.startdate.substring(5, 7)),
+        int.parse(widget.classinf.startdate.substring(8, 10)));
   }
 
   getUserInfor() async {
@@ -84,6 +89,31 @@ class _AttendanceScreenForStudentState
     });
   }
 
+  String getNumOfAbsences(int timeOfALesson) {
+    // get number of attendances
+    int numOfAttendances = 0;
+    if (attendenceList != null) numOfAttendances = attendenceList.length;
+    // get number of learning days each week
+    int learningDaysInWeek = 0;
+    for (int i = 0; i < 7; i++)
+      if (widget.classinf.schedule[i]) learningDaysInWeek++;
+    // get number of lessons passed
+    int numOfDayPassed = now.difference(startDate).inDays;
+    int numOfLesson = (numOfDayPassed ~/ 7) * learningDaysInWeek;
+    int firstLesson = startDate.weekday;
+    for (int i = 0; i < numOfDayPassed % 7; i++)
+      if (widget.classinf.schedule[(i + firstLesson - 1) % 7]) numOfLesson++;
+    // check: is lesson today?
+    int nowInMinutes = now.hour * 60 + now.minute;
+    int startTimeInMinutes =
+        int.parse(widget.classinf.time.substring(0, 2)) * 60 +
+            int.parse(widget.classinf.time.substring(3, 5));
+    if (nowInMinutes - startTimeInMinutes >= timeOfALesson &&
+        widget.classinf.schedule[now.weekday - 1]) numOfLesson++;
+    // return
+    return (numOfLesson - numOfAttendances).toString();
+  }
+
   Container currentCalendar() {
     listCalendar.clear();
     listCalendar.addAll(dayOfWeek);
@@ -105,16 +135,21 @@ class _AttendanceScreenForStudentState
         (index) => (index + 1).toString()));
 
     bool checkInRangeOfLearningDays(int aDay) {
-      if (aDay <= 0) return true;
-      var startDate = new DateTime.utc(
-          int.parse(widget.classinf.startdate.substring(0, 4)),
-          int.parse(widget.classinf.startdate.substring(5, 7)),
-          int.parse(widget.classinf.startdate.substring(8, 10)));
+      if (aDay <= 0) return false;
       var considerDate = new DateTime.utc(currentYear, currentMonth, aDay);
+      int nowInMinutes = now.hour * 60 + now.minute;
+      int startTimeInMinutes =
+          int.parse(widget.classinf.time.substring(0, 2)) * 60 +
+              int.parse(widget.classinf.time.substring(3, 5));
+      if (currentYear == now.year &&
+          currentMonth == now.month &&
+          aDay == now.day) {
+        print(widget.classinf.time);
+        print(now.toString());
+        return (nowInMinutes - startTimeInMinutes >= 90);
+      }
       return considerDate.compareTo(startDate) >= 0 &&
-              considerDate.compareTo(now) < 0
-          ? false
-          : true;
+          considerDate.compareTo(now) < 0;
     }
 
     return Container(
@@ -147,7 +182,7 @@ class _AttendanceScreenForStudentState
                           widget.classinf.schedule[index % 7] == false ||
                           checkInRangeOfLearningDays(
                                   index - indexOfTheStartDay) ==
-                              true
+                              false
                       ? whiteColor
                       : mediumPink,
               shape: BoxShape.circle,
@@ -185,7 +220,7 @@ class _AttendanceScreenForStudentState
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '00',
+                              getNumOfAbsences(90),
                               style: TextStyle(
                                 color: Color(0xffef4874),
                                 fontSize: 16,
