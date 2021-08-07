@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tesma/views/login_screens/loading.dart';
 
 import 'mainscreen.dart';
 
@@ -28,7 +29,8 @@ class _UserInformationState extends State<UserInformation> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Text("Loading");
         }
-
+        print(snapshot.data.data());
+        if (snapshot.data.data()['userType'] == null) return Loading();
         return MyHomePage(
           userdata: snapshot.data,
         );
