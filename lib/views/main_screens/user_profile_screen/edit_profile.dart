@@ -1,14 +1,38 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:tesma/models/firebase_authen.dart';
 //import 'package:provider/provider.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/constants/color.dart';
+import 'package:tesma/views/main_screens/user_profile_screen/user_profile_screen.dart';
+
+Future<void> userUpdate(String highSchool, String faceBook, String phoneNumber) async {
+  User currentUser = FirebaseAuth.instance.currentUser;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  if (phoneNumber != '') 
+  users.doc(currentUser.uid).update({
+    'numberPhone': phoneNumber,
+  });
+  if (faceBook != '') 
+  users.doc(currentUser.uid).update({
+    'faceBook': faceBook
+  });
+  if (highSchool != '') 
+  users.doc(currentUser.uid).update({
+    'highSchool': highSchool,
+  });
+}
 
 class EditProfile extends StatelessWidget {
   final TextEditingController highSchoolController = TextEditingController(); 
   final TextEditingController faceBookController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
+
+  String phoneNumber = '';
+  String highSchool = '';
+  String faceBook = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(           
@@ -30,6 +54,7 @@ class EditProfile extends StatelessWidget {
                   spreadRadius: 10,
                 )],
               ),
+              
               child: Container(
                 padding: EdgeInsets.only(top: 10 * SizeConfig.heightMultiplier, left: 10* SizeConfig.widthMultiplier),
                 child: Row(
@@ -37,37 +62,17 @@ class EditProfile extends StatelessWidget {
                   children: [
                     RichText(
                       text: TextSpan(
-                        text: "PROFILE",
+                        text: "EDIT PROFILE",
                         style: TextStyle(
                           fontSize: 40,
-                          fontFamily: 'SegoeUI',
+                          fontFamily: 'SegoeUI-Black',
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
+                          letterSpacing: 1*SizeConfig.widthMultiplier,
                         )
                       ),
                     ),
-                    SizedBox(width: 10*SizeConfig.widthMultiplier,),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => EditProfile()),
-                        );
-                      }, 
-                      child: Text(
-                        "Edit",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'SegoeUI',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),),
-                        style: ElevatedButton.styleFrom(
-                        primary: Colors.yellow,
-                        padding: EdgeInsets.symmetric(horizontal: 5*SizeConfig.widthMultiplier),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      ),
-                      )
+                    
                   ],
                 )
               )  
@@ -190,13 +195,34 @@ class EditProfile extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 0.25*SizeConfig.heightMultiplier,),
-                    Text(
-                      "Nguyen Binh Khiem",
-                      style: TextStyle(
-                        fontSize: 2*SizeConfig.textMultiplier,
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w300,
-                        color: Colors.deepPurpleAccent,
+                    Container(
+                      height: 2.5*SizeConfig.heightMultiplier,
+                      width: 45*SizeConfig.widthMultiplier,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          width: 0.5*SizeConfig.widthMultiplier,
+                          color: Colors.blue                         
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 15,
+                            spreadRadius: 5,
+                          )
+                        ]
+                      ),
+                      child: TextField(
+                        controller: highSchoolController,
+                        decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 1.75*SizeConfig.heightMultiplier),
+                        hintText: "Your high school",
+                        hintStyle: TextStyle(
+                          fontSize: 2*SizeConfig.textMultiplier,
+                          color: Colors.grey,
+                        )
+                        ),
                       ),
                     ),
                   ],
@@ -244,16 +270,37 @@ class EditProfile extends StatelessWidget {
                         color: Color(0xff181a54),
                       ),
                     ),
-                    SizedBox(height: 0.25*SizeConfig.heightMultiplier,),
-                    Text(
-                      "fb.com/TuanRider",
-                      style: TextStyle(
-                        fontSize: 2*SizeConfig.textMultiplier,
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w300,
-                        color: Colors.deepPurpleAccent,
+                    SizedBox(height: 0.25*SizeConfig.heightMultiplier,),                   
+                    Container(
+                      height: 2.5*SizeConfig.heightMultiplier,
+                      width: 45*SizeConfig.widthMultiplier,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          width: 0.5*SizeConfig.widthMultiplier,
+                          color: Colors.blue                         
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 15,
+                            spreadRadius: 5,
+                          )
+                        ]
                       ),
-                    ),
+                      child: TextField(
+                        controller: faceBookController,
+                        decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 1.75*SizeConfig.heightMultiplier),
+                        hintText: "Your facebook adress",
+                        hintStyle: TextStyle(
+                          fontSize: 2*SizeConfig.textMultiplier,
+                          color: Colors.grey,
+                        )
+                        ),
+                      ),
+                    )
                   ],
                 )
               ],
@@ -300,15 +347,37 @@ class EditProfile extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 0.25*SizeConfig.heightMultiplier,),
-                    Text(
-                      "0388030248",
-                      style: TextStyle(
-                        fontSize: 2*SizeConfig.textMultiplier,
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w300,
-                        color: Colors.deepPurpleAccent,
+                    Container(
+                      height: 2.5*SizeConfig.heightMultiplier,
+                      width: 45*SizeConfig.widthMultiplier,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          width: 0.5*SizeConfig.widthMultiplier,
+                          color: Colors.blue                         
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 15,
+                            spreadRadius: 5,
+                          )
+                        ]
                       ),
-                    ),
+                      child: TextField(
+                        controller: phoneNumberController,
+                        decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 1.75*SizeConfig.heightMultiplier),
+                        hintText: "Your phone number",
+                        hintStyle: TextStyle(
+                          fontSize: 2*SizeConfig.textMultiplier,
+                          color: Colors.grey,
+                        )
+                        ),
+                      ),
+                      
+                    )
                   ],
                 )
               ],
@@ -340,20 +409,24 @@ class EditProfile extends StatelessWidget {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       ),
               onPressed: () {
-                Navigator.pop(context);
+                highSchool = highSchoolController.text;
+                faceBook = faceBookController.text;
+                phoneNumber = phoneNumberController.text;
+                userUpdate(highSchool, faceBook , phoneNumber);
+                Navigator.pop(context,'updated');
               },
               child: Text(
                 "Update",
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
                   fontFamily: 'SegoeUI',
-                  letterSpacing: 2,
+                  letterSpacing: 1*SizeConfig.widthMultiplier,
                 ),               
               ),             
             ),
           ),
         ),
-    //  SignOut
+    //  Update Press  
         ],
       ),
     );

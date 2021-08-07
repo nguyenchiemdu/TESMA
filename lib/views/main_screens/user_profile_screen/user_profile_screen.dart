@@ -2,14 +2,53 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tesma/models/firebase_authen.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/constants/color.dart';
+import 'package:tesma/models/userinf.dart';
 import 'package:tesma/views/main_screens/user_profile_screen/edit_profile.dart';
 
-class UserProfile extends StatelessWidget {
-  final String currentUid = FirebaseAuth.instance.currentUser.uid;
+class UserProfile extends StatefulWidget {
+  final DocumentSnapshot userdata; 
+  //final UserInf userinfor;
+  const UserProfile({Key key, this.userdata}) : super(key: key);
+  @override
+  _UserProfileState createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
+  //final String currentUid = FirebaseAuth.instance.currentUser.uid;
+@override
+  void initState() {
+    super.initState();
+    userinf = UserInf.fromSnapshot(widget.userdata);
+    getUserinf();
+  } 
+  UserInf userinf;
+  String highSchool = '';
+  String faceBook = '';
+  String phoneNumber = '';
+
+  getUserinf() async {await FirebaseFirestore.instance.collection('users').doc(userinf.uid).get().then(
+    (DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          highSchool=documentSnapshot.data()[
+            'highSchool'
+          ];
+          faceBook=documentSnapshot.data()[
+            'faceBook'
+          ];
+          phoneNumber=documentSnapshot.data()[
+            'numberPhone'
+          ];
+        });
+      }
+    }
+  );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,10 +88,7 @@ class UserProfile extends StatelessWidget {
                     SizedBox(width: 10*SizeConfig.widthMultiplier,),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => EditProfile()),
-                        );
+                        pressEdit();
                       }, 
                       child: Text(
                         "Edit",
@@ -114,7 +150,7 @@ class UserProfile extends StatelessWidget {
               ),
               SizedBox(height: 1*SizeConfig.heightMultiplier,),
               Text(
-                'Nguyen Dinh Tuan',
+                userinf.userName,
                 style: TextStyle(
                   fontSize: 3*SizeConfig.textMultiplier,
                   fontFamily: 'SegoeUI',
@@ -123,30 +159,58 @@ class UserProfile extends StatelessWidget {
               ),
               SizedBox(height: 1*SizeConfig.heightMultiplier,),
               Text(
-                  'STUDENT',
+                  userinf.userType.toUpperCase(),
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontFamily: 'SegoeUI',
                   ),
                 ),
-              Column(children: [
-                Text(
-                  '05',
-                  style: TextStyle(
-                    color: Color(0xff181a54),
-                    fontSize: 25,
-                    fontFamily: 'SegoeUI',
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                Text(
-                  'Classes',
-                  style: TextStyle(
-                    fontFamily: 'SegoeUI',
-                    fontWeight: FontWeight.w900,
-                  )
-                )
-              ],)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(children: [
+                    Text(
+                      userinf.listClass != null 
+                      ?userinf.listClass.length.toString()
+                      :'0',
+                      style: TextStyle(
+                        color: Color(0xff181a54),
+                        fontSize: 25,
+                        fontFamily: 'SegoeUI',
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Text(
+                      'Classes',
+                      style: TextStyle(
+                        fontFamily: 'SegoeUI',
+                        fontWeight: FontWeight.w900,
+                      )
+                    )
+                  ],),
+                  if (userinf.userType == 'teacher')
+                  Column(children: [
+                    Text(
+                      userinf.listClass != null 
+                      ?userinf.listClass.length.toString()
+                      :'0',
+                      style: TextStyle(
+                        color: Color(0xff181a54),
+                        fontSize: 25,
+                        fontFamily: 'SegoeUI',
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Text(
+                      'Students',
+                      style: TextStyle(
+                        fontFamily: 'SegoeUI',
+                        fontWeight: FontWeight.w900,
+                      )
+                    )
+                  ],),
+                ],
+              )
             ],),       
           ),
         ),
@@ -191,7 +255,7 @@ class UserProfile extends StatelessWidget {
                     ),
                     SizedBox(height: 0.25*SizeConfig.heightMultiplier,),
                     Text(
-                      "Nguyen Binh Khiem",
+                      highSchool,
                       style: TextStyle(
                         fontSize: 2*SizeConfig.textMultiplier,
                         fontFamily: 'SegoeUI',
@@ -246,7 +310,7 @@ class UserProfile extends StatelessWidget {
                     ),
                     SizedBox(height: 0.25*SizeConfig.heightMultiplier,),
                     Text(
-                      "fb.com/TuanRider",
+                      faceBook,
                       style: TextStyle(
                         fontSize: 2*SizeConfig.textMultiplier,
                         fontFamily: 'SegoeUI',
@@ -291,7 +355,7 @@ class UserProfile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Phone number",
+                      'Phone Number',
                       style: TextStyle(
                         fontSize: 2*SizeConfig.textMultiplier,
                         fontWeight: FontWeight.w900,
@@ -301,7 +365,7 @@ class UserProfile extends StatelessWidget {
                     ),
                     SizedBox(height: 0.25*SizeConfig.heightMultiplier,),
                     Text(
-                      "0388030248",
+                      phoneNumber,
                       style: TextStyle(
                         fontSize: 2*SizeConfig.textMultiplier,
                         fontFamily: 'SegoeUI',
@@ -358,5 +422,18 @@ class UserProfile extends StatelessWidget {
       ),
     );
   }
-}
 
+  void pressEdit() async {
+    String result = '';
+    result = await
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => EditProfile()),
+        );
+        if (result == 'updated'){
+          setState(() {
+            getUserinf();
+          });
+        }       
+  }
+}
