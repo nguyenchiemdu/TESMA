@@ -29,6 +29,9 @@ class _InputClassScreen extends State<InputClassScreen> {
   final TextEditingController maxstudentsController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
+  bool isFilledInAll = false;
+  String isErrorFromServe = "";
+
   Map<String, dynamic> newClass = {};
 
   DateTime startDate = DateTime.now();
@@ -183,7 +186,11 @@ class _InputClassScreen extends State<InputClassScreen> {
         ),
         title: Text(
           notification.title,
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontFamily: 'SegoeUI',
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       );
 
@@ -290,6 +297,47 @@ class _InputClassScreen extends State<InputClassScreen> {
         print(error.code);
       });
       return;
+    }
+
+    bool isSchedule(List<CheckBoxState> schedule){
+      if(schedule.map((element) => element.value).contains(true)){
+        return true;
+      }
+      return false;
+    }
+
+    bool isFee(String fee) {
+      if (fee == null) {
+        return false;
+      }
+      return int.tryParse(fee) != null;
+    }
+
+    Future<void> createClassOnServe() async {
+      try {
+        await Firebase.initializeApp();
+        bool isNewClass =
+            await ClassInfor().isNewClass(classNameController.text.toString());
+        if (isNewClass) {
+          await classSetup(
+            classNameController.text,
+            valueChooseSubject,
+            valueChooseGrade,
+            startDate.toString(),
+            valueChooseHour + ":" + valueChooseMinute,
+            locationController.text,
+            feeController.text,
+            numberOfStudents,
+            maxstudentsController.text,
+            dayOfWeek,
+          );
+        } else
+          _showToast('Class name đã bị trùng');
+      } on FirebaseAuthException catch (e) {
+        print(e.code);
+      } catch (e) {
+        print(e.toString());
+      }
     }
 
     return new Scaffold(
@@ -426,8 +474,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                                 Expanded(
                                   flex: 5,
                                   child: Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 10, right: 50),
+                                    padding:                                     EdgeInsets.only(left: 10, right: 50),
                                     child: Container(
                                       alignment: Alignment.center,
                                       height: 5 * SizeConfig.heightMultiplier,
@@ -614,9 +661,6 @@ class _InputClassScreen extends State<InputClassScreen> {
                         height: 5 * SizeConfig.heightMultiplier,
                       ),
                       Container(
-                        height: 5 * SizeConfig.heightMultiplier,
-                      ),
-                      Container(
                           padding:
                               EdgeInsets.all(2 * SizeConfig.heightMultiplier),
                           child: Container(
@@ -701,7 +745,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                                   flex: 5,
                                   child: Padding(
                                     padding:
-                                        EdgeInsets.only(left: 10, right: 50),
+                                        EdgeInsets.only(left: 10, right: 40),
                                     child: Container(
                                       height: 5 * SizeConfig.heightMultiplier,
                                       child: NumberInputWithIncrementDecrement(
@@ -719,8 +763,34 @@ class _InputClassScreen extends State<InputClassScreen> {
                                       ),
                                     ),
                                   ),
-                                ),
-                              ]))),
+                                  )]))),
+                      Container(
+                        height: 5 * SizeConfig.heightMultiplier,
+                      ),
+                      Container(
+                        child: Text(
+                          'LOCATION',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontFamily: 'SegoeUI',
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 5 * SizeConfig.heightMultiplier,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: TextField(
+                            controller: locationController,
+                            decoration: new InputDecoration(
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.text,
+                          ),
+                        ),
+                      ),
                       Container(
                         height: 5 * SizeConfig.heightMultiplier,
                       ),
@@ -795,35 +865,32 @@ class _InputClassScreen extends State<InputClassScreen> {
                                       padding:
                                           EdgeInsets.only(left: 20, right: 2),
                                       child: ElevatedButton(
-                                        onPressed: () async {
-                                          try {
-                                            await Firebase.initializeApp();
-                                            bool isNewClass = await ClassInfor()
-                                                .isNewClass(classNameController
-                                                    .text
-                                                    .toString());
-                                            if (isNewClass) {
-                                              await classSetup(
-                                                classNameController.text,
-                                                valueChooseSubject,
-                                                valueChooseGrade,
-                                                startDate.toString(),
-                                                valueChooseHour +
-                                                    ":" +
-                                                    valueChooseMinute,
-                                                locationController.text,
-                                                feeController.text,
-                                                numberOfStudents,
-                                                maxstudentsController.text,
-                                                dayOfWeek,
-                                              );
-                                            } else
-                                              _showToast(
-                                                  'Class name has already existed!');
-                                          } on FirebaseAuthException catch (e) {
-                                            print(e.code);
-                                          } catch (e) {
-                                            print(e.toString());
+                                        onPressed: () {
+                                          if (classNameController.text == "" ||
+                                              feeController.text == "" ||
+                                              locationController.text == "" ||
+                                              valueChooseSubject == "Subject" ||
+                                              valueChooseGrade == "Grade" ||
+                                              valueChooseMinute == "" ||
+                                              valueChooseHour == ""
+                                              ) {
+                                            isFilledInAll = false;
+                                          } else {
+                                            isFilledInAll = true;
+                                          }
+                                          if (!isFilledInAll) {
+                                            _showToast(
+                                                'Bạn chưa điền đầy đủ thông tin');
+                                          } else if (!isFee(
+                                              feeController.text)) {
+                                            _showToast(
+                                                'Nhập học phí không chính xác');
+                                          } else if(!isSchedule(dayOfWeek)){
+                                            _showToast('Vui lòng chọn lịch học');
+                                          }
+                                          else {
+                                            isErrorFromServe = "";
+                                            createClassOnServe();
                                           }
                                         },
                                         style: ElevatedButton.styleFrom(

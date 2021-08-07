@@ -2,23 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:quiver/time.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tesma/models/classinf.dart';
 
 final now = new DateTime.now();
 List<String> listCalendar = [];
 
-class AttendanceScreen extends StatefulWidget {
+class AttendanceScreenForStudent extends StatefulWidget {
   final ClassInf classinf;
-  const AttendanceScreen({Key key, @required this.classinf}) : super(key: key);
+  final String currentUserID;
+  const AttendanceScreenForStudent(
+      {Key key, @required this.classinf, this.currentUserID})
+      : super(key: key);
   @override
-  _AttendanceScreenState createState() => _AttendanceScreenState();
+  _AttendanceScreenForStudentState createState() =>
+      _AttendanceScreenForStudentState();
 }
 
-class _AttendanceScreenState extends State<AttendanceScreen> {
+class _AttendanceScreenForStudentState
+    extends State<AttendanceScreenForStudent> {
   int currentYear = now.year;
   int currentMonth = now.month;
   int firstDayOfMonth = DateTime.utc(now.year, now.month, 1).weekday;
+  String requestedUserName = 'loading...';
+  List attendenceList;
+  DateTime startDate;
   List<String> listOfMonths = [
     "Jan",
     "Feb",
@@ -43,13 +51,106 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     "Su",
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    getUserInfor();
+    startDate = new DateTime.utc(
+        int.parse(widget.classinf.startdate.substring(0, 4)),
+        int.parse(widget.classinf.startdate.substring(5, 7)),
+        int.parse(widget.classinf.startdate.substring(8, 10)));
+  }
+
+  getUserInfor() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.currentUserID)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          requestedUserName = documentSnapshot.data()['userName'];
+          print('get userName successfully');
+        });
+      }
+    });
+    await FirebaseFirestore.instance
+        .collection('classes')
+        .doc(widget.classinf.classid)
+        .collection('schedule')
+        .doc(widget.currentUserID)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          attendenceList = documentSnapshot.data()['attendance'];
+        });
+      }
+    });
+  }
+
+  String getNumOfAbsences(int timeOfALesson) {
+    // get number of attendances
+    int numOfAttendances = 0;
+    if (attendenceList != null) numOfAttendances = attendenceList.length;
+    // get number of learning days each week
+    int learningDaysInWeek = 0;
+    for (int i = 0; i < 7; i++)
+      if (widget.classinf.schedule[i]) learningDaysInWeek++;
+    // get number of lessons passed
+    int numOfDayPassed = now.difference(startDate).inDays;
+    int numOfLesson = (numOfDayPassed ~/ 7) * learningDaysInWeek;
+    int firstLesson = startDate.weekday;
+    for (int i = 0; i < numOfDayPassed % 7; i++)
+      if (widget.classinf.schedule[(i + firstLesson - 1) % 7]) numOfLesson++;
+    // check: is lesson today?
+    int nowInMinutes = now.hour * 60 + now.minute;
+    int startTimeInMinutes =
+        int.parse(widget.classinf.time.substring(0, 2)) * 60 +
+            int.parse(widget.classinf.time.substring(3, 5));
+    if (nowInMinutes - startTimeInMinutes >= timeOfALesson &&
+        widget.classinf.schedule[now.weekday - 1]) numOfLesson++;
+    // return
+    return (numOfLesson - numOfAttendances).toString();
+  }
+
   Container currentCalendar() {
     listCalendar.clear();
     listCalendar.addAll(dayOfWeek);
     listCalendar.addAll(List.generate(firstDayOfMonth - 1, (index) => ""));
+    int indexOfTheStartDay = 7 + firstDayOfMonth - 2;
+    String tmpString;
+    Map attend = Map<int, bool>();
+    if (attendenceList != null) {
+      for (int i = 0; i < attendenceList.length; i++) {
+        tmpString = attendenceList[i].toString();
+        if (currentMonth == int.parse(tmpString.substring(3, 5)) &&
+            currentYear == int.parse(tmpString.substring(6, 10))) {
+          attend[int.parse(tmpString.substring(0, 2)) + indexOfTheStartDay] =
+              true;
+        }
+      }
+    }
     listCalendar.addAll(List.generate(daysInMonth(currentYear, currentMonth),
         (index) => (index + 1).toString()));
-    int indexOfTheStartDay = 7 + firstDayOfMonth - 1;
+
+    bool checkInRangeOfLearningDays(int aDay) {
+      if (aDay <= 0) return false;
+      var considerDate = new DateTime.utc(currentYear, currentMonth, aDay);
+      int nowInMinutes = now.hour * 60 + now.minute;
+      int startTimeInMinutes =
+          int.parse(widget.classinf.time.substring(0, 2)) * 60 +
+              int.parse(widget.classinf.time.substring(3, 5));
+      if (currentYear == now.year &&
+          currentMonth == now.month &&
+          aDay == now.day) {
+        print(widget.classinf.time);
+        print(now.toString());
+        return (nowInMinutes - startTimeInMinutes >= 90);
+      }
+      return considerDate.compareTo(startDate) >= 0 &&
+          considerDate.compareTo(now) < 0;
+    }
 
     return Container(
       height: 26.5 * SizeConfig.heightMultiplier,
@@ -75,9 +176,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               ),
             ),
             decoration: BoxDecoration(
-              color: indexOfTheStartDay <= index && index % 2 == 1
-                  ? mediumPink
-                  : lightGreenColor,
+              color: attend.containsKey(index)
+                  ? lightGreenColor
+                  : indexOfTheStartDay >= index ||
+                          widget.classinf.schedule[index % 7] == false ||
+                          checkInRangeOfLearningDays(
+                                  index - indexOfTheStartDay) ==
+                              false
+                      ? whiteColor
+                      : mediumPink,
               shape: BoxShape.circle,
             ),
           ),
@@ -113,7 +220,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '00',
+                              getNumOfAbsences(90),
                               style: TextStyle(
                                 color: Color(0xffef4874),
                                 fontSize: 16,
@@ -139,10 +246,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          widget.classinf.classname,
+                          requestedUserName,
                           style: TextStyle(
                             color: Color(0xff181a54),
-                            fontFamily: 'SegoeUI',
+                            fontFamily: 'SegoeUIB',
                             fontWeight: FontWeight.w600,
                           ),
                         ),

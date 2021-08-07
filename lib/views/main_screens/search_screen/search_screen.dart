@@ -322,6 +322,8 @@ class _SearchState extends State<Search> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => MyClassPage(
+                                            currentUser: UserInf.fromSnapshot(
+                                                widget.userdata),
                                             resultList: _allresultList[index])),
                                   );
                                 },

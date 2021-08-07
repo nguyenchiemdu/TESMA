@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/size_config.dart';
+import 'package:tesma/views/classes_screen/attendance_screen_teacher.dart';
 
 import 'package:tesma/views/classes_screen/qr_class.dart';
 import 'package:tesma/views/main_screens/home_screen/class_info.dart';
-import 'package:tesma/views/classes_screen/attendance_screen.dart';
+import 'package:tesma/views/classes_screen/attendance_screen_forStudent.dart';
 import 'package:tesma/views/classes_screen/uploadFile_screen.dart';
 import 'package:tesma/models/classinf.dart';
+import 'package:tesma/models/userinf.dart';
 
 class TabControllerScreen extends StatefulWidget {
   final ClassInf classinf;
-  const TabControllerScreen({Key key, this.classinf}) : super(key: key);
+  final UserInf currentUser;
+  const TabControllerScreen({Key key, this.classinf, this.currentUser})
+      : super(key: key);
   @override
   _TabControllerScreenState createState() => _TabControllerScreenState();
 }
@@ -81,8 +85,17 @@ class _TabControllerScreenState extends State<TabControllerScreen>
                 <Widget>[
                   ClassInfoScreen(classinf: widget.classinf),
                   QrClass(classinf: widget.classinf),
-                  AttendanceScreen(classinf: widget.classinf),
-                  UploadFileScreen(classinf: widget.classinf),
+                  if (widget.currentUser.userType == 'student')
+                    AttendanceScreenForStudent(
+                      classinf: widget.classinf,
+                      currentUserID: widget.currentUser.uid,
+                    )
+                  else
+                    AttendanceScreenTeacher(classinf: widget.classinf),
+                  UploadFileScreen(
+                    classinf: widget.classinf,
+                    userType: widget.currentUser.userType,
+                  ),
                 ],
               ),
             ),

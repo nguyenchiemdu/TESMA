@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 class UserInfor {
   Future<bool> isNewUser() async {
@@ -24,6 +25,82 @@ class UserInfor {
 }
 
 class ClassInfor {
+  Future<void> resetday(String idClass, String uid) async {
+    try {
+      final classes =
+          FirebaseFirestore.instance.collection('classes').doc(idClass);
+      final schedule = FirebaseFirestore.instance
+          .collection('classes')
+          .doc(idClass)
+          .collection('schedule');
+      await schedule.get().then((snapshot) {
+        snapshot.docs.forEach((element) {
+          schedule.doc(element.id).update({'today': false});
+        });
+      });
+      await classes.update({'lastday': DateTime.now()});
+    } catch (error) {
+      print(error.toString());
+    }
+  }
+
+  Future<void> changestatustoday(String idClass, String uid, bool key) async {
+    try {
+      final schedule = FirebaseFirestore.instance
+          .collection('classes')
+          .doc(idClass)
+          .collection('schedule')
+          .doc(uid);
+      await schedule.get().then((snapshot) {
+        bool today = snapshot.data()['today'];
+        today = !today;
+        if (today) {
+          schedule.update({'today': today});
+          List<dynamic> attendance = [];
+          final DateTime now = DateTime.now();
+          final DateFormat dayformatter = DateFormat('dd-MM-yyyy');
+          final String dayformatted = dayformatter.format(now);
+          if (snapshot.data().containsKey('attendance')) {
+            attendance = snapshot.data()['attendance'];
+            if (!attendance.contains(dayformatted)) {
+              attendance.add(dayformatted);
+            }
+            schedule.update({
+              'today': today,
+              'attendance': attendance,
+            });
+          } else {
+            attendance.add(dayformatted);
+            schedule.update({
+              'today': today,
+              'attendance': attendance,
+            });
+          }
+        } else {
+          if (key) {
+            schedule.update({'today': today});
+            List<dynamic> attendance = [];
+            final DateTime now = DateTime.now();
+            final DateFormat dayformatter = DateFormat('dd-MM-yyyy');
+            final String dayformatted = dayformatter.format(now);
+            if (snapshot.data().containsKey('attendance')) {
+              attendance = snapshot.data()['attendance'];
+              if (attendance.contains(dayformatted)) {
+                attendance.remove(dayformatted);
+              }
+              schedule.update({
+                'today': today,
+                'attendance': attendance,
+              });
+            }
+          }
+        }
+      });
+    } catch (error) {
+      print(error.toString());
+    }
+  }
+
   Future<bool> isNewClass(String classname) async {
     bool ok = false;
     CollectionReference classes =

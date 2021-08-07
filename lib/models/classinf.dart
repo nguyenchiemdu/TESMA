@@ -17,6 +17,9 @@ class ClassInf {
   String grade;
   String teachername;
   List<dynamic> liststudent;
+  List<dynamic> liststudentname;
+  String location;
+  DateTime lastday;
 
   ClassInf(this.classname, this.subject, this.description, this.startdate,
       this.enddate, this.schedule, this.createdate, this.hostID);
@@ -30,6 +33,9 @@ class ClassInf {
         enddate = snapshot.data()['enddate'],
         schedule = snapshot.data()['dayofweek'],
         createdate = snapshot.data()['createdate'],
+        lastday = snapshot.data()['lastday'] != null
+            ? snapshot.data()['lastday'].toDate()
+            : DateTime(2000),
         numberofstudents = snapshot.data()['numberofstudents'],
         maxstudents = snapshot.data()['maxstudents'],
         time = snapshot.data()['time'],
@@ -39,5 +45,9 @@ class ClassInf {
         liststudent = snapshot.data()['liststudent'] != null
             ? snapshot.data()['liststudent']
             : [],
-        hostID = snapshot.data()['hostID'];
+        liststudentname = snapshot.data()['liststudentname'] != null
+            ? snapshot.data()['liststudentname']
+            : [],
+        hostID = snapshot.data()['hostID'],
+        location = snapshot.data()['location'];
 }

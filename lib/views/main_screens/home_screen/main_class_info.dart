@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:tesma/views/main_screens/home_screen/tab_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tesma/models/classinf.dart';
+import 'package:tesma/models/userinf.dart';
 
 import 'package:tesma/constants/size_config.dart';
 
 class MyClassPage extends StatefulWidget {
   final DocumentSnapshot resultList;
-  const MyClassPage({Key key, this.resultList}) : super(key: key);
+  final UserInf currentUser;
+  const MyClassPage({Key key, this.resultList, this.currentUser})
+      : super(key: key);
   @override
   _MyClassPageState createState() => _MyClassPageState();
 }
@@ -55,7 +58,10 @@ class _MyClassPageState extends State<MyClassPage> {
               ),
               SingleChildScrollView(
                 child: Container(
-                  child: TabControllerScreen(classinf: classinf),
+                  child: TabControllerScreen(
+                    classinf: classinf,
+                    currentUser: widget.currentUser,
+                  ),
                   height: 100 * SizeConfig.heightMultiplier,
                 ),
               ),

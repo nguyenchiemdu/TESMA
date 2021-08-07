@@ -101,6 +101,12 @@ class _ClassCardState extends State<ClassCard> {
       print(_isButtonDisabled);
       try {
         ClassInfor().enroll(classinf.classid, uid);
+        Notif().createNotif(
+            'You have successfully enrolled in class: ' + classinf.classname,
+            'You have successfully enrolled in class: ' + classinf.classname,
+            'class',
+            uid,
+            DateTime.now());
         setState(() {
           _isButtonDisabled = false;
           classinf.numberofstudents++;
