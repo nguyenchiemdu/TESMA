@@ -27,7 +27,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       QrScan(),
       NotificationScreens(),
-      UserProfile(),
+      UserProfile(
+        userdata: widget.userdata,
+      ),
     ];
   }
 

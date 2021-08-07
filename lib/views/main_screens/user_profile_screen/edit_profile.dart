@@ -1,58 +1,43 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:tesma/models/firebase_authen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
+//import 'package:tesma/models/firebase_authen.dart';
+//import 'package:provider/provider.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/constants/color.dart';
-import 'package:tesma/models/userinf.dart';
-import 'package:tesma/views/main_screens/user_profile_screen/edit_profile.dart';
+import 'package:tesma/views/main_screens/user_profile_screen/user_profile_screen.dart';
 
-class UserProfile extends StatefulWidget {
-  final DocumentSnapshot userdata; 
-  //final UserInf userinfor;
-  const UserProfile({Key key, this.userdata}) : super(key: key);
-  @override
-  _UserProfileState createState() => _UserProfileState();
+Future<void> userUpdate(String highSchool, String faceBook, String phoneNumber) async {
+  User currentUser = FirebaseAuth.instance.currentUser;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  if (phoneNumber != '') 
+  users.doc(currentUser.uid).update({
+    'numberPhone': phoneNumber,
+  });
+  if (faceBook != '') 
+  users.doc(currentUser.uid).update({
+    'faceBook': faceBook
+  });
+  if (highSchool != '') 
+  users.doc(currentUser.uid).update({
+    'highSchool': highSchool,
+  });
 }
 
-class _UserProfileState extends State<UserProfile> {
-  //final String currentUid = FirebaseAuth.instance.currentUser.uid;
-@override
-  void initState() {
-    super.initState();
-    userinf = UserInf.fromSnapshot(widget.userdata);
-    getUserinf();
-  } 
-  UserInf userinf;
+class EditProfile extends StatelessWidget {
+  final TextEditingController highSchoolController = TextEditingController(); 
+  final TextEditingController faceBookController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+
+  String phoneNumber = '';
   String highSchool = '';
   String faceBook = '';
-  String phoneNumber = '';
-
-  getUserinf() async {await FirebaseFirestore.instance.collection('users').doc(userinf.uid).get().then(
-    (DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        setState(() {
-          highSchool=documentSnapshot.data()[
-            'highSchool'
-          ];
-          faceBook=documentSnapshot.data()[
-            'faceBook'
-          ];
-          phoneNumber=documentSnapshot.data()[
-            'numberPhone'
-          ];
-        });
-      }
-    }
-  );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    return Scaffold(           
+      body: 
+      Stack(
         children: [
         Positioned(
             top: -5 * SizeConfig.heightMultiplier,
@@ -69,6 +54,7 @@ class _UserProfileState extends State<UserProfile> {
                   spreadRadius: 10,
                 )],
               ),
+              
               child: Container(
                 padding: EdgeInsets.only(top: 10 * SizeConfig.heightMultiplier, left: 10* SizeConfig.widthMultiplier),
                 child: Row(
@@ -76,34 +62,17 @@ class _UserProfileState extends State<UserProfile> {
                   children: [
                     RichText(
                       text: TextSpan(
-                        text: "PROFILE",
+                        text: "EDIT PROFILE",
                         style: TextStyle(
                           fontSize: 40,
-                          fontFamily: 'SegoeUI',
+                          fontFamily: 'SegoeUI-Black',
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
+                          letterSpacing: 1*SizeConfig.widthMultiplier,
                         )
                       ),
                     ),
-                    SizedBox(width: 10*SizeConfig.widthMultiplier,),
-                    ElevatedButton(
-                      onPressed: () {
-                        pressEdit();
-                      }, 
-                      child: Text(
-                        "Edit",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'SegoeUI',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),),
-                        style: ElevatedButton.styleFrom(
-                        primary: Colors.yellow,
-                        padding: EdgeInsets.symmetric(horizontal: 5*SizeConfig.widthMultiplier),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      ),
-                      )
+                    
                   ],
                 )
               )  
@@ -150,7 +119,7 @@ class _UserProfileState extends State<UserProfile> {
               ),
               SizedBox(height: 1*SizeConfig.heightMultiplier,),
               Text(
-                userinf.userName,
+                'Nguyen Dinh Tuan',
                 style: TextStyle(
                   fontSize: 3*SizeConfig.textMultiplier,
                   fontFamily: 'SegoeUI',
@@ -159,58 +128,30 @@ class _UserProfileState extends State<UserProfile> {
               ),
               SizedBox(height: 1*SizeConfig.heightMultiplier,),
               Text(
-                  userinf.userType.toUpperCase(),
+                  'STUDENT',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontFamily: 'SegoeUI',
                   ),
                 ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(children: [
-                    Text(
-                      userinf.listClass != null 
-                      ?userinf.listClass.length.toString()
-                      :'0',
-                      style: TextStyle(
-                        color: Color(0xff181a54),
-                        fontSize: 25,
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    Text(
-                      'Classes',
-                      style: TextStyle(
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w900,
-                      )
-                    )
-                  ],),
-                  if (userinf.userType == 'teacher')
-                  Column(children: [
-                    Text(
-                      userinf.listClass != null 
-                      ?userinf.listClass.length.toString()
-                      :'0',
-                      style: TextStyle(
-                        color: Color(0xff181a54),
-                        fontSize: 25,
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    Text(
-                      'Students',
-                      style: TextStyle(
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w900,
-                      )
-                    )
-                  ],),
-                ],
-              )
+              Column(children: [
+                Text(
+                  '05',
+                  style: TextStyle(
+                    color: Color(0xff181a54),
+                    fontSize: 25,
+                    fontFamily: 'SegoeUI',
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                Text(
+                  'Classes',
+                  style: TextStyle(
+                    fontFamily: 'SegoeUI',
+                    fontWeight: FontWeight.w900,
+                  )
+                )
+              ],)
             ],),       
           ),
         ),
@@ -254,13 +195,34 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                     SizedBox(height: 0.25*SizeConfig.heightMultiplier,),
-                    Text(
-                      highSchool,
-                      style: TextStyle(
-                        fontSize: 2*SizeConfig.textMultiplier,
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w300,
-                        color: Colors.deepPurpleAccent,
+                    Container(
+                      height: 2.5*SizeConfig.heightMultiplier,
+                      width: 45*SizeConfig.widthMultiplier,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          width: 0.5*SizeConfig.widthMultiplier,
+                          color: Colors.blue                         
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 15,
+                            spreadRadius: 5,
+                          )
+                        ]
+                      ),
+                      child: TextField(
+                        controller: highSchoolController,
+                        decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 1.75*SizeConfig.heightMultiplier),
+                        hintText: "Your high school",
+                        hintStyle: TextStyle(
+                          fontSize: 2*SizeConfig.textMultiplier,
+                          color: Colors.grey,
+                        )
+                        ),
                       ),
                     ),
                   ],
@@ -308,16 +270,37 @@ class _UserProfileState extends State<UserProfile> {
                         color: Color(0xff181a54),
                       ),
                     ),
-                    SizedBox(height: 0.25*SizeConfig.heightMultiplier,),
-                    Text(
-                      faceBook,
-                      style: TextStyle(
-                        fontSize: 2*SizeConfig.textMultiplier,
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w300,
-                        color: Colors.deepPurpleAccent,
+                    SizedBox(height: 0.25*SizeConfig.heightMultiplier,),                   
+                    Container(
+                      height: 2.5*SizeConfig.heightMultiplier,
+                      width: 45*SizeConfig.widthMultiplier,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          width: 0.5*SizeConfig.widthMultiplier,
+                          color: Colors.blue                         
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 15,
+                            spreadRadius: 5,
+                          )
+                        ]
                       ),
-                    ),
+                      child: TextField(
+                        controller: faceBookController,
+                        decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 1.75*SizeConfig.heightMultiplier),
+                        hintText: "Your facebook adress",
+                        hintStyle: TextStyle(
+                          fontSize: 2*SizeConfig.textMultiplier,
+                          color: Colors.grey,
+                        )
+                        ),
+                      ),
+                    )
                   ],
                 )
               ],
@@ -355,7 +338,7 @@ class _UserProfileState extends State<UserProfile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Phone Number',
+                      "Phone number",
                       style: TextStyle(
                         fontSize: 2*SizeConfig.textMultiplier,
                         fontWeight: FontWeight.w900,
@@ -364,15 +347,37 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                     SizedBox(height: 0.25*SizeConfig.heightMultiplier,),
-                    Text(
-                      phoneNumber,
-                      style: TextStyle(
-                        fontSize: 2*SizeConfig.textMultiplier,
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w300,
-                        color: Colors.deepPurpleAccent,
+                    Container(
+                      height: 2.5*SizeConfig.heightMultiplier,
+                      width: 45*SizeConfig.widthMultiplier,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          width: 0.5*SizeConfig.widthMultiplier,
+                          color: Colors.blue                         
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 15,
+                            spreadRadius: 5,
+                          )
+                        ]
                       ),
-                    ),
+                      child: TextField(
+                        controller: phoneNumberController,
+                        decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 1.75*SizeConfig.heightMultiplier),
+                        hintText: "Your phone number",
+                        hintStyle: TextStyle(
+                          fontSize: 2*SizeConfig.textMultiplier,
+                          color: Colors.grey,
+                        )
+                        ),
+                      ),
+                      
+                    )
                   ],
                 )
               ],
@@ -404,36 +409,26 @@ class _UserProfileState extends State<UserProfile> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       ),
               onPressed: () {
-                context.read<AuthService>().signOut();
+                highSchool = highSchoolController.text;
+                faceBook = faceBookController.text;
+                phoneNumber = phoneNumberController.text;
+                userUpdate(highSchool, faceBook , phoneNumber);
+                Navigator.pop(context,'updated');
               },
               child: Text(
-                "Sign Out",
+                "Update",
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
                   fontFamily: 'SegoeUI',
-                  letterSpacing: 2,
+                  letterSpacing: 1*SizeConfig.widthMultiplier,
                 ),               
-              ),            
+              ),             
             ),
           ),
         ),
-    //  SignOut
+    //  Update Press  
         ],
       ),
     );
-  }
-
-  void pressEdit() async {
-    String result = '';
-    result = await
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => EditProfile()),
-        );
-        if (result == 'updated'){
-          setState(() {
-            getUserinf();
-          });
-        }       
   }
 }
