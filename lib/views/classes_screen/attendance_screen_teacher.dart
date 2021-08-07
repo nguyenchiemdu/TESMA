@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/classinf.dart';
+import 'package:tesma/models/firebase_database.dart';
+import 'package:tesma/constants/datetime.dart';
 
 class AttendanceScreenTeacher extends StatefulWidget {
   final ClassInf classinf;
@@ -22,8 +25,16 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
         .collection('classes')
         .doc(widget.classinf.classid)
         .snapshots();
+    print('lastday = ' + widget.classinf.lastday.toString());
+    if ((widget.classinf.lastday == null) ||
+        (!widget.classinf.lastday.isSameDate(DateTime.now()) &&
+            widget.classinf.lastday.isBefore(DateTime.now()))) {
+      ClassInfor().resetday(widget.classinf.classid, uid);
+      widget.classinf.lastday = DateTime.now();
+    }
   }
 
+  String uid = FirebaseAuth.instance.currentUser.uid;
   Stream<DocumentSnapshot> _classesStream;
   TextEditingController searchController = TextEditingController();
 
@@ -78,7 +89,6 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Text("Loading");
                       }
-                      print(snapshot.data.data());
                       return ListView.builder(
                           itemCount: snapshot.data.data()['numberofstudents'],
                           itemBuilder: (BuildContext context, int index) {
@@ -139,18 +149,67 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(right: 0),
-                                    width: 5 * SizeConfig.heightMultiplier,
-                                    height: 5 * SizeConfig.heightMultiplier,
-                                    padding: EdgeInsets.all(3.0),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                          color: lightGreenColor,
-                                        )),
-                                    child: Icon(Icons.done),
-                                  ),
+                                  StreamBuilder<DocumentSnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('classes')
+                                          .doc(widget.classinf.classid)
+                                          .collection('schedule')
+                                          .doc(snapshot.data
+                                              .data()['liststudent'][index])
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<DocumentSnapshot>
+                                              snapshotschedule) {
+                                        if (snapshotschedule.data
+                                            .data()['today'])
+                                          return GestureDetector(
+                                            onTap: () {
+                                              ClassInfor().changestatustoday(
+                                                  snapshot.data.id,
+                                                  snapshotschedule.data.id,
+                                                  true);
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(right: 0),
+                                              width: 5 *
+                                                  SizeConfig.heightMultiplier,
+                                              height: 5 *
+                                                  SizeConfig.heightMultiplier,
+                                              padding: EdgeInsets.all(3.0),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  border: Border.all(
+                                                    color: lightGreenColor,
+                                                  )),
+                                              child: Icon(Icons.done),
+                                            ),
+                                          );
+                                        else
+                                          return GestureDetector(
+                                            onTap: () {
+                                              ClassInfor().changestatustoday(
+                                                  snapshot.data.id,
+                                                  snapshotschedule.data.id,
+                                                  true);
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(right: 0),
+                                              width: 5 *
+                                                  SizeConfig.heightMultiplier,
+                                              height: 5 *
+                                                  SizeConfig.heightMultiplier,
+                                              padding: EdgeInsets.all(3.0),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  border: Border.all(
+                                                    color: redColor,
+                                                  )),
+                                              child: Icon(Icons.clear),
+                                            ),
+                                          );
+                                      }),
                                 ],
                               ),
                               decoration: BoxDecoration(
