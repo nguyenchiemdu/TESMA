@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/classinf.dart';
@@ -36,15 +35,20 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
     String year = widget.classinf.startdate.substring(0, 4);
     var month = int.parse(widget.classinf.startdate.substring(5, 7));
     var date = widget.classinf.startdate.substring(8, 10);
-    startDate1 = 'Already starts  ' +
+    startDate1 = 'Will start  ' +
         listOfMonths[month - 1] +
         ' ' +
         date +
         ' ' +
         ", " +
         year;
-    startDate2 =
-        'Started  ' + listOfMonths[month - 1] + ' ' + date + ' ' + ", " + year;
+    startDate2 = 'Already starts  ' +
+        listOfMonths[month - 1] +
+        ' ' +
+        date +
+        ' ' +
+        ", " +
+        year;
 
     now.month <= month
         ? (now.day < dateint ? startDate = startDate1 : startDate = startDate2)
@@ -276,6 +280,7 @@ class _ClassInfoScreenState extends State<ClassInfoScreen> {
                         color: Color(0xff181a54),
                         fontSize: 16,
                         fontFamily: 'SegoeUI',
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),

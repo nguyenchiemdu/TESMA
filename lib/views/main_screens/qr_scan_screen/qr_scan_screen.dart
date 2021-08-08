@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/userinf.dart';
 
 class QrScan extends StatefulWidget {
@@ -96,7 +95,8 @@ class _QrScanState extends State<QrScan> {
                   isUpdated = true;
                 });
               } else {
-                String lastestAttendance = attendanceList[attendanceList.length - 1];
+                String lastestAttendance =
+                    attendanceList[attendanceList.length - 1];
                 if (lastestAttendance != dateToString(now)) {
                   setState(() {
                     attendanceList.add(dateToString(now));
@@ -152,7 +152,9 @@ class _QrScanState extends State<QrScan> {
                             future: controller?.getFlashStatus(),
                             builder: (context, snapshot) {
                               if (snapshot.data != null) {
-                                return Icon(snapshot.data ? Icons.flash_on : Icons.flash_off);
+                                return Icon(snapshot.data
+                                    ? Icons.flash_on
+                                    : Icons.flash_off);
                               } else {}
                               return Text('Flash: ${snapshot.data}');
                             },
@@ -263,10 +265,10 @@ class _QrScanState extends State<QrScan> {
 
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    var scanArea =
-        (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400)
-            ? 300.0
-            : 500.0;
+    var scanArea = (MediaQuery.of(context).size.width < 400 ||
+            MediaQuery.of(context).size.height < 400)
+        ? 300.0
+        : 500.0;
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(

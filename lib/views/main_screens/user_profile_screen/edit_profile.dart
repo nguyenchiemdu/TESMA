@@ -2,12 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:tesma/models/firebase_authen.dart';
-//import 'package:provider/provider.dart';
 import 'package:tesma/models/userinf.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/constants/color.dart';
-import 'package:tesma/views/main_screens/user_profile_screen/user_profile_screen.dart';
 
 Future<void> userUpdate(
     String highSchool, String faceBook, String phoneNumber) async {
