@@ -4,14 +4,14 @@ import 'package:tesma/constants/color.dart';
 import 'package:tesma/models/notification.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-Widget notifcard(BuildContext context, DocumentSnapshot document) {
+Widget notifcard(BuildContext context, DocumentSnapshot document, bool status) {
   final notif = Notif.fromSnapshot(document);
 
   return Container(
     padding: EdgeInsets.all(20),
     margin: EdgeInsets.fromLTRB(0, 0, 0, 25),
     decoration: BoxDecoration(
-        color: notif.status == "unread" ? Colors.white : greyColor,
+        color: notif.status == "unread" && status ? Colors.white : greyColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
