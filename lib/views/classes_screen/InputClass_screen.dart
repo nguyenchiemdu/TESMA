@@ -299,8 +299,8 @@ class _InputClassScreen extends State<InputClassScreen> {
       return;
     }
 
-    bool isSchedule(List<CheckBoxState> schedule){
-      if(schedule.map((element) => element.value).contains(true)){
+    bool isSchedule(List<CheckBoxState> schedule) {
+      if (schedule.map((element) => element.value).contains(true)) {
         return true;
       }
       return false;
@@ -378,6 +378,9 @@ class _InputClassScreen extends State<InputClassScreen> {
                         ),
                       ),
                       Container(
+                        height: 2 * SizeConfig.heightMultiplier,
+                      ),
+                      Container(
                         height: 5 * SizeConfig.heightMultiplier,
                         child: Padding(
                           padding: EdgeInsets.only(right: 10),
@@ -391,11 +394,15 @@ class _InputClassScreen extends State<InputClassScreen> {
                         ),
                       ),
                       Container(
-                          padding:
-                              EdgeInsets.all(2 * SizeConfig.heightMultiplier),
+                          padding: EdgeInsets.fromLTRB(
+                              0,
+                              2 * SizeConfig.heightMultiplier,
+                              0,
+                              1 * SizeConfig.heightMultiplier),
                           child: Container(
                               child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                 Expanded(
                                   flex: 5,
@@ -431,8 +438,8 @@ class _InputClassScreen extends State<InputClassScreen> {
                                 ),
                               ]))),
                       Container(
-                          padding:
-                              EdgeInsets.all(1 * SizeConfig.heightMultiplier),
+                          padding: EdgeInsets.fromLTRB(
+                              0, 0, 0, 1 * SizeConfig.heightMultiplier),
                           child: Container(
                               child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -441,7 +448,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                                   flex: 5,
                                   child: Padding(
                                     padding:
-                                        EdgeInsets.only(left: 10, right: 30),
+                                        EdgeInsets.only(left: 3, right: 30),
                                     child: Container(
                                       alignment: Alignment.center,
                                       height: 5 * SizeConfig.heightMultiplier,
@@ -474,7 +481,8 @@ class _InputClassScreen extends State<InputClassScreen> {
                                 Expanded(
                                   flex: 5,
                                   child: Padding(
-                                    padding:                                     EdgeInsets.only(left: 10, right: 50),
+                                    padding:
+                                        EdgeInsets.only(left: 10, right: 50),
                                     child: Container(
                                       alignment: Alignment.center,
                                       height: 5 * SizeConfig.heightMultiplier,
@@ -505,8 +513,8 @@ class _InputClassScreen extends State<InputClassScreen> {
                                   ),
                                 ),
                               ]))),
-                      Row(children: [
-                        Text(
+                      Container(
+                        child: Text(
                           "SCHEDULE",
                           textAlign: TextAlign.left,
                           style: TextStyle(
@@ -516,10 +524,12 @@ class _InputClassScreen extends State<InputClassScreen> {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                      ]),
+                      ),
                       Container(
-                        height: MediaQuery.of(context).size.height / 2,
+                        height: 52 * SizeConfig.heightMultiplier,
                         child: GridView.extent(
+                          padding: EdgeInsets.fromLTRB(0, 3, 0, 3),
+                          physics: NeverScrollableScrollPhysics(),
                           childAspectRatio: 9 / 5,
                           primary: false,
                           maxCrossAxisExtent: 170,
@@ -527,53 +537,55 @@ class _InputClassScreen extends State<InputClassScreen> {
                         ),
                       ),
                       Container(
-                          padding:
-                              EdgeInsets.all(2 * SizeConfig.heightMultiplier),
                           child: Container(
                               child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                Expanded(
-                                  flex: 5,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Text(
-                                      'TIME',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: 'SegoeUI',
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    ),
+                            Expanded(
+                              flex: 5,
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 10),
+                                child: Text(
+                                  'TIME',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'SegoeUI',
+                                    fontWeight: FontWeight.w900,
                                   ),
                                 ),
-                                Expanded(
-                                  flex: 5,
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 15, right: 10),
-                                    child: Text(
-                                      'FEE',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: 'SegoeUI',
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 5,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 15, right: 10),
+                                child: Text(
+                                  'FEE',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'SegoeUI',
+                                    fontWeight: FontWeight.w900,
                                   ),
                                 ),
-                              ]))),
+                              ),
+                            ),
+                          ]))),
                       Container(
+                        padding: EdgeInsets.fromLTRB(
+                            0,
+                            2 * SizeConfig.heightMultiplier,
+                            0,
+                            2 * SizeConfig.heightMultiplier),
                         child: Container(
                           child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 Expanded(
                                   flex: 2,
                                   child: Padding(
-                                    padding: EdgeInsets.only(left: 7),
+                                    padding: EdgeInsets.only(left: 3),
                                     child: Container(
                                       alignment: Alignment.centerRight,
                                       height: 5 * SizeConfig.heightMultiplier,
@@ -658,53 +670,48 @@ class _InputClassScreen extends State<InputClassScreen> {
                         ),
                       ),
                       Container(
-                        height: 5 * SizeConfig.heightMultiplier,
-                      ),
-                      Container(
-                          padding:
-                              EdgeInsets.all(2 * SizeConfig.heightMultiplier),
                           child: Container(
                               child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                Expanded(
-                                  flex: 5,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Text(
-                                      'START DATE',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: 'SegoeUI',
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    ),
+                            Expanded(
+                              flex: 5,
+                              child: Text(
+                                'START DATE',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontFamily: 'SegoeUI',
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 5,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 15, right: 10),
+                                child: Text(
+                                  'STUDENTS',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'SegoeUI',
+                                    fontWeight: FontWeight.w900,
                                   ),
                                 ),
-                                Expanded(
-                                  flex: 5,
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 15, right: 10),
-                                    child: Text(
-                                      'STUDENTS',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontFamily: 'SegoeUI',
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ]))),
+                              ),
+                            ),
+                          ]))),
                       Container(
-                          padding:
-                              EdgeInsets.all(1 * SizeConfig.heightMultiplier),
+                          padding: EdgeInsets.fromLTRB(
+                              0,
+                              2 * SizeConfig.heightMultiplier,
+                              0,
+                              3 * SizeConfig.heightMultiplier),
                           child: Container(
                               child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                 Expanded(
                                   flex: 5,
@@ -720,7 +727,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                                         style: ElevatedButton.styleFrom(
                                           primary: Colors.white,
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 20),
+                                              horizontal: 10),
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10)),
@@ -763,10 +770,8 @@ class _InputClassScreen extends State<InputClassScreen> {
                                       ),
                                     ),
                                   ),
-                                  )]))),
-                      Container(
-                        height: 5 * SizeConfig.heightMultiplier,
-                      ),
+                                )
+                              ]))),
                       Container(
                         child: Text(
                           'LOCATION',
@@ -779,9 +784,13 @@ class _InputClassScreen extends State<InputClassScreen> {
                         ),
                       ),
                       Container(
-                        height: 5 * SizeConfig.heightMultiplier,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 10),
+                        padding: EdgeInsets.fromLTRB(
+                            0,
+                            2 * SizeConfig.heightMultiplier,
+                            0,
+                            1 * SizeConfig.heightMultiplier),
+                        child: Container(
+                          height: 5 * SizeConfig.heightMultiplier,
                           child: TextField(
                             controller: locationController,
                             decoration: new InputDecoration(
@@ -790,36 +799,6 @@ class _InputClassScreen extends State<InputClassScreen> {
                             keyboardType: TextInputType.text,
                           ),
                         ),
-                      ),
-                      Container(
-                        height: 5 * SizeConfig.heightMultiplier,
-                      ),
-                      Container(
-                        child: Text(
-                          'LOCATION',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontFamily: 'SegoeUI',
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 5 * SizeConfig.heightMultiplier,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 10),
-                          child: TextField(
-                            controller: locationController,
-                            decoration: new InputDecoration(
-                              border: OutlineInputBorder(),
-                            ),
-                            keyboardType: TextInputType.text,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 2 * SizeConfig.heightMultiplier,
                       ),
                       Container(
                         padding:
@@ -872,8 +851,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                                               valueChooseSubject == "Subject" ||
                                               valueChooseGrade == "Grade" ||
                                               valueChooseMinute == "" ||
-                                              valueChooseHour == ""
-                                              ) {
+                                              valueChooseHour == "") {
                                             isFilledInAll = false;
                                           } else {
                                             isFilledInAll = true;
@@ -885,10 +863,10 @@ class _InputClassScreen extends State<InputClassScreen> {
                                               feeController.text)) {
                                             _showToast(
                                                 'Nhập học phí không chính xác');
-                                          } else if(!isSchedule(dayOfWeek)){
-                                            _showToast('Vui lòng chọn lịch học');
-                                          }
-                                          else {
+                                          } else if (!isSchedule(dayOfWeek)) {
+                                            _showToast(
+                                                'Vui lòng chọn lịch học');
+                                          } else {
                                             isErrorFromServe = "";
                                             createClassOnServe();
                                           }
