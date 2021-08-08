@@ -6,6 +6,7 @@ import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/classinf.dart';
 import 'package:tesma/models/firebase_database.dart';
 import 'package:tesma/constants/datetime.dart';
+import 'package:tesma/views/classes_screen/attendance_screen_forStudent.dart';
 
 class AttendanceScreenTeacher extends StatefulWidget {
   final ClassInf classinf;
@@ -20,12 +21,16 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
   @override
   void initState() {
     super.initState();
+    startDate = new DateTime.utc(
+        int.parse(widget.classinf.startdate.substring(0, 4)),
+        int.parse(widget.classinf.startdate.substring(5, 7)),
+        int.parse(widget.classinf.startdate.substring(8, 10)));
     print(widget.classinf.classid);
     _classesStream = FirebaseFirestore.instance
         .collection('classes')
         .doc(widget.classinf.classid)
         .snapshots();
-    print('lastday = ' + widget.classinf.lastday.toString());
+    //print('lastday = ' + widget.classinf.lastday.toString());
     if ((widget.classinf.lastday == null) ||
         (!widget.classinf.lastday.isSameDate(DateTime.now()) &&
             widget.classinf.lastday.isBefore(DateTime.now()))) {
@@ -34,6 +39,33 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
     }
   }
 
+  String getNumOfAbsences(int timeOfALesson, List attendenceList) {
+    // get number of attendances
+    int numOfAttendances = 0;
+    if (attendenceList != null) numOfAttendances = attendenceList.length;
+    // get number of learning days each week
+    int learningDaysInWeek = 0;
+    for (int i = 0; i < 7; i++)
+      if (widget.classinf.schedule[i]) learningDaysInWeek++;
+    // get number of lessons passed
+    int numOfDayPassed = now.difference(startDate).inDays;
+    int numOfLesson = (numOfDayPassed ~/ 7) * learningDaysInWeek;
+    int firstLesson = startDate.weekday;
+    for (int i = 0; i < numOfDayPassed % 7; i++)
+      if (widget.classinf.schedule[(i + firstLesson - 1) % 7]) numOfLesson++;
+    // check: is lesson today?
+    int nowInMinutes = now.hour * 60 + now.minute;
+    int startTimeInMinutes =
+        int.parse(widget.classinf.time.substring(0, 2)) * 60 +
+            int.parse(widget.classinf.time.substring(3, 5));
+    if (nowInMinutes - startTimeInMinutes >= timeOfALesson &&
+        widget.classinf.schedule[now.weekday - 1]) numOfLesson++;
+    // return
+    return (numOfLesson - numOfAttendances).toString();
+  }
+
+  final now = new DateTime.now();
+  DateTime startDate;
   String uid = FirebaseAuth.instance.currentUser.uid;
   Stream<DocumentSnapshot> _classesStream;
   TextEditingController searchController = TextEditingController();
@@ -92,137 +124,184 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
                       return ListView.builder(
                           itemCount: snapshot.data.data()['numberofstudents'],
                           itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              height: 6 * SizeConfig.heightMultiplier,
-                              margin: EdgeInsets.only(
-                                top: 2 * SizeConfig.heightMultiplier,
-                              ),
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                      left: 2 * SizeConfig.widthMultiplier,
-                                      right: 2 * SizeConfig.widthMultiplier,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '00',
-                                          style: TextStyle(
-                                            color: Color(0xffef4874),
-                                            fontSize: 16,
-                                            fontFamily: 'SegoeUI',
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Absence',
-                                          style: TextStyle(
-                                            color: Color(0xff181a54),
-                                            fontSize: 8,
-                                            fontFamily: 'SegoeUI',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        AttendanceScreenForStudent(
+                                            classinf: widget.classinf,
+                                            currentUserID: snapshot.data
+                                                .data()['liststudent'][index]),
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                      left: 2 * SizeConfig.widthMultiplier,
-                                      right: 2 * SizeConfig.widthMultiplier,
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      snapshot.data
-                                          .data()['liststudentname'][index]
-                                          .toString(),
-                                      style: TextStyle(
-                                        color: Color(0xff181a54),
-                                        fontFamily: 'SegoeUI',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                  StreamBuilder<DocumentSnapshot>(
-                                      stream: FirebaseFirestore.instance
-                                          .collection('classes')
-                                          .doc(widget.classinf.classid)
-                                          .collection('schedule')
-                                          .doc(snapshot.data
-                                              .data()['liststudent'][index])
-                                          .snapshots(),
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<DocumentSnapshot>
-                                              snapshotschedule) {
-                                        if (snapshotschedule.data
-                                            .data()['today'])
-                                          return GestureDetector(
-                                            onTap: () {
-                                              ClassInfor().changestatustoday(
-                                                  snapshot.data.id,
-                                                  snapshotschedule.data.id,
-                                                  true);
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.only(right: 0),
-                                              width: 5 *
-                                                  SizeConfig.heightMultiplier,
-                                              height: 5 *
-                                                  SizeConfig.heightMultiplier,
-                                              padding: EdgeInsets.all(3.0),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border: Border.all(
-                                                    color: lightGreenColor,
-                                                  )),
-                                              child: Icon(Icons.done),
+                                );
+                              },
+                              child: Container(
+                                height: 6 * SizeConfig.heightMultiplier,
+                                margin: EdgeInsets.only(
+                                  top: 2 * SizeConfig.heightMultiplier,
+                                ),
+                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                child: StreamBuilder<DocumentSnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection('classes')
+                                        .doc(widget.classinf.classid)
+                                        .collection('schedule')
+                                        .doc(snapshot.data.data()['liststudent']
+                                            [index])
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<DocumentSnapshot>
+                                            snapshotschedule) {
+                                      if (snapshotschedule.data != null)
+                                        return Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                left: 2 *
+                                                    SizeConfig.widthMultiplier,
+                                                right: 2 *
+                                                    SizeConfig.widthMultiplier,
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    getNumOfAbsences(
+                                                        90,
+                                                        snapshotschedule.data
+                                                                .data()[
+                                                            'attendance']),
+                                                    style: TextStyle(
+                                                      color: Color(0xffef4874),
+                                                      fontSize: 16,
+                                                      fontFamily: 'SegoeUI',
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Absence',
+                                                    style: TextStyle(
+                                                      color: Color(0xff181a54),
+                                                      fontSize: 8,
+                                                      fontFamily: 'SegoeUI',
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          );
-                                        else
-                                          return GestureDetector(
-                                            onTap: () {
-                                              ClassInfor().changestatustoday(
-                                                  snapshot.data.id,
-                                                  snapshotschedule.data.id,
-                                                  true);
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.only(right: 0),
-                                              width: 5 *
-                                                  SizeConfig.heightMultiplier,
-                                              height: 5 *
-                                                  SizeConfig.heightMultiplier,
-                                              padding: EdgeInsets.all(3.0),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border: Border.all(
-                                                    color: redColor,
-                                                  )),
-                                              child: Icon(Icons.clear),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                left: 2 *
+                                                    SizeConfig.widthMultiplier,
+                                                right: 2 *
+                                                    SizeConfig.widthMultiplier,
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                snapshot.data
+                                                    .data()['liststudentname']
+                                                        [index]
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  color: Color(0xff181a54),
+                                                  fontFamily: 'SegoeUI',
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
                                             ),
-                                          );
-                                      }),
-                                ],
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0x3f000000),
-                                    offset: Offset(0.25, 1.75),
-                                    blurRadius: 1,
-                                    spreadRadius: 0,
-                                  ),
-                                ],
+                                            (snapshotschedule.data
+                                                    .data()['today'])
+                                                ? GestureDetector(
+                                                    onTap: () {
+                                                      ClassInfor()
+                                                          .changestatustoday(
+                                                              snapshot.data.id,
+                                                              snapshotschedule
+                                                                  .data.id,
+                                                              true);
+                                                    },
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          right: 0),
+                                                      width: 5 *
+                                                          SizeConfig
+                                                              .heightMultiplier,
+                                                      height: 5 *
+                                                          SizeConfig
+                                                              .heightMultiplier,
+                                                      padding:
+                                                          EdgeInsets.all(3.0),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          border: Border.all(
+                                                            color:
+                                                                lightGreenColor,
+                                                          )),
+                                                      child: Icon(Icons.done),
+                                                    ),
+                                                  )
+                                                : GestureDetector(
+                                                    onTap: () {
+                                                      ClassInfor()
+                                                          .changestatustoday(
+                                                              snapshot.data.id,
+                                                              snapshotschedule
+                                                                  .data.id,
+                                                              true);
+                                                    },
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          right: 0),
+                                                      width: 5 *
+                                                          SizeConfig
+                                                              .heightMultiplier,
+                                                      height: 5 *
+                                                          SizeConfig
+                                                              .heightMultiplier,
+                                                      padding:
+                                                          EdgeInsets.all(3.0),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          border: Border.all(
+                                                            color: redColor,
+                                                          )),
+                                                      child: Icon(Icons.clear),
+                                                    ),
+                                                  ),
+                                          ],
+                                        );
+                                      else
+                                        return Center(
+                                          child: Container(
+                                            height: 20,
+                                            width: 20,
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                    }),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(0x3f000000),
+                                      offset: Offset(0.25, 1.75),
+                                      blurRadius: 1,
+                                      spreadRadius: 0,
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           });
