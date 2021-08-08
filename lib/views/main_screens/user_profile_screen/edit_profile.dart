@@ -136,7 +136,7 @@ class _EditProfileState extends State<EditProfile> {
                     userinf.userName,
                     style: TextStyle(
                       fontSize: 3*SizeConfig.textMultiplier,
-                      fontFamily: 'SegoeUI',
+                      fontFamily: 'SegoeUIB',
                       fontWeight: FontWeight.w900,
                     ),
                   ),

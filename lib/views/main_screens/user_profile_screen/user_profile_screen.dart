@@ -375,7 +375,7 @@ class _UserProfileState extends State<UserProfile> {
                         phoneNumber == null ? '' : phoneNumber,
                         style: TextStyle(
                           fontSize: 2 * SizeConfig.textMultiplier,
-                          fontFamily: 'SegoeUI',
+                          fontFamily: 'SegoeUIB',
                           fontWeight: FontWeight.w300,
                           color: Colors.deepPurpleAccent,
                         ),
