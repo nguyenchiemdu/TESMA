@@ -3,10 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
-import 'package:tesma/views/main_screens/home_screen/main_class_info.dart';
+import 'package:tesma/models/firebase_database.dart';
+//import 'package:tesma/models/userinf.dart';
+//import 'package:tesma/views/main_screens/home_screen/main_class_info.dart';
 import 'package:tesma/views/main_screens/notification_screen/notificationcard.dart';
 
 class NotificationScreens extends StatefulWidget {
+  final DocumentSnapshot userdata;
+  const NotificationScreens({Key key, @required this.userdata})
+      : super(key: key);
   @override
   _NotificationScreensState createState() => _NotificationScreensState();
 }
@@ -21,6 +26,7 @@ class _NotificationScreensState extends State<NotificationScreens> {
   bool hasNext = true;
   bool isFetching = false;
   List _allresultList = [];
+  List _status = [];
 
   Color getbackgroudcolor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -80,6 +86,7 @@ class _NotificationScreensState extends State<NotificationScreens> {
       }
       setState(() {
         _allresultList.addAll(data.docs);
+        _status.addAll(List.filled(_allresultList.length, true));
       });
       if (data.docs.length < documentLimit) hasNext = false;
       print('get notification successful');
@@ -134,7 +141,15 @@ class _NotificationScreensState extends State<NotificationScreens> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Notif().deleteUser(
+                                        FirebaseAuth.instance.currentUser.uid);
+                                    setState(() {
+                                      _allresultList = [];
+                                      _status = [];
+                                      //getNotif();
+                                    });
+                                  },
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.resolveWith(
@@ -157,7 +172,15 @@ class _NotificationScreensState extends State<NotificationScreens> {
                                 width: 10.0,
                               ),
                               ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Notif().markallread(
+                                        FirebaseAuth.instance.currentUser.uid);
+                                    setState(() {
+                                      _status = List.filled(
+                                          _allresultList.length, false);
+                                      //getNotif();
+                                    });
+                                  },
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.resolveWith(
@@ -206,16 +229,24 @@ class _NotificationScreensState extends State<NotificationScreens> {
                                   }
                                 } else {
                                   return GestureDetector(
-                                    child: notifcard(
-                                        context, _allresultList[index]),
+                                    child: notifcard(context,
+                                        _allresultList[index], _status[index]),
                                     onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => MyClassPage(
-                                                resultList:
-                                                    _allresultList[index])),
-                                      );
+                                      setState(() {
+                                        _status[index] = false;
+                                      });
+                                      Notif()
+                                          .markread(_allresultList[index].id);
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //       builder: (context) => MyClassPage(
+                                      //           currentUser:
+                                      //               UserInf.fromSnapshot(
+                                      //                   widget.userdata),
+                                      //           resultList:
+                                      //               _allresultList[index])),
+                                      // );
                                     },
                                   );
                                 }

@@ -184,4 +184,35 @@ class Notif {
     });
     return;
   }
+
+  Future<void> markread(String id) async {
+    final notifications =
+        FirebaseFirestore.instance.collection('notifications').doc(id);
+    await notifications.update({'status': "readed"});
+  }
+
+  Future<void> markallread(String uid) async {
+    CollectionReference notifications =
+        FirebaseFirestore.instance.collection('notifications');
+    await notifications.where('uid', isEqualTo: uid).get().then((value) {
+      value.docs.forEach((element) {
+        notifications.doc(element.id).update({'status': "readed"});
+      });
+    });
+  }
+
+  Future<void> deleteUser(String uid) async {
+    CollectionReference notifications =
+        FirebaseFirestore.instance.collection('notifications');
+    await notifications.where('uid', isEqualTo: uid).get().then((value) {
+      value.docs.forEach((element) {
+        notifications
+            .doc(element.id)
+            .delete()
+            .then((value) => print("notifications id= " + uid + " Deleted"))
+            .catchError((error) =>
+                print("Failed to delete notificationsid= " + uid + ": $error"));
+      });
+    });
+  }
 }
