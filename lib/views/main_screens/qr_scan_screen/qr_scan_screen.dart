@@ -5,17 +5,31 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tesma/constants/size_config.dart';
+import 'package:tesma/models/userinf.dart';
 
 class QrScan extends StatefulWidget {
+  final userdata;
+  const QrScan({Key key, this.userdata}) : super(key: key);
   @override
   State<StatefulWidget> createState() => _QrScanState();
 }
 
 class _QrScanState extends State<QrScan> {
+  @override
+  void initState() {
+    super.initState();
+    userinf = UserInf.fromSnapshot(widget.userdata);
+  }
+
+  UserInf userinf;
   Barcode result;
+  String whyIsItWrongQr = '';
+  bool isCorrectCode = false;
   QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-
+  bool isUpdated = false;
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
   @override
@@ -25,6 +39,94 @@ class _QrScanState extends State<QrScan> {
       controller.pauseCamera();
     }
     controller.resumeCamera();
+  }
+
+  String dateToString(DateTime aDayTime) {
+    String day = aDayTime.day.toString();
+    String month = aDayTime.month.toString();
+    String year = aDayTime.year.toString();
+    if (day.length == 1) day = '0' + day;
+    if (month.length == 1) month = '0' + month;
+    return day + '-' + month + '-' + year;
+  }
+
+  Future<void> checkQrCodeAndMarkAttendance(Barcode resultBarCode) async {
+    DateTime now = DateTime.now();
+    String resultCode = resultBarCode.code;
+    if (resultCode.length == 0) {
+      setState(() {
+        whyIsItWrongQr = 'This QR Code is out of date';
+      });
+      return;
+    }
+    if (resultCode.length != 40) return;
+    String getClassID = resultCode.substring(0, 20);
+    String getRamdomCode = resultCode.substring(30, 40);
+    String codeFromServe = '';
+    setState(() {
+      result = resultBarCode;
+    });
+    await FirebaseFirestore.instance
+        .collection('classes')
+        .doc(getClassID)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        codeFromServe = documentSnapshot.data()['qrCode'];
+        if (codeFromServe.substring(30, 40) == getRamdomCode &&
+            codeFromServe.substring(20, 30) == dateToString(now)) {
+          FirebaseFirestore.instance
+              .collection('classes')
+              .doc(getClassID)
+              .collection('schedule')
+              .doc(userinf.uid)
+              .get()
+              .then((DocumentSnapshot documentSnapshot) {
+            if (documentSnapshot.exists) {
+              List attendanceList = documentSnapshot.data()['attendance'];
+              if (attendanceList == null || attendanceList.length == 0) {
+                setState(() {
+                  List<String> newList = [dateToString(now)];
+                  FirebaseFirestore.instance
+                      .collection('classes')
+                      .doc(getClassID)
+                      .collection('schedule')
+                      .doc(userinf.uid)
+                      .update({'attendance': newList});
+                  isUpdated = true;
+                });
+              } else {
+                String lastestAttendance = attendanceList[attendanceList.length - 1];
+                if (lastestAttendance != dateToString(now)) {
+                  setState(() {
+                    attendanceList.add(dateToString(now));
+                    FirebaseFirestore.instance
+                        .collection('classes')
+                        .doc(getClassID)
+                        .collection('schedule')
+                        .doc(userinf.uid)
+                        .update({'attendance': attendanceList});
+                    isUpdated = true;
+                  });
+                }
+              }
+            } else {
+              setState(() {
+                whyIsItWrongQr = 'You are not a member of this class';
+              });
+            }
+          });
+        } else {
+          setState(() {
+            whyIsItWrongQr = 'This QR Code is out of date';
+          });
+        }
+      } else {
+        setState(() {
+          whyIsItWrongQr = 'Wrong type QR Code';
+        });
+      }
+    });
   }
 
   @override
@@ -49,11 +151,9 @@ class _QrScanState extends State<QrScan> {
                           icon: FutureBuilder<bool>(
                             future: controller?.getFlashStatus(),
                             builder: (context, snapshot) {
-                              if(snapshot.data != null){
+                              if (snapshot.data != null) {
                                 return Icon(snapshot.data ? Icons.flash_on : Icons.flash_off);
-                              } else{
-
-                              }
+                              } else {}
                               return Text('Flash: ${snapshot.data}');
                             },
                           ),
@@ -97,42 +197,65 @@ class _QrScanState extends State<QrScan> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   if (result != null)
-                    Text(
-                        'Barcode Type: ${describeEnum(result.format)}   Data: ${result.code}')
+                    if (isUpdated == false)
+                      Text(
+                        whyIsItWrongQr,
+                        style: TextStyle(
+                          color: royalBlueColor,
+                          fontSize: 12,
+                          fontFamily: 'SegoeUI',
+                        ),
+                      )
+                    else
+                      Text(
+                        "You have been marked to attend today's lesson",
+                        style: TextStyle(
+                          color: royalBlueColor,
+                          fontSize: 12,
+                          fontFamily: 'SegoeUI',
+                        ),
+                      )
                   else
-                    Text('Scan a code'),
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: Text(
-                          'QR SCAN',
-                          style: TextStyle(
-                            color: royalBlueColor,
-                            fontSize: 40,
-                            fontFamily: 'SegoeUI',
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
+                    Text(
+                      'Scanning QR code',
+                      style: TextStyle(
+                        color: royalBlueColor,
+                        fontSize: 12,
+                        fontFamily: 'SegoeUI',
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10, right: 10),
-                        child: Container(
-                          margin: EdgeInsets.all(8),
-                          width: 200,
-                          child: Text(
-                            'Place your teacher code inside the frame to scan ',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: royalBlueColor,
-                              fontSize: 16,
-                              fontFamily: 'SegoeUI',
-                            ),
-                          ),
-                        ),
+                    ),
+                  Container(
+                    margin: EdgeInsets.all(8),
+                    child: Text(
+                      'QR SCAN',
+                      style: TextStyle(
+                        color: royalBlueColor,
+                        fontSize: 40,
+                        fontFamily: 'SegoeUI',
+                        fontWeight: FontWeight.w900,
                       ),
-                    ],
+                    ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: Container(
+                      margin: EdgeInsets.all(8),
+                      width: 200,
+                      child: Text(
+                        'Place your teacher code inside the frame to scan ',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: royalBlueColor,
+                          fontSize: 16,
+                          fontFamily: 'SegoeUI',
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
+          ),
         ],
       ),
     );
@@ -140,10 +263,10 @@ class _QrScanState extends State<QrScan> {
 
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 300.0
-        : 500.0;
+    var scanArea =
+        (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400)
+            ? 300.0
+            : 500.0;
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
@@ -164,9 +287,7 @@ class _QrScanState extends State<QrScan> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
+      checkQrCodeAndMarkAttendance(scanData);
     });
   }
 

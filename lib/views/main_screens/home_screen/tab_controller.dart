@@ -84,7 +84,10 @@ class _TabControllerScreenState extends State<TabControllerScreen>
               child: _getTabBarView(
                 <Widget>[
                   ClassInfoScreen(classinf: widget.classinf),
-                  QrClass(classinf: widget.classinf),
+                  QrClass(
+                    classinf: widget.classinf,
+                    userType: widget.currentUser.userType,
+                  ),
                   if (widget.currentUser.userType == 'student')
                     AttendanceScreenForStudent(
                       classinf: widget.classinf,
