@@ -59,10 +59,36 @@ class _ClassCardState extends State<ClassCard> {
   }
 
   String uid = FirebaseAuth.instance.currentUser.uid;
-  var classinf;
+  ClassInf classinf;
   UserInf userinf;
   DocumentSnapshot document;
   String startdateText;
+
+  getUserData() async {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    bool ok = false;
+    //print(classinf.classid);
+    await users.doc(uid).get().then((docsnap) {
+      if (docsnap.data()['listClass'] == null) {
+        ok = true;
+        setState(() {
+          _isButtonDisabled = true;
+        });
+      } else {
+        if (!docsnap.data()['listClass'].contains(classinf.classid)) {
+          ok = true;
+          setState(() {
+            _isButtonDisabled = true;
+          });
+        }
+      }
+    });
+    if (!ok)
+      setState(() {
+        _isButtonDisabled = false;
+      });
+    return ok;
+  }
 
   void setup() {
     // Setup scheduleText ---------------------------
@@ -91,6 +117,9 @@ class _ClassCardState extends State<ClassCard> {
     //String feeText;
 
     bool enrollbtn() {
+      //print(_isButtonDisabled);
+      if (!_isButtonDisabled) return false;
+      getUserData();
       if (uid == classinf.hostID) return false;
       if (classinf.numberofstudents == classinf.maxstudents) return false;
       if (classinf.liststudent.contains(uid)) return false;
@@ -266,12 +295,11 @@ class _ClassCardState extends State<ClassCard> {
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith(
-                            enrollbtn() && _isButtonDisabled
+                            enrollbtn()
                                 ? backgroudcolorenable
                                 : backgroudcolordisabled),
                       ),
-                      onPressed:
-                          enrollbtn() && _isButtonDisabled ? _enrollfucn : null,
+                      onPressed: enrollbtn() ? _enrollfucn : null,
                       child: Text(
                         "Enroll",
                         style: TextStyle(
