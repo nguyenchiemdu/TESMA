@@ -40,7 +40,7 @@ Widget singleClass(BuildContext context, DocumentSnapshot document) {
     if ((now.hour.toString() + ":" + now.minute.toString())
             .compareTo(classinf.time) ==
         1) {
-      nextday++;
+      nextday = (nextday + 1) % 7;
       count++;
     }
     while (classinf.schedule[nextday % 7] == false) {

@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           new BottomNavigationBarItem(
             icon: Icon(Icons.list_alt_rounded),
-            label: 'List',
+            label: 'Profile',
           ),
         ],
       ),
