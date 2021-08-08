@@ -187,28 +187,7 @@ class _UserProfileState extends State<UserProfile> {
                         fontWeight: FontWeight.w900,
                       )
                     )
-                  ],),
-                  if (userinf.userType == 'teacher')
-                  Column(children: [
-                    Text(
-                      userinf.listClass != null 
-                      ?userinf.listClass.length.toString()
-                      :'0',
-                      style: TextStyle(
-                        color: Color(0xff181a54),
-                        fontSize: 25,
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    Text(
-                      'Students',
-                      style: TextStyle(
-                        fontFamily: 'SegoeUI',
-                        fontWeight: FontWeight.w900,
-                      )
-                    )
-                  ],),
+                  ],),                  
                 ],
               )
             ],),       
@@ -255,7 +234,8 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     SizedBox(height: 0.25*SizeConfig.heightMultiplier,),
                     Text(
-                      highSchool,
+                      highSchool == null
+                      ?'':highSchool,
                       style: TextStyle(
                         fontSize: 2*SizeConfig.textMultiplier,
                         fontFamily: 'SegoeUI',
@@ -310,7 +290,8 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     SizedBox(height: 0.25*SizeConfig.heightMultiplier,),
                     Text(
-                      faceBook,
+                      faceBook == null
+                      ?'':faceBook,
                       style: TextStyle(
                         fontSize: 2*SizeConfig.textMultiplier,
                         fontFamily: 'SegoeUI',
@@ -365,7 +346,8 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     SizedBox(height: 0.25*SizeConfig.heightMultiplier,),
                     Text(
-                      phoneNumber,
+                      phoneNumber == null
+                      ?'':phoneNumber,
                       style: TextStyle(
                         fontSize: 2*SizeConfig.textMultiplier,
                         fontFamily: 'SegoeUI',
@@ -428,7 +410,9 @@ class _UserProfileState extends State<UserProfile> {
     result = await
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => EditProfile()),
+        MaterialPageRoute(builder: (context) => EditProfile(
+          userdata: widget.userdata
+        )),
         );
         if (result == 'updated'){
           setState(() {

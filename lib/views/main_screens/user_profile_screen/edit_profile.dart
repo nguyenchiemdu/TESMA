@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:tesma/models/firebase_authen.dart';
 //import 'package:provider/provider.dart';
+import 'package:tesma/models/userinf.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:tesma/views/main_screens/user_profile_screen/user_profile_screen.dart';
@@ -25,11 +26,24 @@ Future<void> userUpdate(String highSchool, String faceBook, String phoneNumber) 
   });
 }
 
-class EditProfile extends StatelessWidget {
+class EditProfile extends StatefulWidget {
+  final DocumentSnapshot userdata; 
+  //final UserInf userinfor;
+  const EditProfile({Key key, this.userdata}) : super(key: key);
+  @override
+  _EditProfileState createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
   final TextEditingController highSchoolController = TextEditingController(); 
   final TextEditingController faceBookController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
 
+  void initState() {
+    super.initState();
+    userinf = UserInf.fromSnapshot(widget.userdata);
+  }
+  UserInf userinf;
   String phoneNumber = '';
   String highSchool = '';
   String faceBook = '';
@@ -119,7 +133,7 @@ class EditProfile extends StatelessWidget {
               ),
               SizedBox(height: 1*SizeConfig.heightMultiplier,),
               Text(
-                'Nguyen Dinh Tuan',
+                userinf.userName,
                 style: TextStyle(
                   fontSize: 3*SizeConfig.textMultiplier,
                   fontFamily: 'SegoeUI',
@@ -128,7 +142,7 @@ class EditProfile extends StatelessWidget {
               ),
               SizedBox(height: 1*SizeConfig.heightMultiplier,),
               Text(
-                  'STUDENT',
+                  userinf.userType.toUpperCase(),
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontFamily: 'SegoeUI',
@@ -136,7 +150,9 @@ class EditProfile extends StatelessWidget {
                 ),
               Column(children: [
                 Text(
-                  '05',
+                  userinf.listClass != null 
+                      ?userinf.listClass.length.toString()
+                      :'0',
                   style: TextStyle(
                     color: Color(0xff181a54),
                     fontSize: 25,
