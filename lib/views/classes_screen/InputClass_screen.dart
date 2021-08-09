@@ -526,13 +526,13 @@ class _InputClassScreen extends State<InputClassScreen> {
                         ),
                       ),
                       Container(
-                        height: 52 * SizeConfig.heightMultiplier,
+                        height: 245,
                         child: GridView.extent(
                           padding: EdgeInsets.fromLTRB(0, 3, 0, 3),
                           physics: NeverScrollableScrollPhysics(),
-                          childAspectRatio: 9 / 5,
+                          childAspectRatio: 3,
                           primary: false,
-                          maxCrossAxisExtent: 170,
+                          maxCrossAxisExtent: 190,
                           children: dayOfWeek.map(buildSingleCheckbox).toList(),
                         ),
                       ),

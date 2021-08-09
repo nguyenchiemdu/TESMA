@@ -29,7 +29,7 @@ class _UserInformationState extends State<UserInformation> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Text("Loading");
         }
-        print(snapshot.data.data());
+        //print(snapshot.data.data());
         if (snapshot.data.data()['userType'] == null) return Loading();
         return MyHomePage(
           userdata: snapshot.data,
