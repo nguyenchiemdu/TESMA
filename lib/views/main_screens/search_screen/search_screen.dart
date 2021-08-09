@@ -117,59 +117,90 @@ class _SearchState extends State<Search> {
 
   searchResultsListGrade() {
     var showResults = [];
+    var showResultsClassInf = [];
+    List<int> showResultsindex = [];
+    int dem = 0;
     for (var Snapshot in _resultsList) {
       var gradeItem = ClassInf.fromSnapshot(Snapshot).grade.toLowerCase();
       for (var i = 0; i < 3; i++) {
         if (grade[i].value && gradeItem == grade[i].title.toLowerCase()) {
           showResults.add(Snapshot);
+          showResultsClassInf.add(_resultsListClassInf[dem]);
+          showResultsindex.add(_indexClassInf[dem]);
           break;
         }
       }
+      ++dem;
     }
     setState(() {
       _resultsList = showResults;
+      _resultsListClassInf = showResultsClassInf;
+      _indexClassInf = showResultsindex;
     });
   }
 
   searchResultsListSubject() {
     var showResults = [];
+    var showResultsClassInf = [];
+    List<int> showResultsindex = [];
+    int dem = 0;
     for (var Snapshot in _resultsList) {
       var subjectItem = ClassInf.fromSnapshot(Snapshot).subject.toLowerCase();
       for (var i = 0; i < 5; i++) {
         if (subject[i].value && subjectItem == subject[i].title.toLowerCase()) {
           showResults.add(Snapshot);
+          showResultsClassInf.add(_resultsListClassInf[dem]);
+          showResultsindex.add(_indexClassInf[dem]);
           break;
         }
       }
+      ++dem;
     }
     setState(() {
       _resultsList = showResults;
+      _resultsListClassInf = showResultsClassInf;
+      _indexClassInf = showResultsindex;
     });
   }
 
   searchResultsListStatus() {
     var showResults = [];
+    var showResultsClassInf = [];
+    List<int> showResultsindex = [];
+    int dem = 0;
     if (status[0].value == status[1].value) {
       showResults = List.from(_resultsList);
+      showResultsClassInf = List.from(_allresultListClassInf);
+      showResultsindex = List.from(_indexClassInf);
     } else {
-      if (status[0].value) {
+      if (status[1].value) {
         for (var Snapshot in _resultsList) {
           var startDate = DateTime.parse(
               ClassInf.fromSnapshot(Snapshot).startdate.toLowerCase());
-          if (DateTime.now().compareTo(startDate) >= 0)
+          if (DateTime.now().compareTo(startDate) >= 0) {
             showResults.add(Snapshot);
+            showResultsClassInf.add(_resultsListClassInf[dem]);
+            showResultsindex.add(_indexClassInf[dem]);
+          }
+          ++dem;
         }
       } else {
         for (var Snapshot in _resultsList) {
           var startDate = DateTime.parse(
               ClassInf.fromSnapshot(Snapshot).startdate.toLowerCase());
-          if (DateTime.now().compareTo(startDate) < 0)
+          if (DateTime.now().compareTo(startDate) < 0) {
             showResults.add(Snapshot);
+            showResultsClassInf.add(_resultsListClassInf[dem]);
+            showResultsindex.add(_indexClassInf[dem]);
+          }
+          ++dem;
         }
       }
     }
     setState(() {
       _resultsList = showResults;
+      _resultsListClassInf = showResultsClassInf;
+      _indexClassInf = showResultsindex;
     });
   }
 
@@ -184,7 +215,6 @@ class _SearchState extends State<Search> {
     var showResultsClassInf = [];
     List<int> showResultsindex = [];
     int dem = 0;
-    print("Hello");
     if (searchController.text != "") {
       for (var Snapshot in _allresultList) {
         //print("Snapshot");
@@ -194,7 +224,6 @@ class _SearchState extends State<Search> {
         if (classname.contains(searchController.text.toLowerCase())) {
           //print(classname);
           showResults.add(Snapshot);
-          //print(_allresultListClassInf[dem].classname);
           showResultsClassInf.add(_allresultListClassInf[dem]);
           showResultsindex.add(dem);
         }
@@ -210,10 +239,11 @@ class _SearchState extends State<Search> {
       _resultsList = showResults;
       _resultsListClassInf = showResultsClassInf;
       _indexClassInf = showResultsindex;
-      print(showResultsindex);
+      //print(showResultsindex);
     });
-    //searchResultsListwithFilter();
+    searchResultsListwithFilter();
     if (_resultsList.length < 3 && hasNext) getClassInfor();
+    print(hasNext);
   }
 
   @override
@@ -231,7 +261,7 @@ class _SearchState extends State<Search> {
   }
 
   getClassInfor() async {
-    if (isFetching) return;
+    //if (isFetching) return;
     errorMessage = '';
     isFetching = true;
     try {
