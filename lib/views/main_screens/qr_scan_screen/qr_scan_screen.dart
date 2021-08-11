@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,6 +41,15 @@ class _QrScanState extends State<QrScan> {
     controller.resumeCamera();
   }
 
+  void _showToast(String context) {
+    Fluttertoast.showToast(
+      msg: context,
+      backgroundColor: redColor,
+      textColor: whiteColor,
+      gravity: ToastGravity.CENTER,
+    );
+  }
+
   String dateToString(DateTime aDayTime) {
     String day = aDayTime.day.toString();
     String month = aDayTime.month.toString();
@@ -49,19 +59,25 @@ class _QrScanState extends State<QrScan> {
     return day + '-' + month + '-' + year;
   }
 
+  void checkForRepetition(String notif) {
+    if (whyIsItWrongQr != notif) {
+      setState(() {
+        whyIsItWrongQr = notif;
+      });
+      _showToast(notif);
+    }
+  }
+
   Future<void> checkQrCodeAndMarkAttendance(Barcode resultBarCode) async {
+    if (isUpdated) return;
     DateTime now = DateTime.now();
     String resultCode = resultBarCode.code;
     if (resultCode.length == 0) {
-      setState(() {
-        whyIsItWrongQr = 'This QR Code is out of date';
-      });
+      checkForRepetition('This QR Code is out of date');
       return;
     }
     if (resultCode.length != 40) {
-      setState(() {
-        whyIsItWrongQr = 'Wrong type QR Code';
-      });
+      checkForRepetition('Wrong type QR Code');
       return;
     }
     String getClassID = resultCode.substring(0, 20);
@@ -98,6 +114,7 @@ class _QrScanState extends State<QrScan> {
                       .doc(userinf.uid)
                       .update({'attendance': newList});
                   isUpdated = true;
+                  _showToast("You have been marked to attend today's lesson");
                 });
               } else {
                 String lastestAttendance = attendanceList[attendanceList.length - 1];
@@ -115,20 +132,14 @@ class _QrScanState extends State<QrScan> {
                 }
               }
             } else {
-              setState(() {
-                whyIsItWrongQr = 'You are not a member of this class';
-              });
+              checkForRepetition('You are not a member of this class');
             }
           });
         } else {
-          setState(() {
-            whyIsItWrongQr = 'This QR Code is out of date';
-          });
+          checkForRepetition('This QR Code is out of date');
         }
       } else {
-        setState(() {
-          whyIsItWrongQr = 'Wrong type QR Code';
-        });
+        checkForRepetition('Wrong type QR Code');
       }
     });
   }
@@ -201,24 +212,14 @@ class _QrScanState extends State<QrScan> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   if (result != null)
-                    if (isUpdated == false)
-                      Text(
-                        whyIsItWrongQr,
-                        style: TextStyle(
-                          color: royalBlueColor,
-                          fontSize: 12,
-                          fontFamily: 'SegoeUI',
-                        ),
-                      )
-                    else
-                      Text(
-                        "You have been marked to attend today's lesson",
-                        style: TextStyle(
-                          color: royalBlueColor,
-                          fontSize: 12,
-                          fontFamily: 'SegoeUI',
-                        ),
-                      )
+                    Text(
+                      '',
+                      style: TextStyle(
+                        color: royalBlueColor,
+                        fontSize: 12,
+                        fontFamily: 'SegoeUI',
+                      ),
+                    )
                   else
                     Text(
                       'Scanning QR code',
