@@ -67,7 +67,6 @@ class _AttendanceScreenForStudentState extends State<AttendanceScreenForStudent>
       if (documentSnapshot.exists) {
         setState(() {
           requestedUserName = documentSnapshot.data()['userName'];
-          print('get userName successfully');
         });
       }
     });
@@ -127,7 +126,6 @@ class _AttendanceScreenForStudentState extends State<AttendanceScreenForStudent>
         }
       }
     }
-    print(attend);
     listCalendar.addAll(
         List.generate(daysInMonth(currentYear, currentMonth), (index) => (index + 1).toString()));
 
