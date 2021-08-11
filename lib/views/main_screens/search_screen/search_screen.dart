@@ -108,7 +108,8 @@ class _SearchState extends State<Search> {
 
   void scrollListener() {
     if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
+            scrollController.position.maxScrollExtent &&
+        searchController.text == '') {
       if (hasNext) {
         getClassInfor();
       }
@@ -170,7 +171,7 @@ class _SearchState extends State<Search> {
     int dem = 0;
     if (status[0].value == status[1].value) {
       showResults = List.from(_resultsList);
-      showResultsClassInf = List.from(_allresultListClassInf);
+      showResultsClassInf = List.from(_resultsListClassInf);
       showResultsindex = List.from(_indexClassInf);
     } else {
       if (status[1].value) {
@@ -239,10 +240,13 @@ class _SearchState extends State<Search> {
       _resultsList = showResults;
       _resultsListClassInf = showResultsClassInf;
       _indexClassInf = showResultsindex;
+      print(showResultsindex);
+      print(showResultsClassInf);
+
       //print(showResultsindex);
     });
     searchResultsListwithFilter();
-    if (_resultsList.length < 3 && hasNext) getClassInfor();
+    //if (_resultsList.length < 3 && hasNext) getClassInfor();
     print(hasNext);
   }
 
@@ -468,7 +472,7 @@ class _SearchState extends State<Search> {
                           itemCount: _resultsList.length + 1,
                           itemBuilder: (BuildContext context, int index) {
                             if (index >= _resultsList.length) {
-                              if (hasNext) {
+                              if (hasNext && _resultsList.length > 3) {
                                 return Center(
                                   child: Container(
                                     height: 20,
