@@ -64,6 +64,11 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
     return (numOfLesson - numOfAttendances).toString();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   final now = new DateTime.now();
   DateTime startDate;
   String uid = FirebaseAuth.instance.currentUser.uid;

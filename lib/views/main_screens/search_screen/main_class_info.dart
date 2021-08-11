@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tesma/views/main_screens/home_screen/tab_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tesma/models/classinf.dart';
 import 'package:tesma/models/userinf.dart';
