@@ -11,16 +11,13 @@ List<String> listCalendar = [];
 class AttendanceScreenForStudent extends StatefulWidget {
   final ClassInf classinf;
   final String currentUserID;
-  const AttendanceScreenForStudent(
-      {Key key, @required this.classinf, this.currentUserID})
+  const AttendanceScreenForStudent({Key key, @required this.classinf, this.currentUserID})
       : super(key: key);
   @override
-  _AttendanceScreenForStudentState createState() =>
-      _AttendanceScreenForStudentState();
+  _AttendanceScreenForStudentState createState() => _AttendanceScreenForStudentState();
 }
 
-class _AttendanceScreenForStudentState
-    extends State<AttendanceScreenForStudent> {
+class _AttendanceScreenForStudentState extends State<AttendanceScreenForStudent> {
   int currentYear = now.year;
   int currentMonth = now.month;
   int firstDayOfMonth = DateTime.utc(now.year, now.month, 1).weekday;
@@ -90,13 +87,14 @@ class _AttendanceScreenForStudentState
   }
 
   String getNumOfAbsences(int timeOfALesson) {
+    if (startDate.compareTo(now) == 1) return '0';
+
     // get number of attendances
     int numOfAttendances = 0;
     if (attendenceList != null) numOfAttendances = attendenceList.length;
     // get number of learning days each week
     int learningDaysInWeek = 0;
-    for (int i = 0; i < 7; i++)
-      if (widget.classinf.schedule[i]) learningDaysInWeek++;
+    for (int i = 0; i < 7; i++) if (widget.classinf.schedule[i]) learningDaysInWeek++;
     // get number of lessons passed
     int numOfDayPassed = now.difference(startDate).inDays;
     int numOfLesson = (numOfDayPassed ~/ 7) * learningDaysInWeek;
@@ -105,9 +103,8 @@ class _AttendanceScreenForStudentState
       if (widget.classinf.schedule[(i + firstLesson - 1) % 7]) numOfLesson++;
     // check: is lesson today?
     int nowInMinutes = now.hour * 60 + now.minute;
-    int startTimeInMinutes =
-        int.parse(widget.classinf.time.substring(0, 2)) * 60 +
-            int.parse(widget.classinf.time.substring(3, 5));
+    int startTimeInMinutes = int.parse(widget.classinf.time.substring(0, 2)) * 60 +
+        int.parse(widget.classinf.time.substring(3, 5));
     if (nowInMinutes - startTimeInMinutes >= timeOfALesson &&
         widget.classinf.schedule[now.weekday - 1]) numOfLesson++;
     // return
@@ -120,36 +117,31 @@ class _AttendanceScreenForStudentState
     listCalendar.addAll(List.generate(firstDayOfMonth - 1, (index) => ""));
     int indexOfTheStartDay = 7 + firstDayOfMonth - 2;
     String tmpString;
-    Map attend = Map<int, bool>();
+    Map attend = new Map<int, bool>();
     if (attendenceList != null) {
       for (int i = 0; i < attendenceList.length; i++) {
         tmpString = attendenceList[i].toString();
         if (currentMonth == int.parse(tmpString.substring(3, 5)) &&
             currentYear == int.parse(tmpString.substring(6, 10))) {
-          attend[int.parse(tmpString.substring(0, 2)) + indexOfTheStartDay] =
-              true;
+          attend[int.parse(tmpString.substring(0, 2)) + indexOfTheStartDay] = true;
         }
       }
     }
-    listCalendar.addAll(List.generate(daysInMonth(currentYear, currentMonth),
-        (index) => (index + 1).toString()));
+    print(attend);
+    listCalendar.addAll(
+        List.generate(daysInMonth(currentYear, currentMonth), (index) => (index + 1).toString()));
 
     bool checkInRangeOfLearningDays(int aDay) {
       if (aDay <= 0) return false;
       var considerDate = new DateTime.utc(currentYear, currentMonth, aDay);
+      if (considerDate.compareTo(startDate) < 0) return false;
       int nowInMinutes = now.hour * 60 + now.minute;
-      int startTimeInMinutes =
-          int.parse(widget.classinf.time.substring(0, 2)) * 60 +
-              int.parse(widget.classinf.time.substring(3, 5));
-      if (currentYear == now.year &&
-          currentMonth == now.month &&
-          aDay == now.day) {
-        print(widget.classinf.time);
-        print(now.toString());
+      int startTimeInMinutes = int.parse(widget.classinf.time.substring(0, 2)) * 60 +
+          int.parse(widget.classinf.time.substring(3, 5));
+      if (currentYear == now.year && currentMonth == now.month && aDay == now.day) {
         return (nowInMinutes - startTimeInMinutes >= 90);
       }
-      return considerDate.compareTo(startDate) >= 0 &&
-          considerDate.compareTo(now) < 0;
+      return considerDate.compareTo(startDate) >= 0 && considerDate.compareTo(now) < 0;
     }
 
     return Container(
@@ -160,8 +152,8 @@ class _AttendanceScreenForStudentState
         padding: const EdgeInsets.all(0),
         mainAxisSpacing: 0.5 * SizeConfig.heightMultiplier,
         crossAxisCount: 7,
-        childAspectRatio: (75 * SizeConfig.widthMultiplier / 7) /
-            (24 * SizeConfig.heightMultiplier / 6),
+        childAspectRatio:
+            (75 * SizeConfig.widthMultiplier / 7) / (24 * SizeConfig.heightMultiplier / 6),
         children: List.generate(
           listCalendar.length,
           (index) => Container(
@@ -180,9 +172,7 @@ class _AttendanceScreenForStudentState
                   ? lightGreenColor
                   : indexOfTheStartDay >= index ||
                           widget.classinf.schedule[index % 7] == false ||
-                          checkInRangeOfLearningDays(
-                                  index - indexOfTheStartDay) ==
-                              false
+                          checkInRangeOfLearningDays(index - indexOfTheStartDay) == false
                       ? whiteColor
                       : mediumPink,
               shape: BoxShape.circle,
@@ -296,8 +286,7 @@ class _AttendanceScreenForStudentState
                                     currentMonth--;
                                   }
                                   firstDayOfMonth =
-                                      DateTime.utc(currentYear, currentMonth, 1)
-                                          .weekday;
+                                      DateTime.utc(currentYear, currentMonth, 1).weekday;
                                 });
                               },
                               icon: Icon(
@@ -307,9 +296,7 @@ class _AttendanceScreenForStudentState
                               ),
                             ),
                             Text(
-                              listOfMonths[currentMonth - 1] +
-                                  ' ' +
-                                  currentYear.toString(),
+                              listOfMonths[currentMonth - 1] + ' ' + currentYear.toString(),
                               style: TextStyle(
                                 color: Color(0xff45228b),
                                 fontSize: 24,
@@ -327,8 +314,7 @@ class _AttendanceScreenForStudentState
                                     currentMonth++;
                                   }
                                   firstDayOfMonth =
-                                      DateTime.utc(currentYear, currentMonth, 1)
-                                          .weekday;
+                                      DateTime.utc(currentYear, currentMonth, 1).weekday;
                                 });
                               },
                               icon: Icon(
