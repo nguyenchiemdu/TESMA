@@ -595,7 +595,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: DropdownButton(
-                                        hint: Text(""),
+                                        hint: Text("__"),
                                         icon: Icon(Icons.arrow_drop_down_sharp),
                                         iconSize: 35,
                                         underline: SizedBox(),
@@ -629,7 +629,7 @@ class _InputClassScreen extends State<InputClassScreen> {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: DropdownButton(
-                                        hint: Text(""),
+                                        hint: Text("__"),
                                         icon: Icon(Icons.arrow_drop_down_sharp),
                                         iconSize: 35,
                                         underline: SizedBox(),
@@ -848,10 +848,10 @@ class _InputClassScreen extends State<InputClassScreen> {
                                           if (classNameController.text == "" ||
                                               feeController.text == "" ||
                                               locationController.text == "" ||
-                                              valueChooseSubject == "Subject" ||
-                                              valueChooseGrade == "Grade" ||
-                                              valueChooseMinute == "" ||
-                                              valueChooseHour == "") {
+                                              valueChooseSubject == null ||
+                                              valueChooseGrade == null ||
+                                              valueChooseMinute == null ||
+                                              valueChooseHour == null) {
                                             isFilledInAll = false;
                                           } else {
                                             isFilledInAll = true;

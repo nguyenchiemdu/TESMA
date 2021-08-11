@@ -114,7 +114,7 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
                   top: 3 * SizeConfig.heightMultiplier,
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Expanded(
+                child: Container(
                   child: StreamBuilder<DocumentSnapshot>(
                     stream: _classesStream,
                     builder: (BuildContext context,
@@ -127,6 +127,7 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
                         return Text("Loading");
                       }
                       return ListView.builder(
+                          padding: const EdgeInsets.all(0),
                           itemCount: snapshot.data.data()['numberofstudents'],
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
@@ -161,7 +162,6 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
                                             snapshotschedule) {
                                       if (snapshotschedule.data != null)
                                         return Row(
-                                          mainAxisSize: MainAxisSize.min,
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
