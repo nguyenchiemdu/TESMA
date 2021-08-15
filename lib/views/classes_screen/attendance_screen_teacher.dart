@@ -40,6 +40,7 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
   }
 
   String getNumOfAbsences(int timeOfALesson, List attendenceList) {
+    if (startDate.compareTo(now) == 1) return '0';
     // get number of attendances
     int numOfAttendances = 0;
     if (attendenceList != null) numOfAttendances = attendenceList.length;
