@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tesma/constants/color.dart';
 import 'package:tesma/constants/size_config.dart';
 import 'package:tesma/models/classinf.dart';
@@ -37,6 +38,16 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
       ClassInfor().resetday(widget.classinf.classid, uid);
       widget.classinf.lastday = DateTime.now();
     }
+    iscurrentlesson();
+    print(currentlesson);
+  }
+
+  bool currentlesson = false;
+
+  void iscurrentlesson() {
+    final now = new DateTime.now();
+    int currentday = now.weekday - 1;
+    currentlesson = widget.classinf.schedule[currentday % 7];
   }
 
   String getNumOfAbsences(int timeOfALesson, List attendenceList) {
@@ -68,6 +79,15 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void _showToast(String context) {
+    Fluttertoast.showToast(
+      msg: context,
+      backgroundColor: redColor,
+      textColor: whiteColor,
+      gravity: ToastGravity.CENTER,
+    );
   }
 
   final now = new DateTime.now();
@@ -226,12 +246,17 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
                                                     .data()['today'])
                                                 ? GestureDetector(
                                                     onTap: () {
-                                                      ClassInfor()
-                                                          .changestatustoday(
-                                                              snapshot.data.id,
-                                                              snapshotschedule
-                                                                  .data.id,
-                                                              true);
+                                                      if (currentlesson)
+                                                        ClassInfor()
+                                                            .changestatustoday(
+                                                                snapshot
+                                                                    .data.id,
+                                                                snapshotschedule
+                                                                    .data.id,
+                                                                true);
+                                                      else
+                                                        _showToast(
+                                                            'No class today');
                                                     },
                                                     child: Container(
                                                       margin: EdgeInsets.only(
@@ -257,12 +282,17 @@ class _AttendanceScreenTeacherState extends State<AttendanceScreenTeacher> {
                                                   )
                                                 : GestureDetector(
                                                     onTap: () {
-                                                      ClassInfor()
-                                                          .changestatustoday(
-                                                              snapshot.data.id,
-                                                              snapshotschedule
-                                                                  .data.id,
-                                                              true);
+                                                      if (currentlesson)
+                                                        ClassInfor()
+                                                            .changestatustoday(
+                                                                snapshot
+                                                                    .data.id,
+                                                                snapshotschedule
+                                                                    .data.id,
+                                                                true);
+                                                      else
+                                                        _showToast(
+                                                            'No class today');
                                                     },
                                                     child: Container(
                                                       margin: EdgeInsets.only(
