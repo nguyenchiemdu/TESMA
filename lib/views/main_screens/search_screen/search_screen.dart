@@ -229,6 +229,7 @@ class _SearchState extends State<Search> {
           showResultsindex.add(dem);
         }
         ++dem;
+        print(dem);
       }
     } else {
       showResults = List.from(_allresultList);
@@ -240,14 +241,14 @@ class _SearchState extends State<Search> {
       _resultsList = showResults;
       _resultsListClassInf = showResultsClassInf;
       _indexClassInf = showResultsindex;
-      print(showResultsindex);
-      print(showResultsClassInf);
+      //print(showResultsClassInf);
 
       //print(showResultsindex);
     });
     searchResultsListwithFilter();
-    //if (_resultsList.length < 3 && hasNext) getClassInfor();
-    print(hasNext);
+    print(_indexClassInf);
+    if (_resultsList.length < 3 && hasNext) getClassInfor();
+    //print(hasNext);
   }
 
   @override
