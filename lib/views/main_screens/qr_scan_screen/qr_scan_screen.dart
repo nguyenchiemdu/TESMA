@@ -26,6 +26,7 @@ class _QrScanState extends State<QrScan> {
   UserInf userinf;
   Barcode result;
   String whyIsItWrongQr = '';
+  bool isAllowed = true;
   bool isCorrectCode = false;
   QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -86,6 +87,9 @@ class _QrScanState extends State<QrScan> {
     setState(() {
       result = resultBarCode;
     });
+    setState(() {
+      isAllowed = false;
+    });
     await FirebaseFirestore.instance
         .collection('classes')
         .doc(getClassID)
@@ -141,6 +145,9 @@ class _QrScanState extends State<QrScan> {
       } else {
         checkForRepetition('Wrong type QR Code');
       }
+    });
+    setState(() {
+      isAllowed = true;
     });
   }
 
@@ -292,7 +299,7 @@ class _QrScanState extends State<QrScan> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      checkQrCodeAndMarkAttendance(scanData);
+      if (isAllowed) checkQrCodeAndMarkAttendance(scanData);
     });
   }
 
